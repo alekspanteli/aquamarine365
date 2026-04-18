@@ -4,14 +4,24 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useCallback } from 'react';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from '@phosphor-icons/react/dist/ssr';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function StayCarousel({ villas }) {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
+  const [loadedCovers, setLoadedCovers] = useState(() => new Set());
+  const coverLoaded = loadedCovers.has(villas[index].slug);
+  const markCoverLoaded = (slug) =>
+    setLoadedCovers((s) => {
+      if (s.has(slug)) return s;
+      const next = new Set(s);
+      next.add(slug);
+      return next;
+    });
 
   const go = useCallback(
     (i) => {
@@ -96,15 +106,15 @@ export default function StayCarousel({ villas }) {
                 className="relative block min-h-[300px] lg:min-h-[520px] overflow-hidden group"
                 aria-label={`View ${villa.name}`}
               >
+                {!coverLoaded && <Skeleton className="absolute inset-0 z-0" />}
                 <Image
                   src={villa.cover}
                   alt={villa.name}
                   fill
                   sizes="(max-width: 1024px) 100vw, 60vw"
                   priority={index === 0}
-                  placeholder="blur"
-                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAn/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AKpgA//Z"
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  onLoadingComplete={() => markCoverLoaded(villa.slug)}
+                  className={`object-cover transition-all duration-700 group-hover:scale-105 ${coverLoaded ? 'opacity-100' : 'opacity-0'}`}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent pointer-events-none" />
                 <Badge

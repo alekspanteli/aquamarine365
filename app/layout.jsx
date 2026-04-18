@@ -1,21 +1,22 @@
-import { Fraunces, JetBrains_Mono } from 'next/font/google';
+import { Cormorant_Garamond, IBM_Plex_Mono } from 'next/font/google';
 import { GeistSans } from 'geist/font/sans';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { Toaster } from '@/components/ui/sonner';
+import CookieBanner from '@/components/CookieBanner';
 import './globals.css';
 
-const fraunces = Fraunces({
+const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600'],
+  weight: ['300', '400', '500', '600', '700'],
   style: ['normal', 'italic'],
-  variable: '--font-fraunces',
+  variable: '--font-cormorant',
   display: 'swap'
 });
 
-const jetbrains = JetBrains_Mono({
+const plex = IBM_Plex_Mono({
   subsets: ['latin'],
   weight: ['400', '500', '600'],
-  variable: '--font-jetbrains',
+  variable: '--font-plex-mono',
   display: 'swap'
 });
 
@@ -30,13 +31,14 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${fraunces.variable} ${GeistSans.variable} ${jetbrains.variable}`}
+      className={`${cormorant.variable} ${GeistSans.variable} ${plex.variable}`}
       suppressHydrationWarning
     >
       <body>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange={false}>
           {children}
           <Toaster />
+          <CookieBanner />
         </ThemeProvider>
       </body>
     </html>

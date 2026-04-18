@@ -13,7 +13,7 @@ import {
   CommandSeparator
 } from '@/components/ui/command';
 import { villas } from '@/data/villas';
-import { Bed, Home, Info, HelpCircle, Phone, Mail, MessageCircle, Sun, Moon, Laptop2 } from 'lucide-react';
+import { Bed, House, Info, Question, Phone, Envelope, ChatCircle, Sun, Moon, Laptop } from '@phosphor-icons/react/dist/ssr';
 
 export function CommandPaletteTrigger({ onClick }) {
   return (
@@ -26,7 +26,7 @@ export function CommandPaletteTrigger({ onClick }) {
         <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.6" />
         <path d="m20 20-3.5-3.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
       </svg>
-      <span className="mr-8">Search</span>
+      <span className="mr-8">MagnifyingGlass</span>
       <kbd className="font-mono text-[0.68rem] px-1.5 py-0.5 rounded border border-[var(--line)] bg-[var(--bg)]">⌘K</kbd>
     </button>
   );
@@ -82,11 +82,11 @@ export default function CommandPalette({ open, setOpen }) {
         <CommandSeparator />
 
         <CommandGroup heading="Navigate">
-          <CommandItem onSelect={go('/')}><Home size={16} /> Home</CommandItem>
+          <CommandItem onSelect={go('/')}><House size={16} /> Home</CommandItem>
           <CommandItem onSelect={go('/#stays')}><Bed size={16} /> Browse stays</CommandItem>
           <CommandItem onSelect={go('/#why')}><Info size={16} /> Why Aquamarine</CommandItem>
           <CommandItem onSelect={go('/#how')}><Info size={16} /> How it works</CommandItem>
-          <CommandItem onSelect={go('/#faq')}><HelpCircle size={16} /> FAQ</CommandItem>
+          <CommandItem onSelect={go('/#faq')}><Question size={16} /> FAQ</CommandItem>
           <CommandItem onSelect={go('/#book')}><Info size={16} /> Check availability</CommandItem>
         </CommandGroup>
 
@@ -101,12 +101,12 @@ export default function CommandPalette({ open, setOpen }) {
           <CommandItem
             onSelect={run(() => (window.location.href = 'https://wa.me/35797494941'))}
           >
-            <MessageCircle size={16} /> WhatsApp
+            <ChatCircle size={16} /> WhatsApp
           </CommandItem>
           <CommandItem
             onSelect={run(() => (window.location.href = 'mailto:info@aquamarine365.com'))}
           >
-            <Mail size={16} /> Email info@aquamarine365.com
+            <Envelope size={16} /> Email info@aquamarine365.com
           </CommandItem>
         </CommandGroup>
 
@@ -115,7 +115,7 @@ export default function CommandPalette({ open, setOpen }) {
         <CommandGroup heading="Appearance">
           <CommandItem onSelect={run(() => setTheme('light'))}><Sun size={16} /> Light mode</CommandItem>
           <CommandItem onSelect={run(() => setTheme('dark'))}><Moon size={16} /> Dark mode</CommandItem>
-          <CommandItem onSelect={run(() => setTheme('system'))}><Laptop2 size={16} /> Match system</CommandItem>
+          <CommandItem onSelect={run(() => setTheme('system'))}><Laptop size={16} /> Match system</CommandItem>
         </CommandGroup>
       </CommandList>
     </CommandDialog>

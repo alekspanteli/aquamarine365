@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import dynamic from 'next/dynamic';
-import { Calendar as CalendarIcon } from 'lucide-react';
+import { CalendarBlank as CalendarIcon } from '@phosphor-icons/react/dist/ssr';
 
 const fmt = (d) =>
   d.toLocaleDateString('en-GB', { weekday: 'short', month: 'short', day: 'numeric' });

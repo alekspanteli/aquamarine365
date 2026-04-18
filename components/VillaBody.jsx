@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check } from '@phosphor-icons/react/dist/ssr';
 import VillaGallery from './VillaGallery';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';

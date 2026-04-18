@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Instagram, Mail, MessageCircle } from 'lucide-react';
+import { InstagramLogo, Envelope, ChatCircle } from '@phosphor-icons/react/dist/ssr';
 
 export default function Footer() {
   return (
@@ -23,9 +23,9 @@ export default function Footer() {
           </p>
           <div className="mt-5 flex gap-3">
             {[
-              { Icon: Instagram, href: 'https://instagram.com', label: 'Instagram' },
-              { Icon: MessageCircle, href: 'https://wa.me/35797494941', label: 'WhatsApp' },
-              { Icon: Mail, href: 'mailto:info@aquamarine365.com', label: 'Email' }
+              { Icon: InstagramLogo, href: 'https://instagram.com', label: 'Instagram' },
+              { Icon: ChatCircle, href: 'https://wa.me/35797494941', label: 'WhatsApp' },
+              { Icon: Envelope, href: 'mailto:info@aquamarine365.com', label: 'Email' }
             ].map(({ Icon, href, label }) => (
               <a
                 key={label}

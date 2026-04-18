@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Check } from 'lucide-react';
+import { Check } from '@phosphor-icons/react/dist/ssr';
 
 const rows = [
   { label: 'Booking fees', direct: '€0', other: '€120 – €240' },

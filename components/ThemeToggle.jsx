@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
-import { Sun, Moon } from 'lucide-react';
+import { Sun, Moon } from '@phosphor-icons/react/dist/ssr';
 
 export default function ThemeToggle({ className = '' }) {
   const { theme, resolvedTheme, setTheme } = useTheme();

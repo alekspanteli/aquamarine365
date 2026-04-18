@@ -2,12 +2,13 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Check } from 'lucide-react';
+import { Check } from '@phosphor-icons/react/dist/ssr';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
+import { Spinner } from '@/components/ui/loading-image';
 
 export default function Offer() {
   const [status, setStatus] = useState('idle');
@@ -39,7 +40,7 @@ export default function Offer() {
         style={{
           inset: 0,
           background:
-            'radial-gradient(500px 300px at 15% 20%, color-mix(in srgb, var(--color-aqua) 20%, transparent), transparent 70%), radial-gradient(600px 400px at 85% 80%, color-mix(in srgb, var(--color-coral-dark) 20%, transparent), transparent 70%)'
+            'radial-gradient(500px 300px at 15% 20%, color-mix(in srgb, var(--color-aqua) 20%, transparent), transparent 70%), radial-gradient(600px 400px at 85% 80%, color-mix(in srgb, var(--color-terracotta-dark) 20%, transparent), transparent 70%)'
         }}
       />
       <div className="grain absolute inset-0 -z-10" aria-hidden />
@@ -51,15 +52,15 @@ export default function Offer() {
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
         >
-          <div className="label mb-4 flex items-center gap-2" style={{ color: 'var(--color-coral-dark)' }}>
-            <span className="w-6 h-px" style={{ background: 'var(--color-coral-dark)' }} />
+          <div className="label mb-4 flex items-center gap-2" style={{ color: 'var(--color-terracotta-dark)' }}>
+            <span className="w-6 h-px" style={{ background: 'var(--color-terracotta-dark)' }} />
             Direct offer · 08
           </div>
           <h2 className="max-w-[18ch] !text-[var(--color-cream)]">
             <span className="block">Book direct.</span>
             <span
               className="block italic font-light"
-              style={{ color: 'var(--color-coral-dark)' }}
+              style={{ color: 'var(--color-terracotta-dark)' }}
             >
               Get the week for six.
             </span>
@@ -69,8 +70,8 @@ export default function Offer() {
             <strong
               className="font-mono px-2.5 py-1 rounded tracking-wider"
               style={{
-                color: 'var(--color-coral-dark)',
-                background: 'color-mix(in srgb, var(--color-coral-dark) 15%, transparent)'
+                color: 'var(--color-terracotta-dark)',
+                background: 'color-mix(in srgb, var(--color-terracotta-dark) 15%, transparent)'
               }}
             >
               DIRECT7
@@ -85,7 +86,7 @@ export default function Offer() {
               'Airport pickup & grocery stocking on request'
             ].map((t) => (
               <li key={t} className="flex items-center gap-3 text-[var(--color-cream)]/90">
-                <Check size={18} className="shrink-0" style={{ color: 'var(--color-coral-dark)' }} />
+                <Check size={18} className="shrink-0" style={{ color: 'var(--color-terracotta-dark)' }} />
                 {t}
               </li>
             ))}
@@ -116,9 +117,16 @@ export default function Offer() {
           <Button
             type="submit"
             size="lg"
-            className="mt-2 bg-[var(--color-ink)] text-[var(--color-cream)] hover:bg-[var(--color-sea)]"
+            className="mt-2 bg-[var(--color-ink)] text-[var(--color-cream)] hover:bg-[var(--color-aegean)]"
           >
-            {status === 'sent' ? 'Opening your email…' : status === 'loading' ? 'Preparing…' : 'Check my dates'}
+            {status === 'loading' || status === 'sent' ? (
+              <>
+                <Spinner size={14} />
+                {status === 'sent' ? 'Opening your email…' : 'Preparing…'}
+              </>
+            ) : (
+              'Check my dates'
+            )}
           </Button>
           <p className="text-xs text-[var(--color-muted)] text-center mt-1">
             We reply within one hour, 8am–10pm Cyprus time.

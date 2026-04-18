@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
-import { Menu, Search } from 'lucide-react';
+import { List, MagnifyingGlass } from '@phosphor-icons/react/dist/ssr';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import ThemeToggle from './ThemeToggle';
@@ -70,7 +70,7 @@ export default function Nav() {
             className="hidden md:inline-flex items-center gap-2 h-10 pl-3 pr-2 rounded-full border border-[var(--line)] text-[var(--fg-muted)] hover:text-[var(--fg)] hover:border-[var(--fg)] transition text-sm bg-[var(--surface)] flex-1 max-w-sm"
             aria-label="Open search"
           >
-            <Search size={14} />
+            <MagnifyingGlass size={14} />
             <span className="mr-auto">Search villas, FAQs, contact…</span>
             <kbd className="font-mono text-[0.65rem] px-1.5 py-0.5 rounded border border-[var(--line)] bg-[var(--bg)]">⌘K</kbd>
           </button>
@@ -94,7 +94,7 @@ export default function Nav() {
               aria-label="Open search"
               className="md:hidden inline-flex items-center justify-center h-10 w-10 rounded-full border border-[var(--line)] bg-[var(--surface)] text-[var(--fg)]"
             >
-              <Search size={16} />
+              <MagnifyingGlass size={16} />
             </button>
             <ThemeToggle />
             <Button asChild className="hidden sm:inline-flex">
@@ -106,7 +106,7 @@ export default function Nav() {
                   className="xl:hidden inline-flex items-center justify-center h-10 w-10 rounded-full border border-[var(--line)] bg-[var(--surface)] text-[var(--fg)]"
                   aria-label="Open menu"
                 >
-                  <Menu size={18} />
+                  <List size={18} />
                 </button>
               </SheetTrigger>
               <SheetContent side="right" className="flex flex-col gap-0 p-0 w-full max-w-[420px]">
@@ -184,8 +184,8 @@ function DrawerContent({ close, openCommand }) {
           className="w-full flex items-center justify-between px-4 py-3 rounded-full border border-[var(--line)] text-sm text-[var(--fg-2)] hover:border-[var(--fg)] transition"
         >
           <span className="flex items-center gap-2">
-            <Search size={14} />
-            Search anything
+            <MagnifyingGlass size={14} />
+            MagnifyingGlass anything
           </span>
           <kbd className="font-mono text-[0.65rem] border border-[var(--line)] rounded px-1.5 py-0.5">⌘K</kbd>
         </button>

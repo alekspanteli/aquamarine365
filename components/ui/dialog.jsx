@@ -30,13 +30,17 @@ const DialogContent = React.forwardRef(({ className, children, ...props }, ref) 
     <DialogOverlay />
     <DialogPrimitive.Content
       ref={ref}
-      className="fixed inset-0 z-[95] flex items-center justify-center p-4 outline-none focus:outline-none"
+      className="fixed inset-0 z-[95] flex items-center justify-center p-4 outline-none focus:outline-none pointer-events-none"
+      onPointerDownOutside={(e) => {
+        // Let Radix handle dismiss when pointer lands on the transparent area.
+        // pointer-events-none on Content means those events reach the Overlay.
+      }}
       {...props}
     >
       <div
         data-aq-dialog=""
         className={cn(
-          'relative w-full max-w-[640px] bg-[var(--surface)] text-[var(--fg)] border border-[var(--line)] rounded-2xl shadow-2xl overflow-hidden',
+          'relative pointer-events-auto w-full max-w-[640px] bg-[var(--surface)] text-[var(--fg)] border border-[var(--line)] rounded-2xl shadow-2xl overflow-hidden',
           'will-change-[transform,opacity] origin-center',
           className
         )}

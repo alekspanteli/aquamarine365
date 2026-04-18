@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import * as AccordionPrimitive from '@radix-ui/react-accordion';
-import { Plus } from 'lucide-react';
+import { Plus } from '@phosphor-icons/react/dist/ssr';
 import { cn } from '@/lib/utils';
 
 const Accordion = AccordionPrimitive.Root;

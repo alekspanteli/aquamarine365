@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight } from '@phosphor-icons/react/dist/ssr';
 import { Button } from '@/components/ui/button';
 
 export default function FloatingCTA({ href = '/#book', label = 'Check availability' }) {

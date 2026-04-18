@@ -3,12 +3,23 @@
 import Image from 'next/image';
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, ArrowRight, Maximize2, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CornersOut, X } from '@phosphor-icons/react/dist/ssr';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function VillaGallery({ images, name }) {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [lightbox, setLightbox] = useState(false);
+  const [loadedSet, setLoadedSet] = useState(() => new Set());
+  const isLoaded = loadedSet.has(index);
+  const markLoaded = useCallback((i) => {
+    setLoadedSet((s) => {
+      if (s.has(i)) return s;
+      const next = new Set(s);
+      next.add(i);
+      return next;
+    });
+  }, []);
 
   const go = useCallback(
     (i) => {
@@ -61,14 +72,16 @@ export default function VillaGallery({ images, name }) {
               onClick={() => setLightbox(true)}
               className="absolute inset-0"
             >
+              {!isLoaded && <Skeleton className="absolute inset-0 z-10" />}
               <Image
                 src={images[index]}
                 alt={`${name} — image ${index + 1}`}
                 fill
                 sizes="(max-width: 960px) 100vw, 70vw"
-                className="object-cover"
+                className={`object-cover transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
                 priority={index === 0}
                 fetchPriority={index === 0 ? 'high' : 'auto'}
+                onLoadingComplete={() => markLoaded(index)}
                 placeholder="blur"
                 blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAn/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AKpgA//Z"
               />
@@ -99,7 +112,7 @@ export default function VillaGallery({ images, name }) {
             aria-label="Open full size"
             className="absolute bottom-4 right-4 h-10 w-10 rounded-xl bg-white text-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-white shadow-lg transition z-10 inline-flex items-center justify-center"
           >
-            <Maximize2 size={16} />
+            <CornersOut size={16} />
           </button>
         </div>
 

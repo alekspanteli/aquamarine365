@@ -1,7 +1,7 @@
 'use client';
 
 import { DayPicker } from 'react-day-picker';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { CaretLeft, CaretRight } from '@phosphor-icons/react/dist/ssr';
 import { cn } from '@/lib/utils';
 
 export function Calendar({ className, classNames, showOutsideDays = true, ...props }) {
@@ -38,8 +38,8 @@ export function Calendar({ className, classNames, showOutsideDays = true, ...pro
         ...classNames
       }}
       components={{
-        IconLeft: () => <ChevronLeft className="h-4 w-4" />,
-        IconRight: () => <ChevronRight className="h-4 w-4" />
+        IconLeft: () => <CaretLeft className="h-4 w-4" />,
+        IconRight: () => <CaretRight className="h-4 w-4" />
       }}
       {...props}
     />
