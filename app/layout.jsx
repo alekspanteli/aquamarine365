@@ -1,6 +1,7 @@
 import { Fraunces, JetBrains_Mono } from 'next/font/google';
 import { GeistSans } from 'geist/font/sans';
 import { ThemeProvider } from '@/components/ThemeProvider';
+import { Toaster } from '@/components/ui/sonner';
 import './globals.css';
 
 const fraunces = Fraunces({
@@ -35,6 +36,7 @@ export default function RootLayout({ children }) {
       <body>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange={false}>
           {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

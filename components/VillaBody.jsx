@@ -1,12 +1,20 @@
 'use client';
 
 import Link from 'next/link';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
 import VillaGallery from './VillaGallery';
 import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { DatePicker } from '@/components/ui/date-picker';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 
 export default function VillaBody({ villa }) {
+  const [checkIn, setCheckIn] = useState();
+  const [checkOut, setCheckOut] = useState();
+  const [guests, setGuests] = useState('2');
+  const today = new Date();
   return (
     <>
       <section className="pt-8 md:pt-14 pb-6 md:pb-8 bg-[var(--bg-2)]">
@@ -152,39 +160,47 @@ export default function VillaBody({ villa }) {
                 .
               </p>
 
-              <div className="grid grid-cols-2 gap-2.5 mb-5">
-                <label className="flex flex-col gap-1">
-                  <span className="label !text-[0.65rem]">Check-in</span>
-                  <input
-                    type="date"
-                    className="h-11 px-3 rounded-xl border border-[var(--line)] bg-[var(--surface)] focus:border-[var(--accent)] outline-none text-sm"
+              <div className="grid grid-cols-2 gap-3 mb-5">
+                <div className="flex flex-col gap-1.5">
+                  <Label>Check-in</Label>
+                  <DatePicker
+                    value={checkIn}
+                    onChange={setCheckIn}
+                    placeholder="Add date"
+                    minDate={today}
                   />
-                </label>
-                <label className="flex flex-col gap-1">
-                  <span className="label !text-[0.65rem]">Check-out</span>
-                  <input
-                    type="date"
-                    className="h-11 px-3 rounded-xl border border-[var(--line)] bg-[var(--surface)] focus:border-[var(--accent)] outline-none text-sm"
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <Label>Check-out</Label>
+                  <DatePicker
+                    value={checkOut}
+                    onChange={setCheckOut}
+                    placeholder="Add date"
+                    minDate={checkIn || today}
                   />
-                </label>
-                <label className="flex flex-col gap-1 col-span-2">
-                  <span className="label !text-[0.65rem]">Guests</span>
-                  <select
-                    defaultValue="2"
-                    className="h-11 px-3 rounded-xl border border-[var(--line)] bg-[var(--surface)] focus:border-[var(--accent)] outline-none text-sm"
-                  >
-                    {[...Array(villa.sleeps)].map((_, i) => (
-                      <option key={i} value={i + 1}>
-                        {i + 1} guest{i ? 's' : ''}
-                      </option>
-                    ))}
-                  </select>
-                </label>
+                </div>
+                <div className="flex flex-col gap-1.5 col-span-2">
+                  <Label>Guests</Label>
+                  <Select value={guests} onValueChange={setGuests}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {[...Array(villa.sleeps)].map((_, i) => (
+                        <SelectItem key={i} value={String(i + 1)}>
+                          {i + 1} guest{i ? 's' : ''}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
 
               <Button asChild size="lg" variant="punch" className="w-full mb-4">
                 <a
-                  href={`mailto:info@aquamarine365.com?subject=Enquiry: ${encodeURIComponent(villa.name)}&body=Hi Aquamarine, I'd like to check availability at ${encodeURIComponent(villa.name)} for...`}
+                  href={`mailto:info@aquamarine365.com?subject=Enquiry: ${encodeURIComponent(villa.name)}&body=${encodeURIComponent(
+                    `Hi Aquamarine, I'd like to check availability at ${villa.name}.\n\nCheck-in: ${checkIn ? checkIn.toDateString() : '—'}\nCheck-out: ${checkOut ? checkOut.toDateString() : '—'}\nGuests: ${guests}\n\nThanks,`
+                  )}`}
                 >
                   Enquire now
                   <ArrowRight size={16} />

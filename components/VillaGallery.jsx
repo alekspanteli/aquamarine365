@@ -78,14 +78,14 @@ export default function VillaGallery({ images, name }) {
           <button
             onClick={() => go(index - 1)}
             aria-label="Previous image"
-            className="absolute top-1/2 -translate-y-1/2 left-4 h-12 w-12 rounded-full bg-white/90 backdrop-blur text-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-white transition z-10 inline-flex items-center justify-center"
+            className="absolute top-1/2 -translate-y-1/2 left-4 h-12 w-12 rounded-full bg-white text-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-white shadow-lg transition z-10 inline-flex items-center justify-center"
           >
             <ArrowLeft size={18} />
           </button>
           <button
             onClick={() => go(index + 1)}
             aria-label="Next image"
-            className="absolute top-1/2 -translate-y-1/2 right-4 h-12 w-12 rounded-full bg-white/90 backdrop-blur text-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-white transition z-10 inline-flex items-center justify-center"
+            className="absolute top-1/2 -translate-y-1/2 right-4 h-12 w-12 rounded-full bg-white text-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-white shadow-lg transition z-10 inline-flex items-center justify-center"
           >
             <ArrowRight size={18} />
           </button>
@@ -97,7 +97,7 @@ export default function VillaGallery({ images, name }) {
           <button
             onClick={() => setLightbox(true)}
             aria-label="Open full size"
-            className="absolute bottom-4 right-4 h-10 w-10 rounded-xl bg-white/90 backdrop-blur text-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-white transition z-10 inline-flex items-center justify-center"
+            className="absolute bottom-4 right-4 h-10 w-10 rounded-xl bg-white text-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-white shadow-lg transition z-10 inline-flex items-center justify-center"
           >
             <Maximize2 size={16} />
           </button>

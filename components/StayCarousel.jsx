@@ -6,6 +6,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useCallback } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
 
 export default function StayCarousel({ villas }) {
   const [index, setIndex] = useState(0);
@@ -48,7 +50,7 @@ export default function StayCarousel({ villas }) {
             <button
               onClick={() => go(index - 1)}
               aria-label="Previous stay"
-              className="h-12 w-12 rounded-full border border-[var(--line)] bg-[var(--surface)] text-[var(--fg)] hover:bg-[var(--fg)] hover:text-[var(--bg)] transition inline-flex items-center justify-center"
+              className="h-12 w-12 rounded-full bg-[var(--fg)] text-[var(--bg)] hover:bg-[var(--accent)] hover:text-white shadow-md transition inline-flex items-center justify-center"
             >
               <ArrowLeft size={18} />
             </button>
@@ -59,7 +61,7 @@ export default function StayCarousel({ villas }) {
             <button
               onClick={() => go(index + 1)}
               aria-label="Next stay"
-              className="h-12 w-12 rounded-full border border-[var(--line)] bg-[var(--surface)] text-[var(--fg)] hover:bg-[var(--fg)] hover:text-[var(--bg)] transition inline-flex items-center justify-center"
+              className="h-12 w-12 rounded-full bg-[var(--fg)] text-[var(--bg)] hover:bg-[var(--accent)] hover:text-white shadow-md transition inline-flex items-center justify-center"
             >
               <ArrowRight size={18} />
             </button>
@@ -105,10 +107,13 @@ export default function StayCarousel({ villas }) {
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent pointer-events-none" />
-                <div className="absolute top-5 left-5 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 backdrop-blur text-[0.72rem] font-mono uppercase tracking-wider text-[var(--ink)]">
+                <Badge
+                  variant="live"
+                  className="absolute top-5 left-5 bg-white/95 !text-[var(--color-ink)] border-transparent"
+                >
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                   Available
-                </div>
+                </Badge>
                 <div className="absolute top-5 right-5 flex items-baseline gap-1 bg-[var(--color-ink)] text-white px-4 py-2.5 rounded-2xl shadow-xl">
                   <span className="font-mono text-[0.65rem] uppercase tracking-wider text-white/70">From</span>
                   <strong className="font-display text-xl font-medium ml-1">€{villa.priceFrom}</strong>
