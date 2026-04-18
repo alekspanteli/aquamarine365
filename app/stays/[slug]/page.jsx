@@ -1,9 +1,9 @@
 import { notFound } from 'next/navigation';
-import Link from 'next/link';
 import Nav from '@/components/Nav';
+import ProgressBar from '@/components/ProgressBar';
 import Footer from '@/components/Footer';
-import VillaGallery from '@/components/VillaGallery';
 import VillaBody from '@/components/VillaBody';
+import FloatingCTA from '@/components/FloatingCTA';
 import { villas, getVilla } from '@/data/villas';
 
 export function generateStaticParams() {
@@ -25,11 +25,13 @@ export default function VillaPage({ params }) {
 
   return (
     <>
+      <ProgressBar />
       <Nav />
       <main>
         <VillaBody villa={villa} />
       </main>
       <Footer />
+      <FloatingCTA href="#book" label={`Enquire — from €${villa.priceFrom}/night`} />
     </>
   );
 }

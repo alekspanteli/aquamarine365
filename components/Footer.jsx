@@ -1,85 +1,88 @@
 import Link from 'next/link';
-import styles from './Footer.module.css';
+import { Instagram, Mail, MessageCircle } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className={styles.footer} id="contact">
-      <div className={`container ${styles.inner}`}>
-        <div className={styles.brandCol}>
-          <div className={styles.brand}>
-            <span className={styles.mark} aria-hidden />
-            <span className={styles.word}>Aquamarine</span>
+    <footer id="contact" className="bg-[var(--color-ink-dark)] text-[var(--color-cream)]/75 pt-20 pb-7">
+      <div className="container-x grid md:grid-cols-[1.6fr_1fr_1fr_1fr] gap-12 pb-12">
+        <div>
+          <div className="flex items-center gap-2.5">
+            <span
+              className="w-6 h-6 rounded-full"
+              style={{
+                background: 'radial-gradient(circle at 30% 30%, #B9E0DB, var(--color-aqua) 70%)',
+                boxShadow: 'inset 0 0 0 2px #0a1721, 0 2px 8px rgba(127,201,184,0.35)'
+              }}
+              aria-hidden
+            />
+            <span className="font-display text-2xl text-white">Aquamarine</span>
+            <span className="font-mono text-xs tracking-widest uppercase text-[var(--color-cream)]/50 ml-1">365</span>
           </div>
-          <p className={styles.tag}>
+          <p className="mt-4 text-[var(--color-cream)]/60 max-w-[32ch] leading-relaxed">
             Ayia Napa villas &amp; suites, managed by the people who own them.
           </p>
-          <div className={styles.socials}>
-            <a href="https://instagram.com" aria-label="Instagram" target="_blank" rel="noopener">
-              <Ig />
-            </a>
-            <a href="https://wa.me/35797494941" aria-label="WhatsApp" target="_blank" rel="noopener">
-              <Wa />
-            </a>
-            <a href="mailto:info@aquamarine365.com" aria-label="Email">
-              <Mail />
-            </a>
+          <div className="mt-5 flex gap-3">
+            {[
+              { Icon: Instagram, href: 'https://instagram.com', label: 'Instagram' },
+              { Icon: MessageCircle, href: 'https://wa.me/35797494941', label: 'WhatsApp' },
+              { Icon: Mail, href: 'mailto:info@aquamarine365.com', label: 'Email' }
+            ].map(({ Icon, href, label }) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener"
+                aria-label={label}
+                className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-white/10 text-[var(--color-cream)]/70 hover:bg-[var(--color-aqua)] hover:border-[var(--color-aqua)] hover:text-[var(--color-ink-dark)] transition"
+              >
+                <Icon size={16} />
+              </a>
+            ))}
           </div>
         </div>
 
-        <div className={styles.col}>
-          <h4>Contact</h4>
-          <p><a href="tel:+35797494941">+357 97 494 941</a></p>
-          <p><a href="mailto:info@aquamarine365.com">info@aquamarine365.com</a></p>
-          <p>61 Tefkrou Anthia<br />Ayia Napa 5330, Cyprus</p>
+        <div>
+          <h4 className="label !text-white/80 mb-3">Contact</h4>
+          <p className="text-sm">
+            <a href="tel:+35797494941" className="font-mono hover:text-white">+357 97 494 941</a>
+          </p>
+          <p className="text-sm mt-1">
+            <a href="mailto:info@aquamarine365.com" className="hover:text-white">info@aquamarine365.com</a>
+          </p>
+          <p className="text-sm mt-2 leading-relaxed">
+            61 Tefkrou Anthia
+            <br />
+            Ayia Napa 5330, Cyprus
+          </p>
         </div>
 
-        <div className={styles.col}>
-          <h4>Stays</h4>
-          <p><Link href="/stays/ocean-dreams-suites">Ocean Dreams Suites</Link></p>
-          <p><Link href="/stays/dream-tropicana-villa">Dream Tropicana Villa</Link></p>
-          <p><Link href="/stays/valerian-palm-villa">Valerian Palm Villa</Link></p>
+        <div>
+          <h4 className="label !text-white/80 mb-3">Stays</h4>
+          <ul className="space-y-1.5 text-sm">
+            <li><Link href="/stays/ocean-dreams-suites" className="hover:text-white">Ocean Dreams Suites</Link></li>
+            <li><Link href="/stays/dream-tropicana-villa" className="hover:text-white">Dream Tropicana Villa</Link></li>
+            <li><Link href="/stays/valerian-palm-villa" className="hover:text-white">Valerian Palm Villa</Link></li>
+          </ul>
         </div>
 
-        <div className={styles.col}>
-          <h4>Trust</h4>
-          <p>Licensed CY-DMT 2024</p>
-          <p>GDPR compliant</p>
-          <p>Secure payments · Stripe</p>
+        <div>
+          <h4 className="label !text-white/80 mb-3">Trust</h4>
+          <ul className="space-y-1.5 text-sm text-[var(--color-cream)]/60">
+            <li>Licensed CY-DMT 2024</li>
+            <li>GDPR compliant</li>
+            <li>Secure payments · Stripe</li>
+          </ul>
         </div>
       </div>
 
-      <div className={`container ${styles.base}`}>
+      <div className="container-x flex flex-col md:flex-row justify-between gap-3 pt-6 border-t border-white/10 text-xs text-[var(--color-cream)]/45 font-mono">
         <small>© {new Date().getFullYear()} Aquamarine Holiday Rentals. All rights reserved.</small>
-        <small>
-          <a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="#">House rules</a>
+        <small className="flex gap-3">
+          <a href="#" className="hover:text-white">Privacy</a>
+          <a href="#" className="hover:text-white">Terms</a>
+          <a href="#" className="hover:text-white">House rules</a>
         </small>
       </div>
     </footer>
-  );
-}
-
-function Ig() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" strokeWidth="1.6" />
-      <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="1.6" />
-      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" />
-    </svg>
-  );
-}
-function Wa() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path d="M20 12a8 8 0 1 0-14.2 5.1L4 21l4-1.8A8 8 0 0 0 20 12Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
-      <path d="M9 10c.5 2 2 3.5 4 4l1.2-1a.6.6 0 0 1 .6-.1l1.6.6a.5.5 0 0 1 .3.6c-.3 1.2-1.5 2-2.8 1.9-2.8-.2-5.4-2.7-5.6-5.5a2 2 0 0 1 1.9-2 .5.5 0 0 1 .6.4l.5 1.5c0 .2 0 .4-.2.6L9 10Z" fill="currentColor" />
-    </svg>
-  );
-}
-function Mail() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="1.6" />
-      <path d="m3 7 9 6 9-6" stroke="currentColor" strokeWidth="1.6" />
-    </svg>
   );
 }

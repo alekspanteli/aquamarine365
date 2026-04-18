@@ -16,7 +16,7 @@ export const villas = [
       'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=2000&q=80',
       'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&w=2000&q=80',
       'https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&w=2000&q=80',
-      'https://images.unsplash.com/photo-1505692794403-34d4982f9fbb?auto=format&fit=crop&w=2000&q=80',
+      'https://images.unsplash.com/photo-1551776235-dde6d482980b?auto=format&fit=crop&w=2000&q=80',
       'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=2000&q=80'
     ],
     highlights: [
