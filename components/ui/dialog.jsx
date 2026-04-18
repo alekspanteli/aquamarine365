@@ -19,20 +19,30 @@ const DialogOverlay = React.forwardRef(({ className, ...props }, ref) => (
 ));
 DialogOverlay.displayName = 'DialogOverlay';
 
+/**
+ * The outer Content is a positioned flex centerer with NO transform at all —
+ * that's what Radix focus-traps + announces. The inner `[data-aq-dialog]`
+ * animates scale+opacity only. Keeping position + animation on separate
+ * elements avoids fighting Tailwind's `translate` longhand.
+ */
 const DialogContent = React.forwardRef(({ className, children, ...props }, ref) => (
   <DialogPortal>
     <DialogOverlay />
     <DialogPrimitive.Content
       ref={ref}
-      data-aq-dialog=""
-      className={cn(
-        'fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-[95] w-[min(640px,92vw)]',
-        'bg-[var(--surface)] text-[var(--fg)] border border-[var(--line)] rounded-2xl shadow-2xl overflow-hidden',
-        className
-      )}
+      className="fixed inset-0 z-[95] flex items-center justify-center p-4 outline-none focus:outline-none"
       {...props}
     >
-      {children}
+      <div
+        data-aq-dialog=""
+        className={cn(
+          'relative w-full max-w-[640px] bg-[var(--surface)] text-[var(--fg)] border border-[var(--line)] rounded-2xl shadow-2xl overflow-hidden',
+          'will-change-[transform,opacity] origin-center',
+          className
+        )}
+      >
+        {children}
+      </div>
     </DialogPrimitive.Content>
   </DialogPortal>
 ));

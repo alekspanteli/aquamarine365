@@ -162,8 +162,14 @@ html.dark .grain::before { mix-blend-mode: overlay; opacity: 0.06; }
 @keyframes aq-slide-out-right { from { transform: translateX(0); } to { transform: translateX(100%); } }
 @keyframes aq-slide-in-left { from { transform: translateX(-100%); } to { transform: translateX(0); } }
 @keyframes aq-slide-out-left { from { transform: translateX(0); } to { transform: translateX(-100%); } }
-@keyframes aq-zoom-in { from { opacity: 0; transform: translate(-50%, -48%) scale(0.96); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
-@keyframes aq-zoom-out { from { opacity: 1; transform: translate(-50%, -50%) scale(1); } to { opacity: 0; transform: translate(-50%, -48%) scale(0.96); } }
+@keyframes aq-zoom-in {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes aq-zoom-out {
+  from { opacity: 1; transform: scale(1) translateY(0); }
+  to   { opacity: 0; transform: scale(0.96) translateY(4px); }
+}
 
 [data-aq-overlay][data-state="open"] { animation: aq-fade-in 0.25s var(--ease-out-soft); }
 [data-aq-overlay][data-state="closed"] { animation: aq-fade-out 0.25s var(--ease-out-soft); }
