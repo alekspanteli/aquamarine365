@@ -18,11 +18,41 @@ const plex = IBM_Plex_Mono({
   display: 'swap'
 });
 
+const SITE_NAME = 'Aquamarine';
+const SITE_URL = 'https://aquamarine365.com';
+const DEFAULT_TITLE = 'Aquamarine — Private Villas in Ayia Napa, Cyprus';
+const DEFAULT_DESCRIPTION =
+  'Owner-operated villas and seafront suites in Ayia Napa. Direct booking, no platform fees, on-island support 24/7.';
+
 export const metadata = {
-  metadataBase: new URL('https://aquamarine365.com'),
-  title: 'Aquamarine — Private Villas in Ayia Napa, Cyprus',
-  description:
-    "Owner-operated villas and seafront suites in Ayia Napa. Direct booking, no platform fees, on-island support 24/7."
+  metadataBase: new URL(SITE_URL),
+  title: { default: DEFAULT_TITLE, template: '%s · Aquamarine' },
+  description: DEFAULT_DESCRIPTION,
+  applicationName: SITE_NAME,
+  alternates: { canonical: '/' },
+  openGraph: {
+    type: 'website',
+    siteName: SITE_NAME,
+    url: SITE_URL,
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
+    locale: 'en_GB'
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION
+  },
+  robots: { index: true, follow: true }
+};
+
+export const viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#FBFDFE' },
+    { media: '(prefers-color-scheme: dark)', color: '#061419' }
+  ],
+  width: 'device-width',
+  initialScale: 1
 };
 
 export default function RootLayout({ children }) {
