@@ -6,21 +6,19 @@
   --font-mono: var(--font-plex-mono), "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
 
   /* Light — sea glass + Aegean teal + whitewash + sun */
-  --color-bone: #F1ECDC;          /* bleached shore */
-  --color-bone-2: #E6DEC6;        /* dunes */
-  --color-ink: #05212B;           /* deep-sea navy, almost black */
+  --color-bone: #FBFDFE;          /* near-white with faint cool cast */
+  --color-bone-2: #E9F2F4;        /* sea-glass pale blue alt band */
+  --color-ink: #05212B;           /* deep-sea navy */
   --color-ink-2: #1F3A44;
-  --color-muted: #4A5D66;
-  --color-line: #D6CAB0;
-  --color-aegean: #0E7C88;        /* Mediterranean teal — richer, seawater-like */
+  --color-muted: #4E6670;         /* slate-blue muted, AA on white */
+  --color-line: #D5E2E6;          /* soft sea-mist divider */
+  --color-aegean: #0E7C88;        /* Mediterranean teal, primary accent */
   --color-aegean-deep: #08525E;   /* trough */
   --color-aegean-soft: #B8DEDF;   /* seafoam */
   --color-seaglass: #7BB8B8;      /* shallow-water turquoise */
-  /* Warm accent shifted from clay-red to Cypriot sun-gold — reads
-     Mediterranean without fighting the sea palette */
-  --color-sun: #C48B2A;           /* olive-oil amber, warm but not red */
+  --color-sun: #C48B2A;           /* tiny warm accent (kept only for the code pill) */
   --color-sun-soft: #EBD49C;
-  --color-terracotta: #C48B2A;    /* alias kept so legacy refs still work */
+  --color-terracotta: #C48B2A;    /* legacy alias → sun */
   --color-terracotta-soft: #EBD49C;
   --color-olive: #7A7F3A;
   --color-olive-soft: #C4C68A;
@@ -54,7 +52,7 @@
 /* Semantic tokens */
 :root {
   --bg: var(--color-bone);
-  --bg-2: #E9E4D0;                /* slightly cooler alt band */
+  --bg-2: var(--color-bone-2);    /* sea-glass pale blue alt band */
   --fg: var(--color-ink);
   --fg-2: var(--color-ink-2);
   --fg-muted: var(--color-muted);
@@ -66,8 +64,8 @@
   --punch: var(--color-terracotta);
   --punch-soft: var(--color-terracotta-soft);
   --olive: var(--color-olive);
-  --surface: #FBF6E9;
-  --surface-2: #EFE6CA;
+  --surface: #FFFFFF;             /* pure white cards */
+  --surface-2: #DFEAEE;           /* light sea-glass card alt */
   color-scheme: light;
 }
 

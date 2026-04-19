@@ -49,19 +49,23 @@ export default function VillaGallery({ images, name }) {
     <>
       <div className="flex flex-col gap-3">
         <div className="relative aspect-[16/10] rounded-3xl overflow-hidden bg-[var(--color-ink)] cursor-grab active:cursor-grabbing shadow-xl">
-          <AnimatePresence mode="wait" custom={direction}>
+          {/* Persistent skeleton behind the slide — covers the gap while
+              the next image is sliding in or hasn't loaded yet. */}
+          {!isLoaded && <Skeleton className="absolute inset-0 z-[1]" />}
+
+          <AnimatePresence custom={direction}>
             <motion.div
               key={index}
               custom={direction}
               variants={{
-                enter: (d) => ({ x: d > 0 ? 60 : -60, opacity: 0 }),
-                center: { x: 0, opacity: 1 },
-                exit: (d) => ({ x: d > 0 ? -60 : 60, opacity: 0 })
+                enter: (d) => ({ x: d > 0 ? 40 : -40, opacity: 0 }),
+                center: { x: 0, opacity: 1, zIndex: 2 },
+                exit: (d) => ({ x: d > 0 ? -40 : 40, opacity: 0, zIndex: 1 })
               }}
               initial="enter"
               animate="center"
               exit="exit"
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
               drag="x"
               dragConstraints={{ left: 0, right: 0 }}
               dragElastic={0.18}
@@ -72,13 +76,12 @@ export default function VillaGallery({ images, name }) {
               onClick={() => setLightbox(true)}
               className="absolute inset-0"
             >
-              {!isLoaded && <Skeleton className="absolute inset-0 z-10" />}
               <Image
                 src={images[index]}
                 alt={`${name} — image ${index + 1}`}
                 fill
                 sizes="(max-width: 960px) 100vw, 70vw"
-                className={`object-cover transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+                className="object-cover"
                 priority={index === 0}
                 fetchPriority={index === 0 ? 'high' : 'auto'}
                 onLoad={() => markLoaded(index)}

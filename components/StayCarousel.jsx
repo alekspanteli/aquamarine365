@@ -80,7 +80,9 @@ export default function StayCarousel({ villas }) {
         </div>
 
         <div className="relative rounded-[28px] overflow-hidden min-h-[520px] md:min-h-[520px]">
-          <AnimatePresence mode="wait" custom={direction}>
+          {/* Persistent skeleton under the transition so there's never a bare gap */}
+          {!coverLoaded && <Skeleton className="absolute inset-0 z-[1]" />}
+          <AnimatePresence custom={direction}>
             <motion.div
               key={villa.slug}
               custom={direction}

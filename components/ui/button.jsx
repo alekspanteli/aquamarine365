@@ -12,8 +12,10 @@ const buttonVariants = cva(
       variant: {
         default:
           'bg-[var(--fg)] text-[var(--bg)] hover:bg-[var(--accent)] hover:-translate-y-px active:translate-y-0',
+        sea:
+          'bg-[var(--accent)] text-white hover:bg-[var(--accent-deep)] hover:-translate-y-px active:translate-y-0 shadow-[0_8px_24px_rgba(14,124,136,0.25)]',
         punch:
-          'bg-[var(--punch)] text-white hover:brightness-110 hover:-translate-y-px',
+          'bg-[var(--accent)] text-white hover:bg-[var(--accent-deep)] hover:-translate-y-px shadow-[0_8px_24px_rgba(14,124,136,0.25)]',
         outline:
           'border border-[var(--line)] bg-transparent text-[var(--fg)] hover:border-[var(--fg)] hover:bg-[var(--surface)]',
         ghost:
