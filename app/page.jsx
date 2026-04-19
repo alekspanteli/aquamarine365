@@ -13,6 +13,34 @@ import Footer from '@/components/Footer';
 import FloatingCTA from '@/components/FloatingCTA';
 import { villas } from '@/data/villas';
 
+export const metadata = {
+  alternates: { canonical: '/' }
+};
+
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'LodgingBusiness',
+  name: 'Aquamarine',
+  url: 'https://aquamarine365.com',
+  telephone: '+35797494941',
+  email: 'info@aquamarine365.com',
+  priceRange: '€€€',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: '61 Tefkrou Anthia',
+    addressLocality: 'Ayia Napa',
+    postalCode: '5330',
+    addressCountry: 'CY'
+  },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '4.9',
+    reviewCount: '300',
+    bestRating: '5'
+  },
+  areaServed: 'Ayia Napa, Cyprus'
+};
+
 export default function Page() {
   return (
     <>
@@ -32,6 +60,10 @@ export default function Page() {
       </main>
       <Footer />
       <FloatingCTA />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+      />
     </>
   );
 }

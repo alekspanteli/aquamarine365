@@ -88,8 +88,9 @@ export default function VillaBody({ villa }) {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.06 }}
                   className="pl-8 text-[var(--fg-2)] relative before:content-[''] before:absolute before:left-0 before:top-3 before:w-5 before:h-px before:bg-[var(--accent)]"
-                  dangerouslySetInnerHTML={{ __html: h }}
-                />
+                >
+                  {h}
+                </motion.li>
               ))}
             </ul>
 

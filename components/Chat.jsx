@@ -17,23 +17,60 @@ const WELCOME = {
     "Hi — I'm the Aquamarine concierge. Ask about our three villas, pricing, or how booking works. I'll link you to the right page if it helps."
 };
 
-// Simple markdown rendering — only the subset we use (**bold**, lists, links)
-function renderMarkdown(text) {
-  // Bold
-  let html = text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-  // Lists
-  html = html.replace(/(^|\n)- (.+)/g, '$1<li>$2</li>');
-  if (html.includes('<li>')) {
-    html = html.replace(/(<li>[\s\S]+?<\/li>)/g, '<ul>$1</ul>');
-    html = html.replace(/<\/ul>\s*<ul>/g, '');
+// Render the subset of markdown we use (**bold** inline, - lists, paragraphs)
+// as React elements. Never returns HTML strings, so dangerouslySetInnerHTML
+// is not needed — user-supplied chat input can't inject markup.
+function renderInline(text) {
+  const out = [];
+  const re = /\*\*(.+?)\*\*/g;
+  let last = 0;
+  let m;
+  let i = 0;
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > last) out.push(text.slice(last, m.index));
+    out.push(<strong key={`b${i++}`}>{m[1]}</strong>);
+    last = m.index + m[0].length;
   }
-  // Newlines
-  html = html.replace(/\n/g, '<br/>');
-  return html;
+  if (last < text.length) out.push(text.slice(last));
+  return out;
+}
+
+function renderMarkdown(text) {
+  const lines = text.split('\n');
+  const nodes = [];
+  let buf = [];
+  const flushList = () => {
+    if (buf.length) {
+      nodes.push(
+        <ul key={`ul${nodes.length}`}>
+          {buf.map((l, i) => (
+            <li key={i}>{renderInline(l)}</li>
+          ))}
+        </ul>
+      );
+      buf = [];
+    }
+  };
+  lines.forEach((raw, idx) => {
+    const listMatch = raw.match(/^- (.+)$/);
+    if (listMatch) {
+      buf.push(listMatch[1]);
+      return;
+    }
+    flushList();
+    if (raw.length === 0) {
+      nodes.push(<br key={`br${idx}`} />);
+    } else {
+      nodes.push(
+        <span key={`s${idx}`}>
+          {renderInline(raw)}
+          {idx < lines.length - 1 ? <br /> : null}
+        </span>
+      );
+    }
+  });
+  flushList();
+  return nodes;
 }
 
 export default function Chat() {
@@ -255,8 +292,9 @@ function MessageBubble({ message }) {
       >
         <div
           className={isUser ? '' : '[&_strong]:font-semibold [&_ul]:mt-1 [&_ul]:space-y-0.5 [&_li]:pl-3 [&_li]:relative [&_li:before]:content-["·"] [&_li:before]:absolute [&_li:before]:left-0 [&_li:before]:text-[var(--accent)]'}
-          dangerouslySetInnerHTML={{ __html: renderMarkdown(message.content) }}
-        />
+        >
+          {renderMarkdown(message.content)}
+        </div>
         {message.action && !isUser && <ActionLink action={message.action} />}
       </div>
     </motion.div>

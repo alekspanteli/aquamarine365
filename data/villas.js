@@ -73,7 +73,7 @@ export const villas = [
       'Shaded dining for 8 outdoors',
       'Chef kitchen with gas hob and island',
       'Three en-suite-style bedrooms',
-      'On-demand chef &amp; grocery service'
+      'On-demand chef & grocery service'
     ],
     amenities: [
       'Heated pool',
@@ -121,12 +121,12 @@ export const villas = [
       'Sleeps 10 across 5 bedrooms',
       '12×5m pool with shallow end',
       'Indoor game room (pool table, console)',
-      'Fully fenced garden — kid &amp; dog friendly',
+      'Fully fenced garden — kid & dog friendly',
       'Group-friendly floor plan, zero shared walls'
     ],
     amenities: [
       'Large private pool',
-      'BBQ &amp; outdoor kitchen',
+      'BBQ & outdoor kitchen',
       'Game room',
       'Sauna',
       'Air conditioning',
