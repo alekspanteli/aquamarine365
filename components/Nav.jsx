@@ -1,14 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
-import { List, MagnifyingGlass, Phone, ChatCircle, Envelope, ArrowRight } from '@phosphor-icons/react/dist/ssr';
+import { List, MagnifyingGlass, ArrowRight } from '@phosphor-icons/react/dist/ssr';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import ThemeToggle from './ThemeToggle';
-import { villas } from '@/data/villas';
 
 const CommandPalette = dynamic(() => import('./CommandPalette'), { ssr: false });
 
@@ -110,13 +108,7 @@ export default function Nav() {
                 </button>
               </SheetTrigger>
               <SheetContent side="right" className="flex flex-col gap-0 p-0 w-full max-w-[380px]">
-                <DrawerContent
-                  close={() => setSheetOpen(false)}
-                  openCommand={() => {
-                    setSheetOpen(false);
-                    setTimeout(() => setCmdOpen(true), 250);
-                  }}
-                />
+                <DrawerContent close={() => setSheetOpen(false)} />
               </SheetContent>
             </Sheet>
           </div>
@@ -128,10 +120,10 @@ export default function Nav() {
   );
 }
 
-function DrawerContent({ close, openCommand }) {
+function DrawerContent({ close }) {
   return (
     <div className="flex flex-col h-full overflow-y-auto bg-[var(--bg)]">
-      {/* Brand header — no italic magazine headline, just the lockup */}
+      {/* Brand header — restrained lockup, no magazine headline */}
       <div className="px-7 pt-7 pb-6">
         <Link href="/" onClick={close} className="inline-flex items-center gap-2.5">
           <span
@@ -144,12 +136,9 @@ function DrawerContent({ close, openCommand }) {
           />
           <span className="font-display text-xl tracking-tight">Aquamarine</span>
         </Link>
-        <p className="mt-2 text-sm text-[var(--fg-muted)]">
-          Private villas in Ayia Napa, Cyprus.
-        </p>
       </div>
 
-      {/* Primary navigation — clean sans, no numbering, subtle arrow */}
+      {/* Primary navigation — the only thing in the drawer */}
       <nav className="border-t border-[var(--line)]" aria-label="Primary">
         {navItems.map((n) => (
           <Link
@@ -168,95 +157,6 @@ function DrawerContent({ close, openCommand }) {
           </Link>
         ))}
       </nav>
-
-      {/* Villa mini-catalog */}
-      <div className="px-7 pt-7 pb-6">
-        <div className="label mb-4">Our villas</div>
-        <ul className="space-y-3">
-          {villas.map((v) => (
-            <li key={v.slug}>
-              <Link
-                href={`/stays/${v.slug}`}
-                onClick={close}
-                className="group flex items-center gap-3 -mx-1 px-1 py-1 rounded-xl hover:bg-[var(--surface-2)] transition-colors"
-              >
-                <span className="relative w-14 h-14 rounded-lg overflow-hidden flex-shrink-0 bg-[var(--surface-2)]">
-                  <Image src={v.cover} alt="" fill sizes="56px" className="object-cover" />
-                </span>
-                <span className="flex flex-col flex-1 min-w-0">
-                  <span className="text-sm font-medium text-[var(--fg)] truncate">
-                    {v.name}
-                  </span>
-                  <span className="text-xs text-[var(--fg-muted)]">
-                    Sleeps {v.sleeps} · from <span className="font-mono">€{v.priceFrom}</span>
-                  </span>
-                </span>
-                <ArrowRight
-                  size={14}
-                  className="text-[var(--fg-muted)] opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"
-                  aria-hidden
-                />
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      {/* Contact */}
-      <div className="px-7 py-6 border-t border-[var(--line)]">
-        <div className="label mb-4">Get in touch</div>
-        <ul className="space-y-2.5 text-sm">
-          <li>
-            <a href="tel:+35797494941" className="group flex items-center gap-3 text-[var(--fg-2)] hover:text-[var(--fg)]">
-              <Phone size={15} weight="regular" className="text-[var(--accent)]" aria-hidden />
-              <span className="font-mono">+357 97 494 941</span>
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://wa.me/35797494941"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center gap-3 text-[var(--fg-2)] hover:text-[var(--fg)]"
-            >
-              <ChatCircle size={15} weight="regular" className="text-[var(--accent)]" aria-hidden />
-              <span>WhatsApp us</span>
-            </a>
-          </li>
-          <li>
-            <a
-              href="mailto:info@aquamarine365.com"
-              className="group flex items-center gap-3 text-[var(--fg-2)] hover:text-[var(--fg)]"
-            >
-              <Envelope size={15} weight="regular" className="text-[var(--accent)]" aria-hidden />
-              <span>info@aquamarine365.com</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-
-      {/* Footer: primary CTA + utility chips */}
-      <div className="mt-auto px-7 py-6 border-t border-[var(--line)] space-y-3 bg-[var(--surface)]">
-        <Button asChild size="lg" variant="sea" className="w-full">
-          <Link href="/#book" onClick={close}>
-            Check availability
-            <ArrowRight size={15} weight="regular" />
-          </Link>
-        </Button>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={openCommand}
-            className="flex-1 inline-flex items-center justify-between h-10 px-3 rounded-full border border-[var(--line)] text-sm text-[var(--fg-muted)] hover:text-[var(--fg)] hover:border-[var(--fg)] transition"
-          >
-            <span className="inline-flex items-center gap-2">
-              <MagnifyingGlass size={13} weight="regular" />
-              Search
-            </span>
-            <kbd className="font-mono text-[0.62rem] border border-[var(--line)] rounded px-1.5 py-0.5">⌘K</kbd>
-          </button>
-          <ThemeToggle className="flex-shrink-0" />
-        </div>
-      </div>
     </div>
   );
 }

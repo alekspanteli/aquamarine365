@@ -79,7 +79,7 @@ export default function StayCarousel({ villas }) {
           </div>
         </div>
 
-        <div className="relative rounded-[28px] overflow-hidden h-[720px] sm:h-[640px] lg:h-[520px]">
+        <div className="relative rounded-[28px] overflow-hidden h-[820px] sm:h-[700px] lg:h-[520px]">
           {/* Persistent skeleton under the transition so there's never a bare gap */}
           {!coverLoaded && <ImageLoader className="absolute inset-0 z-[1]" />}
           <AnimatePresence custom={direction}>
@@ -136,18 +136,18 @@ export default function StayCarousel({ villas }) {
                 </div>
               </Link>
 
-              <div className="p-8 md:p-10 flex flex-col gap-5">
+              <div className="p-6 md:p-10 flex flex-col gap-4 md:gap-5">
                 <div className="label">{villa.location}</div>
-                <h3 className="font-display text-3xl md:text-4xl leading-tight">
+                <h3 className="font-display text-2xl md:text-4xl leading-tight">
                   {villa.name}
                 </h3>
                 <p className="text-[var(--fg-2)] leading-relaxed">{villa.tagline}</p>
 
-                <ul className="grid grid-cols-2 gap-4 py-5 my-2 border-y border-[var(--line)]">
+                <ul className="grid grid-cols-2 gap-3 md:gap-4 py-4 md:py-5 my-1 md:my-2 border-y border-[var(--line)]">
                   {villa.specs.slice(0, 4).map((s) => (
                     <li key={s.label} className="flex flex-col gap-0.5">
-                      <span className="label !text-[0.68rem]">{s.label}</span>
-                      <strong className="font-display text-lg font-medium">{s.value}</strong>
+                      <span className="label !text-[0.65rem]">{s.label}</span>
+                      <strong className="font-display text-base md:text-lg font-medium">{s.value}</strong>
                     </li>
                   ))}
                 </ul>
