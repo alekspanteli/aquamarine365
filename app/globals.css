@@ -16,8 +16,12 @@
   --color-aegean-deep: #08525E;   /* trough */
   --color-aegean-soft: #B8DEDF;   /* seafoam */
   --color-seaglass: #7BB8B8;      /* shallow-water turquoise */
-  --color-terracotta: #C15836;    /* sun on clay, used sparingly */
-  --color-terracotta-soft: #EAB59A;
+  /* Warm accent shifted from clay-red to Cypriot sun-gold — reads
+     Mediterranean without fighting the sea palette */
+  --color-sun: #C48B2A;           /* olive-oil amber, warm but not red */
+  --color-sun-soft: #EBD49C;
+  --color-terracotta: #C48B2A;    /* alias kept so legacy refs still work */
+  --color-terracotta-soft: #EBD49C;
   --color-olive: #7A7F3A;
   --color-olive-soft: #C4C68A;
 
@@ -31,7 +35,8 @@
   --color-line-dark: #22343C;
   --color-aqua: #65CDD3;          /* brighter turquoise for dark */
   --color-aqua-soft: #173841;
-  --color-terracotta-dark: #EC9164;
+  --color-sun-dark: #E6BC5F;      /* bright warm accent for dark mode */
+  --color-terracotta-dark: #E6BC5F;
 
   --radius-xs: 4px;
   --radius-sm: 8px;
@@ -130,10 +135,12 @@ html.dark {
     letter-spacing: -0.01em;
     font-weight: 500;
   }
-  /* Cormorant really sings in italic — use it */
+  /* Cormorant really sings in italic — use it.
+     Inherit color by default so each section can decide its own accent. */
   em {
     font-style: italic;
     font-weight: 400;
+    color: inherit;
   }
 }
 

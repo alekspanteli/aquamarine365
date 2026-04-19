@@ -61,8 +61,9 @@ export default function Hero() {
         className="absolute inset-0 -z-10"
         style={{
           background:
-            // Bottom navy wash (deep water) + top translucent seafoam breath + warm sun flare top-right
-            'linear-gradient(180deg, rgba(6,20,25,0.40) 0%, rgba(8,82,94,0.15) 30%, rgba(5,33,43,0.92) 100%), radial-gradient(900px 480px at 110% 0%, rgba(236,145,100,0.22), transparent 60%), radial-gradient(700px 400px at 0% 100%, rgba(14,124,136,0.35), transparent 60%)'
+            // Firm navy wash so white H1 reads against bright sky, deepening
+            // toward the base. Left-side teal breath + subtle top-right warm glow.
+            'linear-gradient(180deg, rgba(5,24,30,0.55) 0%, rgba(5,24,30,0.30) 35%, rgba(5,24,30,0.94) 100%), radial-gradient(800px 420px at 0% 60%, rgba(14,124,136,0.35), transparent 60%), radial-gradient(700px 380px at 110% 0%, rgba(196,139,42,0.18), transparent 60%)'
         }}
         aria-hidden
       />
@@ -114,7 +115,7 @@ export default function Hero() {
             variants={{ hidden: { opacity: 0, y: 32 }, visible: { opacity: 1, y: 0 } }}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
             className="block italic"
-            style={{ color: 'var(--color-terracotta-dark)' }}
+            style={{ color: '#7FE0E8' }}
           >
             Ayia Napa,
           </motion.span>

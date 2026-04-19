@@ -25,7 +25,7 @@ export default function WhyUs() {
             Why Aquamarine · 03
           </div>
           <h2>
-            Fewer surprises. <em className="italic">Better holidays.</em>
+            Fewer surprises. <em className="italic text-[var(--accent)]">Better holidays.</em>
           </h2>
           <p className="mt-5 text-lg text-[var(--fg-2)] leading-relaxed">
             We don&apos;t resell other people&apos;s listings. We own the operation — which is why it actually works.

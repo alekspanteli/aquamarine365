@@ -25,7 +25,7 @@ export default function Clarity() {
             What we do · 01
           </div>
           <h2 className="max-w-[18ch]">
-            We help travelers have <em className="italic">the best week</em> of their year — in homes we actually run.
+            We help travelers have <em className="italic text-[var(--accent)]">the best week</em> of their year — in homes we actually run.
           </h2>
           <p className="mt-6 text-lg text-[var(--fg-2)] max-w-[58ch] leading-relaxed">
             Aquamarine owns and manages a small collection of villas and suites in Ayia Napa. We handle the property ourselves, so check-in is smooth, the place is spotless, and if anything&apos;s off, one person answers the phone and fixes it.

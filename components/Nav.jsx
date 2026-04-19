@@ -132,7 +132,7 @@ function DrawerContent({ close, openCommand }) {
     <div className="flex flex-col h-full overflow-y-auto">
       <div className="p-8 pb-5 border-b border-[var(--line)]">
         <div className="label mb-5">Menu</div>
-        <h2 className="font-display text-4xl italic text-[var(--punch)] leading-none">
+        <h2 className="font-display text-4xl italic text-[var(--accent)] leading-none">
           Ayia Napa
         </h2>
         <p className="font-display text-4xl text-[var(--fg)] leading-none mt-1">

@@ -53,7 +53,7 @@ export default function StayCarousel({ villas }) {
               The homes · 02
             </div>
             <h2 className="max-w-[18ch]">
-              Three villas. All ours. <em className="italic">None resold.</em>
+              Three villas. All ours. <em className="italic text-[var(--accent)]">None resold.</em>
             </h2>
           </div>
           <div className="flex items-center gap-3" aria-label="Carousel controls">

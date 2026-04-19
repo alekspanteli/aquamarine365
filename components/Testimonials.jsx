@@ -43,7 +43,7 @@ export default function Testimonials() {
             What guests say · 06
           </div>
           <h2>
-            Real reviews from <em className="italic">real stays.</em>
+            Real reviews from <em className="italic text-[var(--accent)]">real stays.</em>
           </h2>
         </motion.div>
 

@@ -25,7 +25,7 @@ export default function HowItWorks() {
             How it works · 05
           </div>
           <h2>
-            Four steps. <em className="italic">That&apos;s the whole thing.</em>
+            Four steps. <em className="italic text-[var(--accent)]">That&apos;s the whole thing.</em>
           </h2>
         </motion.div>
 

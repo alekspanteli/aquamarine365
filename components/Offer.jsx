@@ -60,7 +60,7 @@ export default function Offer() {
             <span className="block">Book direct.</span>
             <span
               className="block italic font-light"
-              style={{ color: 'var(--color-terracotta-dark)' }}
+              style={{ color: '#7FE0E8' }}
             >
               Get the week for six.
             </span>

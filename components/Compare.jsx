@@ -29,7 +29,7 @@ export default function Compare() {
             The honest comparison · 04
           </div>
           <h2>
-            Book direct. <em className="italic">Here&apos;s what changes.</em>
+            Book direct. <em className="italic text-[var(--accent)]">Here&apos;s what changes.</em>
           </h2>
           <p className="mt-5 text-lg text-[var(--fg-2)] leading-relaxed">
             Same villa either way. Different experience — and a different total at checkout.

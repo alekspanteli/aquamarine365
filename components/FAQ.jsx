@@ -33,7 +33,7 @@ export default function FAQ() {
             Questions · 07
           </div>
           <h2>
-            The stuff <em className="italic">you were going to ask anyway.</em>
+            The stuff <em className="italic text-[var(--accent)]">you were going to ask anyway.</em>
           </h2>
         </motion.div>
 
