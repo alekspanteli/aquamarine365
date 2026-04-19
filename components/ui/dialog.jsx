@@ -20,33 +20,29 @@ const DialogOverlay = React.forwardRef(({ className, ...props }, ref) => (
 DialogOverlay.displayName = 'DialogOverlay';
 
 /**
- * The outer Content is a positioned flex centerer with NO transform at all —
- * that's what Radix focus-traps + announces. The inner `[data-aq-dialog]`
- * animates scale+opacity only. Keeping position + animation on separate
- * elements avoids fighting Tailwind's `translate` longhand.
+ * Content is the centered box itself — NOT a fullscreen wrapper.
+ * That way clicks outside the box land on the Overlay and Radix's
+ * built-in onPointerDownOutside dismisses the dialog.
+ *
+ * We position via `top/left` + inline-style `transform: translate(-50%, -50%)`
+ * (not Tailwind `-translate-*` utilities, since those write to the
+ * `translate` longhand and would fight our CSS animation's `transform`).
  */
 const DialogContent = React.forwardRef(({ className, children, ...props }, ref) => (
   <DialogPortal>
     <DialogOverlay />
     <DialogPrimitive.Content
       ref={ref}
-      className="fixed inset-0 z-[95] flex items-center justify-center p-4 outline-none focus:outline-none pointer-events-none"
-      onPointerDownOutside={(e) => {
-        // Let Radix handle dismiss when pointer lands on the transparent area.
-        // pointer-events-none on Content means those events reach the Overlay.
-      }}
+      data-aq-dialog=""
+      style={{ transform: 'translate(-50%, -50%)' }}
+      className={cn(
+        'fixed top-1/2 left-1/2 z-[95] w-[min(640px,calc(100vw-2rem))]',
+        'bg-[var(--surface)] text-[var(--fg)] border border-[var(--line)] rounded-2xl shadow-2xl overflow-hidden outline-none',
+        className
+      )}
       {...props}
     >
-      <div
-        data-aq-dialog=""
-        className={cn(
-          'relative pointer-events-auto w-full max-w-[640px] bg-[var(--surface)] text-[var(--fg)] border border-[var(--line)] rounded-2xl shadow-2xl overflow-hidden',
-          'will-change-[transform,opacity] origin-center',
-          className
-        )}
-      >
-        {children}
-      </div>
+      {children}
     </DialogPrimitive.Content>
   </DialogPortal>
 ));

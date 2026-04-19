@@ -85,7 +85,7 @@ export default function Testimonials() {
             </motion.figure>
           </AnimatePresence>
 
-          <div role="tablist" aria-label="Testimonials" className="mt-8 pt-6 border-t border-[var(--line)] flex gap-2.5">
+          <div role="tablist" aria-label="Testimonials" className="mt-8 pt-6 border-t border-[var(--line)] flex gap-3">
             {quotes.map((_, n) => (
               <button
                 key={n}
@@ -93,8 +93,8 @@ export default function Testimonials() {
                 aria-selected={n === i}
                 aria-label={`Show testimonial ${n + 1}`}
                 role="tab"
-                className={`relative h-0.5 flex-1 max-w-[56px] rounded overflow-hidden ${
-                  n === i ? 'bg-[var(--accent)]/20' : 'bg-[var(--line)]'
+                className={`relative h-1.5 flex-1 max-w-[64px] rounded-full overflow-hidden transition-colors ${
+                  n === i ? 'bg-[var(--accent)]/25' : 'bg-[var(--fg-muted)]/30 hover:bg-[var(--fg-muted)]/50'
                 }`}
               >
                 {n === i && (

@@ -8,12 +8,12 @@ const Popover = PopoverPrimitive.Root;
 const PopoverTrigger = PopoverPrimitive.Trigger;
 
 /**
- * Radix positions the outer Content via a transform (Floating UI).
- * Don't animate transform on the Content itself — wrap the animated
- * styles on an inner box so positioning and animation don't collide.
+ * Radix positions PopoverContent via a transform (Floating UI).
+ * Don't run a translate animation on the Content itself — the inner
+ * `[data-aq-pop]` box only fades so positioning stays correct.
  */
 const PopoverContent = React.forwardRef(
-  ({ className, align = 'start', sideOffset = 6, ...props }, ref) => (
+  ({ className, align = 'start', sideOffset = 6, children, ...props }, ref) => (
     <PopoverPrimitive.Portal>
       <PopoverPrimitive.Content
         ref={ref}
@@ -23,14 +23,14 @@ const PopoverContent = React.forwardRef(
         {...props}
       >
         <div
-          data-aq-dialog=""
+          data-aq-pop=""
           className={cn(
             'rounded-2xl border border-[var(--line)] bg-[var(--surface)] text-[var(--fg)] p-2 shadow-2xl',
-            'will-change-[transform,opacity] origin-top',
+            'origin-top',
             className
           )}
         >
-          {props.children}
+          {children}
         </div>
       </PopoverPrimitive.Content>
     </PopoverPrimitive.Portal>

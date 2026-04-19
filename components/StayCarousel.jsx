@@ -64,9 +64,10 @@ export default function StayCarousel({ villas }) {
             >
               <ArrowLeft size={18} />
             </button>
-            <span className="font-mono text-sm min-w-[76px] text-center">
-              <span className="text-[var(--fg)]">{String(index + 1).padStart(2, '0')}</span>
-              <span className="text-[var(--fg-muted)]"> / {String(villas.length).padStart(2, '0')}</span>
+            <span className="font-mono text-sm min-w-[84px] text-center flex items-center gap-2 justify-center">
+              <span className="text-[var(--fg)] font-semibold">{String(index + 1).padStart(2, '0')}</span>
+              <span className="text-[var(--fg-muted)]">/</span>
+              <span className="text-[var(--fg-muted)]">{String(villas.length).padStart(2, '0')}</span>
             </span>
             <button
               onClick={() => go(index + 1)}
@@ -113,7 +114,13 @@ export default function StayCarousel({ villas }) {
                   fill
                   sizes="(max-width: 1024px) 100vw, 60vw"
                   priority={index === 0}
+                  onLoad={() => markCoverLoaded(villa.slug)}
                   onLoadingComplete={() => markCoverLoaded(villa.slug)}
+                  ref={(el) => {
+                    // Catch the case where the browser already had this image in cache
+                    // before React attached listeners — onLoad won't fire then.
+                    if (el && el.complete && el.naturalWidth > 0) markCoverLoaded(villa.slug);
+                  }}
                   className={`object-cover transition-all duration-700 group-hover:scale-105 ${coverLoaded ? 'opacity-100' : 'opacity-0'}`}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent pointer-events-none" />
@@ -173,9 +180,9 @@ export default function StayCarousel({ villas }) {
                 setDirection(i > index ? 1 : -1);
                 setIndex(i);
               }}
-              className={`group flex items-center gap-4 p-3 rounded-2xl border transition text-left bg-[var(--surface)] ${
+              className={`group flex items-center gap-4 p-3 rounded-2xl border-2 transition text-left bg-[var(--surface)] ${
                 i === index
-                  ? 'border-[var(--fg)] shadow-md'
+                  ? 'border-[var(--accent)] shadow-[0_8px_24px_rgba(14,124,136,0.18)] -translate-y-0.5'
                   : 'border-[var(--line)] hover:border-[var(--fg-2)] hover:-translate-y-0.5'
               }`}
               aria-selected={i === index}
