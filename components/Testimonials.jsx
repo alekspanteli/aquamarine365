@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 const quotes = [
   { q: "Check-in took ninety seconds. The fridge had the groceries we asked for. The sea was fifty steps from the door. I don't know what else you want from a holiday.", name: 'Marta K.', meta: 'Stockholm · Ocean Dreams · 7 nights' },
@@ -117,10 +118,10 @@ export default function Testimonials() {
  */
 function TrustPanel() {
   const stats = [
-    { k: '4.9', suffix: ' / 5', v: 'Average rating', aside: '300+ stays' },
-    { k: '12', suffix: ' yrs', v: 'Operating locally', aside: 'Ayia Napa' },
-    { k: '68', suffix: '%', v: 'Return or referred', aside: 'Repeat guests' },
-    { k: 'CY-DMT', suffix: '', v: 'Licensed operator', aside: 'Cypriot DMT' }
+    { value: '4.9', unit: '/5', label: 'Average rating' },
+    { value: '300', unit: '+', label: 'Stays hosted' },
+    { value: '68', unit: '%', label: 'Return or referred' },
+    { value: '12', unit: ' yrs', label: 'Operating in Ayia Napa' }
   ];
   const cities = [
     'London', 'Stockholm', 'Paris', 'Berlin', 'Athens', 'Milan', 'Amsterdam',
@@ -129,35 +130,39 @@ function TrustPanel() {
 
   return (
     <div className="mt-14 rounded-2xl bg-[var(--surface)] border border-[var(--line)] overflow-hidden">
-      <dl className="grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-[var(--line)] [&>div]:border-b [&>div]:border-[var(--line)] md:[&>div]:border-b-0">
+      <dl className="grid grid-cols-2 md:grid-cols-4">
         {stats.map((s, i) => (
           <div
-            key={s.v}
-            className={`flex flex-col gap-1 p-6 md:p-7 ${
-              i % 2 === 1 ? 'border-l border-[var(--line)] md:border-l-0' : ''
-            }`}
+            key={s.label}
+            className={cn(
+              'flex flex-col gap-1.5 p-5 md:p-7',
+              // Inner dividers — right + bottom — applied only where needed on each breakpoint
+              i % 2 === 0 && 'border-r border-[var(--line)] md:border-r md:last:border-r-0',
+              i < 2 && 'border-b border-[var(--line)] md:border-b-0',
+              i === 2 && 'md:border-r border-[var(--line)]',
+              i !== 3 && 'md:border-r md:border-[var(--line)]'
+            )}
           >
-            <dt className="label !text-[0.65rem]">{s.v}</dt>
-            <dd className="font-display text-3xl md:text-[2.1rem] font-medium tracking-tight leading-none flex items-baseline gap-0.5">
-              <span>{s.k}</span>
-              <span className="text-[var(--fg-muted)] font-normal text-xl md:text-2xl">{s.suffix}</span>
+            <dt className="label !text-[0.65rem]">{s.label}</dt>
+            <dd className="font-display font-medium tracking-tight leading-none flex items-baseline gap-0.5 text-[clamp(1.75rem,6vw,2.1rem)]">
+              <span>{s.value}</span>
+              <span className="text-[var(--fg-muted)] font-normal text-[0.65em]">{s.unit}</span>
             </dd>
-            <span className="text-xs text-[var(--fg-muted)]">{s.aside}</span>
           </div>
         ))}
       </dl>
 
-      <div className="border-t border-[var(--line)] px-6 md:px-7 py-5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <span className="label !text-[0.65rem]">Booked this year from</span>
+      <div className="border-t border-[var(--line)] px-5 md:px-7 py-4 flex flex-wrap items-center gap-x-2 gap-y-1 bg-[var(--bg-2)]">
+        <span className="label !text-[0.62rem]">Licensed CY-DMT · Booked this year from</span>
         <span className="text-sm text-[var(--fg-2)] leading-relaxed">
-          {cities.slice(0, 6).map((c, i) => (
+          {cities.slice(0, 5).map((c, i) => (
             <span key={c}>
               <span className="font-display">{c}</span>
-              {i < 5 && <span className="text-[var(--fg-muted)] mx-1.5">·</span>}
+              {i < 4 && <span className="text-[var(--fg-muted)] mx-1.5">·</span>}
             </span>
           ))}
           <span className="text-[var(--fg-muted)] ml-1.5">
-            &amp; {cities.length - 6} more
+            &amp; {cities.length - 5} more
           </span>
         </span>
       </div>

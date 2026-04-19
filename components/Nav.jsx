@@ -115,8 +115,8 @@ function DrawerContent({ close }) {
   return (
     <div className="flex flex-col h-full overflow-y-auto bg-[var(--bg)]">
       {/* Brand header — restrained lockup, no magazine headline */}
-      <div className="px-7 pt-7 pb-6" onClick={close}>
-        <Logo />
+      <div className="px-7 pt-7 pb-6">
+        <Logo onNavigate={close} />
       </div>
 
       {/* Primary navigation — the only thing in the drawer */}
