@@ -40,10 +40,10 @@ export default function Testimonials() {
         >
           <div className="label label-accent mb-4 flex items-center gap-2">
             <span className="w-6 h-px bg-[var(--accent)]" />
-            What guests say · 06
+            What guests say
           </div>
           <h2>
-            Real reviews from <em className="italic text-[var(--accent)]">real stays.</em>
+            Real reviews from <span className="text-[var(--accent)]">real stays.</span>
           </h2>
         </motion.div>
 

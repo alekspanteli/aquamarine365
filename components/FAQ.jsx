@@ -30,10 +30,10 @@ export default function FAQ() {
         >
           <div className="label label-accent mb-4 flex items-center gap-2">
             <span className="w-6 h-px bg-[var(--accent)]" />
-            Questions · 07
+            Questions
           </div>
           <h2>
-            The stuff <em className="italic text-[var(--accent)]">you were going to ask anyway.</em>
+            The stuff <span className="text-[var(--accent)]">you were going to ask anyway.</span>
           </h2>
         </motion.div>
 

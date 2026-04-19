@@ -6,14 +6,13 @@ import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion
 import { useEffect, useRef, useState } from 'react';
 import { ArrowRight } from '@phosphor-icons/react/dist/ssr';
 import { Button } from '@/components/ui/button';
-import { OliveBranch } from './Ornaments';
 import Counter from './Counter';
 
 const proof = [
   { render: () => <Counter to={4.9} decimals={1} />, v: 'Guest rating · 300+ stays' },
-  { render: () => <Counter to={12} suffix=" yrs" />, v: 'Local in Ayia Napa' },
-  { render: () => <Counter to={0} suffix="%" />, v: 'Booking fees, direct' },
-  { render: () => '24/7', v: 'On-island support' }
+  { render: () => <Counter to={12} suffix=" yrs" />, v: 'Operating in Ayia Napa' },
+  { render: () => <Counter to={0} suffix="%" />, v: 'Platform fees when direct' },
+  { render: () => '24/7', v: 'On-island guest support' }
 ];
 
 export default function Hero() {
@@ -30,14 +29,14 @@ export default function Hero() {
   }, [reduce]);
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
-  const y = useTransform(scrollYProgress, [0, 1], [0, 100]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1.03, 1.12]);
-  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0.2]);
+  const y = useTransform(scrollYProgress, [0, 1], [0, 90]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1.02, 1.1]);
+  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0.3]);
 
   return (
     <section
       ref={ref}
-      className="relative isolate overflow-hidden min-h-[92svh] flex flex-col justify-end"
+      className="relative isolate overflow-hidden min-h-[88svh] flex flex-col justify-end"
     >
       <motion.div
         style={allowParallax ? { y, scale, opacity } : undefined}
@@ -57,97 +56,68 @@ export default function Hero() {
         />
       </motion.div>
 
+      {/* Quieter, more corporate scrim — restrained, not flashy */}
       <div
         className="absolute inset-0 -z-10"
         style={{
           background:
-            // Firm navy wash so white H1 reads against bright sky, deepening
-            // toward the base. Left-side teal breath + subtle top-right warm glow.
-            'linear-gradient(180deg, rgba(5,24,30,0.55) 0%, rgba(5,24,30,0.30) 35%, rgba(5,24,30,0.94) 100%), radial-gradient(800px 420px at 0% 60%, rgba(14,124,136,0.35), transparent 60%), radial-gradient(700px 380px at 110% 0%, rgba(196,139,42,0.18), transparent 60%)'
+            'linear-gradient(180deg, rgba(5,33,43,0.42) 0%, rgba(5,33,43,0.20) 35%, rgba(5,33,43,0.90) 100%)'
         }}
         aria-hidden
       />
-      <div className="grain absolute inset-0 -z-10" aria-hidden />
-
-      <div className="hidden md:flex absolute top-24 right-8 lg:right-12 z-10 items-start gap-3 text-white/70 text-right">
-        <div>
-          <div className="label !text-white/60">34° 59′ N · 34° 00′ E</div>
-          <div className="font-mono text-xs mt-1 tracking-wider">AYIA NAPA / CYPRUS</div>
-        </div>
-      </div>
 
       <div className="container-x relative z-10 pb-16 md:pb-24 pt-28 md:pt-40">
         <motion.div
-          initial={{ opacity: 0, x: -12 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="text-white/60 mb-5"
-        >
-          <OliveBranch size={120} />
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.15 }}
-          className="label !text-white/75 mb-5"
+          transition={{ duration: 0.5 }}
+          className="label !text-white/70 mb-6"
         >
-          <span className="inline-flex items-center gap-2">
-            <span className="w-8 h-px bg-white/60" />
-            Edition 12 · Summer 2026
-          </span>
+          Ayia Napa · Cyprus
         </motion.div>
 
         <motion.h1
-          className="max-w-[15ch] leading-[0.94] tracking-[-0.025em] !text-white"
+          className="max-w-[18ch] leading-[1] tracking-[-0.028em] !text-white"
           initial="hidden"
           animate="visible"
-          variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
+          variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
         >
           <motion.span
-            variants={{ hidden: { opacity: 0, y: 32 }, visible: { opacity: 1, y: 0 } }}
-            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            className="block font-light"
+            variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="block"
           >
-            Villas in
+            Private villas in Ayia Napa,
           </motion.span>
           <motion.span
-            variants={{ hidden: { opacity: 0, y: 32 }, visible: { opacity: 1, y: 0 } }}
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            className="block italic"
-            style={{ color: '#7FE0E8' }}
+            variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="block"
+            style={{ color: 'var(--color-aqua)' }}
           >
-            Ayia Napa,
-          </motion.span>
-          <motion.span
-            variants={{ hidden: { opacity: 0, y: 32 }, visible: { opacity: 1, y: 0 } }}
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            className="block font-light"
-          >
-            run like a hotel.
+            managed like a hotel.
           </motion.span>
         </motion.h1>
 
         <motion.p
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.6 }}
-          className="mt-7 md:mt-9 max-w-[52ch] text-base md:text-lg text-white/85 leading-relaxed font-sans"
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="mt-7 md:mt-8 max-w-[56ch] text-base md:text-lg text-white/85 leading-relaxed font-sans"
         >
-          Private seafront homes, cleaned before every arrival, stocked on request, and backed by a real human on call 24/7.{' '}
-          <span className="text-white">Book direct — no platform fees.</span>
+          A small, owner-operated collection of seafront homes. Cleaned before every arrival, stocked on request, backed by a real team on the island 24/7. Book direct — no platform fees.
         </motion.p>
 
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.75 }}
-          className="mt-9 flex flex-wrap gap-3"
+          transition={{ duration: 0.6, delay: 0.45 }}
+          className="mt-8 flex flex-wrap gap-3"
         >
-          <Button asChild variant="punch" size="lg">
+          <Button asChild variant="sea" size="lg">
             <Link href="#book">
               Check availability
-              <ArrowRight size={16} weight="light" />
+              <ArrowRight size={16} weight="regular" />
             </Link>
           </Button>
           <Button
@@ -155,25 +125,25 @@ export default function Hero() {
             size="lg"
             className="bg-white/10 text-white border border-white/25 backdrop-blur-md hover:bg-white/20 hover:text-white"
           >
-            <Link href="#stays">See the homes</Link>
+            <Link href="#stays">View the villas</Link>
           </Button>
         </motion.div>
 
         <motion.ul
           initial="hidden"
           animate="visible"
-          variants={{ visible: { transition: { staggerChildren: 0.1, delayChildren: 0.95 } } }}
-          className="mt-16 pt-8 border-t border-white/20 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl"
+          variants={{ visible: { transition: { staggerChildren: 0.08, delayChildren: 0.6 } } }}
+          className="mt-14 pt-7 border-t border-white/20 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl"
           aria-label="At a glance"
         >
           {proof.map((p, i) => (
             <motion.li
               key={i}
-              variants={{ hidden: { opacity: 0, y: 14 }, visible: { opacity: 1, y: 0 } }}
-              transition={{ duration: 0.5 }}
+              variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
+              transition={{ duration: 0.45 }}
               className="flex flex-col gap-1"
             >
-              <strong className="font-display text-3xl md:text-4xl font-light !text-white">
+              <strong className="font-display text-2xl md:text-3xl font-medium !text-white">
                 {p.render()}
               </strong>
               <span className="text-xs md:text-sm text-white/70">{p.v}</span>

@@ -22,10 +22,10 @@ export default function HowItWorks() {
         >
           <div className="label label-accent mb-4 flex items-center gap-2">
             <span className="w-6 h-px bg-[var(--accent)]" />
-            How it works · 05
+            How it works
           </div>
           <h2>
-            Four steps. <em className="italic text-[var(--accent)]">That&apos;s the whole thing.</em>
+            Four steps. <span className="text-[var(--accent)]">That&apos;s the whole thing.</span>
           </h2>
         </motion.div>
 

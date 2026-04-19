@@ -36,14 +36,13 @@ export default function Offer() {
     >
       <div
         aria-hidden
-        className="absolute -z-10 opacity-60"
+        className="absolute -z-10 opacity-50"
         style={{
           inset: 0,
           background:
-            'radial-gradient(500px 300px at 15% 20%, color-mix(in srgb, var(--color-aqua) 20%, transparent), transparent 70%), radial-gradient(600px 400px at 85% 80%, color-mix(in srgb, var(--color-terracotta-dark) 20%, transparent), transparent 70%)'
+            'radial-gradient(600px 400px at 15% 20%, color-mix(in srgb, var(--color-aqua) 18%, transparent), transparent 70%)'
         }}
       />
-      <div className="grain absolute inset-0 -z-10" aria-hidden />
 
       <div className="container-x grid lg:grid-cols-[1.1fr_1fr] gap-12 lg:gap-16 items-center">
         <motion.div
@@ -54,12 +53,12 @@ export default function Offer() {
         >
           <div className="label mb-4 flex items-center gap-2" style={{ color: 'var(--color-terracotta-dark)' }}>
             <span className="w-6 h-px" style={{ background: 'var(--color-terracotta-dark)' }} />
-            Direct offer · 08
+            Direct offer
           </div>
           <h2 className="max-w-[18ch] !text-[var(--color-cream)]">
             <span className="block">Book direct.</span>
             <span
-              className="block italic font-light"
+              className="block"
               style={{ color: '#7FE0E8' }}
             >
               Get the week for six.

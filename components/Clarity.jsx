@@ -22,10 +22,10 @@ export default function Clarity() {
         >
           <div className="label label-accent mb-6 flex items-center gap-2">
             <span className="w-6 h-px bg-[var(--accent)]" />
-            What we do · 01
+            What we do
           </div>
           <h2 className="max-w-[18ch]">
-            We help travelers have <em className="italic text-[var(--accent)]">the best week</em> of their year — in homes we actually run.
+            We help travelers have <span className="text-[var(--accent)]">the best week</span> of their year — in homes we actually run.
           </h2>
           <p className="mt-6 text-lg text-[var(--fg-2)] max-w-[58ch] leading-relaxed">
             Aquamarine owns and manages a small collection of villas and suites in Ayia Napa. We handle the property ourselves, so check-in is smooth, the place is spotless, and if anything&apos;s off, one person answers the phone and fixes it.
@@ -76,10 +76,6 @@ export default function Clarity() {
             </strong>
           </motion.div>
 
-          {/* Editorial figure caption */}
-          <div className="hidden md:block absolute -right-4 top-6 -rotate-90 origin-top-right label !text-[var(--fg-muted)]">
-            Fig. 01 — Courtyard, dusk
-          </div>
         </motion.div>
       </div>
     </section>

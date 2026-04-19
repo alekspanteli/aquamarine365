@@ -50,10 +50,10 @@ export default function StayCarousel({ villas }) {
           <div>
             <div className="label label-accent mb-4 flex items-center gap-2">
               <span className="w-6 h-px bg-[var(--accent)]" />
-              The homes · 02
+              The homes
             </div>
             <h2 className="max-w-[18ch]">
-              Three villas. All ours. <em className="italic text-[var(--accent)]">None resold.</em>
+              Three villas. All ours. <span className="text-[var(--accent)]">None resold.</span>
             </h2>
           </div>
           <div className="flex items-center gap-3" aria-label="Carousel controls">

@@ -4,9 +4,8 @@ test.describe('Aquamarine homepage', () => {
   test('hero renders key copy + primary CTA', async ({ page }) => {
     await page.goto('/');
     const h1 = page.getByRole('heading', { level: 1 });
-    await expect(h1).toContainText(/Villas in/i);
-    await expect(h1).toContainText(/Ayia Napa/i);
-    await expect(h1).toContainText(/run like a hotel/i);
+    await expect(h1).toContainText(/villas? in Ayia Napa/i);
+    await expect(h1).toContainText(/managed like a hotel/i);
     await expect(page.getByRole('link', { name: /check availability/i }).first()).toBeVisible();
   });
 

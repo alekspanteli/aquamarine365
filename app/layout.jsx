@@ -1,14 +1,13 @@
-import { Cormorant_Garamond, IBM_Plex_Mono } from 'next/font/google';
+import { Source_Serif_4, IBM_Plex_Mono } from 'next/font/google';
 import { GeistSans } from 'geist/font/sans';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import DeferredClient from '@/components/DeferredClient';
 import './globals.css';
 
-const cormorant = Cormorant_Garamond({
+const sourceSerif = Source_Serif_4({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  style: ['normal', 'italic'],
-  variable: '--font-cormorant',
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-source-serif',
   display: 'swap'
 });
 
@@ -21,21 +20,19 @@ const plex = IBM_Plex_Mono({
 
 export const metadata = {
   metadataBase: new URL('https://aquamarine365.com'),
-  title: 'Aquamarine — Ayia Napa Villas & Suites, Run Like a Five-Star Hotel',
+  title: 'Aquamarine — Private Villas in Ayia Napa, Cyprus',
   description:
-    "Private seafront villas in Ayia Napa, Cyprus. Book direct, skip the platform fees, and arrive to a home that's cleaned, stocked, and staffed 24/7."
+    "Owner-operated villas and seafront suites in Ayia Napa. Direct booking, no platform fees, on-island support 24/7."
 };
 
 export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${cormorant.variable} ${GeistSans.variable} ${plex.variable}`}
+      className={`${sourceSerif.variable} ${GeistSans.variable} ${plex.variable}`}
       suppressHydrationWarning
     >
       <head>
-        {/* Parallel TLS + DNS for the image CDN, so the hero LCP image
-            starts fetching the moment the HTML parses */}
         <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
       </head>

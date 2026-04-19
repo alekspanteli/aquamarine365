@@ -26,10 +26,10 @@ export default function Compare() {
         >
           <div className="label label-accent mb-4 flex items-center gap-2">
             <span className="w-6 h-px bg-[var(--accent)]" />
-            The honest comparison · 04
+            The honest comparison
           </div>
           <h2>
-            Book direct. <em className="italic text-[var(--accent)]">Here&apos;s what changes.</em>
+            Book direct. <span className="text-[var(--accent)]">Here&apos;s what changes.</span>
           </h2>
           <p className="mt-5 text-lg text-[var(--fg-2)] leading-relaxed">
             Same villa either way. Different experience — and a different total at checkout.

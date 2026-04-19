@@ -22,10 +22,10 @@ export default function WhyUs() {
         >
           <div className="label label-accent mb-4 flex items-center gap-2">
             <span className="w-6 h-px bg-[var(--accent)]" />
-            Why Aquamarine · 03
+            Why Aquamarine
           </div>
           <h2>
-            Fewer surprises. <em className="italic text-[var(--accent)]">Better holidays.</em>
+            Fewer surprises. <span className="text-[var(--accent)]">Better holidays.</span>
           </h2>
           <p className="mt-5 text-lg text-[var(--fg-2)] leading-relaxed">
             We don&apos;t resell other people&apos;s listings. We own the operation — which is why it actually works.
