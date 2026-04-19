@@ -45,7 +45,7 @@ export default function Hero() {
         aria-hidden
       >
         <Image
-          src="https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=1600&q=65"
+          src="https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=1400&q=55"
           alt=""
           fill
           priority

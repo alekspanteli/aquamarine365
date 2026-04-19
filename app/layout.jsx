@@ -1,8 +1,7 @@
 import { Cormorant_Garamond, IBM_Plex_Mono } from 'next/font/google';
 import { GeistSans } from 'geist/font/sans';
 import { ThemeProvider } from '@/components/ThemeProvider';
-import { Toaster } from '@/components/ui/sonner';
-import CookieBanner from '@/components/CookieBanner';
+import DeferredClient from '@/components/DeferredClient';
 import './globals.css';
 
 const cormorant = Cormorant_Garamond({
@@ -37,8 +36,7 @@ export default function RootLayout({ children }) {
       <body>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange={false}>
           {children}
-          <Toaster />
-          <CookieBanner />
+          <DeferredClient />
         </ThemeProvider>
       </body>
     </html>

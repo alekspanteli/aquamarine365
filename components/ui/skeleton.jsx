@@ -1,5 +1,22 @@
 import { cn } from '@/lib/utils';
 
+export function Spinner({ className, size = 16 }) {
+  return (
+    <span
+      className={cn('inline-block align-middle', className)}
+      style={{
+        width: size,
+        height: size,
+        border: '2px solid currentColor',
+        borderRightColor: 'transparent',
+        borderRadius: '50%',
+        animation: 'aq-spin 0.8s linear infinite'
+      }}
+      aria-hidden
+    />
+  );
+}
+
 export function Skeleton({ className, ...props }) {
   return (
     <div

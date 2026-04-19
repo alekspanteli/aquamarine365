@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Spinner } from '@/components/ui/loading-image';
+import { Spinner } from '@/components/ui/skeleton';
 
 export default function Offer() {
   const [status, setStatus] = useState('idle');

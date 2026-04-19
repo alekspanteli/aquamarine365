@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import {
@@ -15,37 +14,9 @@ import {
 import { villas } from '@/data/villas';
 import { Bed, House, Info, Question, Phone, Envelope, ChatCircle, Sun, Moon, Laptop } from '@phosphor-icons/react/dist/ssr';
 
-export function CommandPaletteTrigger({ onClick }) {
-  return (
-    <button
-      onClick={onClick}
-      className="hidden md:inline-flex items-center gap-2 h-10 pl-3 pr-2 rounded-full border border-[var(--line)] text-[var(--fg-muted)] hover:text-[var(--fg)] hover:border-[var(--fg)] transition text-sm bg-[var(--surface)]"
-      aria-label="Open command palette"
-    >
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
-        <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.6" />
-        <path d="m20 20-3.5-3.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-      </svg>
-      <span className="mr-8">MagnifyingGlass</span>
-      <kbd className="font-mono text-[0.68rem] px-1.5 py-0.5 rounded border border-[var(--line)] bg-[var(--bg)]">⌘K</kbd>
-    </button>
-  );
-}
-
 export default function CommandPalette({ open, setOpen }) {
   const router = useRouter();
   const { setTheme } = useTheme();
-
-  useEffect(() => {
-    const onKey = (e) => {
-      if ((e.key === 'k' || e.key === 'K') && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        setOpen((o) => !o);
-      }
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [setOpen]);
 
   const run = (fn) => () => {
     setOpen(false);

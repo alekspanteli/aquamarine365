@@ -68,7 +68,6 @@ export default function Nav() {
           <button
             onClick={() => setCmdOpen(true)}
             className="hidden md:inline-flex items-center gap-2 h-10 pl-3 pr-2 rounded-full border border-[var(--line)] text-[var(--fg-muted)] hover:text-[var(--fg)] hover:border-[var(--fg)] transition text-sm bg-[var(--surface)] flex-1 max-w-sm"
-            aria-label="Open search"
           >
             <MagnifyingGlass size={14} />
             <span className="mr-auto">Search villas, FAQs, contact…</span>

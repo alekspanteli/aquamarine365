@@ -165,7 +165,7 @@ export default function StayCarousel({ villas }) {
           </AnimatePresence>
         </div>
 
-        <div className="mt-5 grid md:grid-cols-3 gap-3">
+        <div role="tablist" aria-label="Browse villas" className="mt-5 grid md:grid-cols-3 gap-3">
           {villas.map((v, i) => (
             <button
               key={v.slug}

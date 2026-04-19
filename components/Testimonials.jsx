@@ -85,7 +85,7 @@ export default function Testimonials() {
             </motion.figure>
           </AnimatePresence>
 
-          <div className="mt-8 pt-6 border-t border-[var(--line)] flex gap-2.5">
+          <div role="tablist" aria-label="Testimonials" className="mt-8 pt-6 border-t border-[var(--line)] flex gap-2.5">
             {quotes.map((_, n) => (
               <button
                 key={n}

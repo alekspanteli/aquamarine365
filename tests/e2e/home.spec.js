@@ -35,7 +35,7 @@ test.describe('Aquamarine homepage', () => {
   test('command palette opens via trigger button and searches', async ({ page }, testInfo) => {
     test.skip(testInfo.project.name !== 'chromium-desktop', 'Trigger button is desktop-only');
     await page.goto('/');
-    await page.getByRole('button', { name: /open search/i }).first().click();
+    await page.getByRole('button', { name: /search/i }).first().click();
     const input = page.getByPlaceholder(/Search villas/i);
     await expect(input).toBeVisible();
     await input.fill('ocean');
