@@ -158,7 +158,7 @@ export default function Chat() {
         transition={{ delay: 1.5, type: 'spring', stiffness: 260, damping: 22 }}
         whileHover={{ scale: 1.04 }}
         whileTap={{ scale: 0.95 }}
-        className={`fixed z-[55] bottom-20 md:bottom-6 right-4 md:right-6 w-14 h-14 rounded-full bg-[var(--accent)] text-white shadow-[0_14px_40px_rgba(14,124,136,0.4)] inline-flex items-center justify-center ${
+        className={`fixed z-[65] bottom-20 md:bottom-6 right-4 md:right-6 w-14 h-14 rounded-full bg-[var(--accent)] text-white shadow-[0_14px_40px_rgba(14,124,136,0.4)] inline-flex items-center justify-center ${
           open ? 'pointer-events-none opacity-0' : ''
         }`}
       >
@@ -174,7 +174,7 @@ export default function Chat() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed z-[56] bottom-4 right-4 md:bottom-6 md:right-6 w-[min(380px,calc(100vw-2rem))] h-[min(600px,calc(100svh-2rem))] flex flex-col bg-[var(--surface)] border border-[var(--line)] rounded-2xl shadow-[0_24px_80px_rgba(14,124,136,0.3)] overflow-hidden"
+            className="fixed z-[66] bottom-4 right-4 md:bottom-6 md:right-6 w-[min(380px,calc(100vw-2rem))] h-[min(600px,calc(100svh-2rem))] flex flex-col bg-[var(--surface)] border border-[var(--line)] rounded-2xl shadow-[0_24px_80px_rgba(14,124,136,0.3)] overflow-hidden"
             role="dialog"
             aria-label="Chat with Aquamarine concierge"
           >

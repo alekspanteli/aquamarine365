@@ -32,7 +32,7 @@ export default function CookieBanner() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 40 }}
           transition={{ type: 'spring', stiffness: 220, damping: 28 }}
-          className="fixed left-4 right-4 md:left-6 md:right-auto bottom-4 md:bottom-6 z-[60] max-w-md"
+          className="fixed left-4 right-[5.5rem] md:left-6 md:right-auto bottom-4 md:bottom-6 z-[60] max-w-md"
           role="dialog"
           aria-label="Cookie notice"
         >
