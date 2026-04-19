@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChatCircle, PaperPlaneTilt, X, ArrowRight, ArrowSquareOut } from '@phosphor-icons/react/dist/ssr';
 import { replyTo, SUGGESTIONS } from '@/lib/chatEngine';
+import { genId } from '@/lib/utils';
 import { Spinner } from '@/components/ui/skeleton';
 import VoiceInput from './VoiceInput';
 
@@ -110,7 +111,7 @@ export default function Chat() {
     const trimmed = text.trim();
     if (!trimmed || typing) return;
 
-    const userMsg = { id: Date.now().toString(), role: 'user', content: trimmed };
+    const userMsg = { id: genId(), role: 'user', content: trimmed };
     setMessages((m) => [...m, userMsg]);
     setInput('');
     setTyping(true);
@@ -119,7 +120,7 @@ export default function Chat() {
     await new Promise((r) => setTimeout(r, 400 + Math.random() * 500));
 
     const { reply, action } = replyTo(trimmed);
-    const assistantId = (Date.now() + 1).toString();
+    const assistantId = genId();
 
     // Add empty assistant message, then stream characters into it
     setMessages((m) => [...m, { id: assistantId, role: 'assistant', content: '', action }]);

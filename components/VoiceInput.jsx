@@ -1,8 +1,15 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { Microphone, MicrophoneSlash } from '@phosphor-icons/react/dist/ssr';
 import { toast } from 'sonner';
+
+// Feature-detect the Web Speech API reactively via useSyncExternalStore:
+// false during SSR + first paint, switches to true after hydration if
+// the browser supports it. Avoids the setState-in-effect anti-pattern.
+const subscribe = () => () => {};
+const getSpeechSupported = () =>
+  typeof window !== 'undefined' && !!(window.SpeechRecognition || window.webkitSpeechRecognition);
 
 /**
  * Microphone button that feeds speech-to-text into `onTranscript(text)`.
@@ -10,15 +17,13 @@ import { toast } from 'sonner';
  * Auto-hides when the API isn't supported (Firefox, some locked-down mobile builds).
  */
 export default function VoiceInput({ onTranscript, onSubmit, disabled, className = '' }) {
-  const [supported, setSupported] = useState(false);
+  const supported = useSyncExternalStore(subscribe, getSpeechSupported, () => false);
   const [listening, setListening] = useState(false);
   const recognitionRef = useRef(null);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (!supported) return;
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SR) return;
-    setSupported(true);
 
     const r = new SR();
     r.continuous = false;
@@ -56,7 +61,7 @@ export default function VoiceInput({ onTranscript, onSubmit, disabled, className
     return () => {
       try { r.stop(); } catch {}
     };
-  }, [onTranscript, onSubmit]);
+  }, [supported, onTranscript, onSubmit]);
 
   if (!supported) return null;
 

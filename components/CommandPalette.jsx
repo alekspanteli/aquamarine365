@@ -65,17 +65,17 @@ export default function CommandPalette({ open, setOpen }) {
 
         <CommandGroup heading="Contact">
           <CommandItem
-            onSelect={run(() => (window.location.href = 'tel:+35797494941'))}
+            onSelect={run(() => window.location.assign('tel:+35797494941'))}
           >
             <Phone size={16} /> Call +357 97 494 941
           </CommandItem>
           <CommandItem
-            onSelect={run(() => (window.location.href = 'https://wa.me/35797494941'))}
+            onSelect={run(() => window.location.assign('https://wa.me/35797494941'))}
           >
             <ChatCircle size={16} /> WhatsApp
           </CommandItem>
           <CommandItem
-            onSelect={run(() => (window.location.href = 'mailto:info@aquamarine365.com'))}
+            onSelect={run(() => window.location.assign('mailto:info@aquamarine365.com'))}
           >
             <Envelope size={16} /> Email info@aquamarine365.com
           </CommandItem>
