@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, Check } from '@phosphor-icons/react/dist/ssr';
 import VillaGallery from './VillaGallery';
 import MapEmbed from './MapEmbed';
+import Weather from './Weather';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { DatePicker } from '@/components/ui/date-picker';
@@ -121,6 +122,16 @@ export default function VillaBody({ villa }) {
             <p className="text-sm text-[var(--fg-muted)] mt-3">
               Map shows the approximate area. We share the exact address and a welcome pack after booking. Airport transfer (LCA, 45 min) from €65.
             </p>
+
+            {villa.coords ? (
+              <div className="mt-8">
+                <Weather
+                  lat={villa.coords.lat}
+                  lng={villa.coords.lng}
+                  label={villa.location_area?.split(',')[0] ?? 'Ayia Napa'}
+                />
+              </div>
+            ) : null}
           </motion.div>
 
           <aside id="book" className="lg:sticky lg:top-24">

@@ -4,9 +4,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
-import { ArrowRight } from '@phosphor-icons/react/dist/ssr';
+import { ArrowRight, Sparkle } from '@phosphor-icons/react/dist/ssr';
 import { Button } from '@/components/ui/button';
 import Counter from './Counter';
+import FindMyVilla from './FindMyVilla';
 
 const proof = [
   { render: () => <Counter to={4.9} decimals={1} />, v: 'Guest rating · 300+ stays' },
@@ -120,13 +121,15 @@ export default function Hero() {
               <ArrowRight size={16} weight="regular" />
             </Link>
           </Button>
-          <Button
-            asChild
-            size="lg"
-            className="bg-white/10 text-white border border-white/25 backdrop-blur-md hover:bg-white/20 hover:text-white"
-          >
-            <Link href="#stays">View the villas</Link>
-          </Button>
+          <FindMyVilla>
+            <Button
+              size="lg"
+              className="bg-white/10 text-white border border-white/25 backdrop-blur-md hover:bg-white/20 hover:text-white"
+            >
+              <Sparkle size={16} weight="regular" />
+              Find your villa
+            </Button>
+          </FindMyVilla>
         </motion.div>
 
         <motion.ul

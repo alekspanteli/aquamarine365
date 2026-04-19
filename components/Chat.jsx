@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChatCircle, PaperPlaneTilt, X, ArrowRight, ArrowSquareOut } from '@phosphor-icons/react/dist/ssr';
 import { replyTo, SUGGESTIONS } from '@/lib/chatEngine';
 import { Spinner } from '@/components/ui/skeleton';
+import VoiceInput from './VoiceInput';
 
 const STORAGE_KEY = 'aq-chat-history';
 
@@ -199,11 +200,16 @@ export default function Chat() {
               }}
               className="flex items-center gap-2 p-3 border-t border-[var(--line)] bg-[var(--surface)]"
             >
+              <VoiceInput
+                disabled={typing}
+                onTranscript={(t) => setInput(t)}
+                onSubmit={(t) => send(t)}
+              />
               <input
                 ref={inputRef}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask about villas, pricing, booking…"
+                placeholder="Ask or speak…"
                 className="flex-1 h-10 px-3 rounded-full bg-[var(--bg)] border border-[var(--line)] text-sm text-[var(--fg)] placeholder:text-[var(--fg-muted)] focus:outline-none focus:border-[var(--accent)]"
                 disabled={typing}
               />
