@@ -124,44 +124,51 @@ export default function VillaGallery({ images, name }) {
           </button>
         </div>
 
-        <div className="grid grid-cols-5 gap-2 md:gap-2.5">
+        <div className="grid grid-cols-5 gap-3 md:gap-3.5 pt-5 pb-2">
           {images.map((src, i) => {
             const active = i === index;
             return (
-              <button
-                key={src}
-                onClick={() => {
-                  setDirection(i > index ? 1 : -1);
-                  setIndex(i);
-                }}
-                aria-label={`Show image ${i + 1}`}
-                aria-current={active ? 'true' : undefined}
-                className={`relative aspect-[4/3] rounded-xl overflow-hidden transition-all duration-300 ${
-                  active
-                    ? 'ring-[3px] ring-[var(--accent)] ring-offset-2 ring-offset-[var(--bg)] shadow-[0_10px_30px_rgba(14,124,136,0.35)] -translate-y-0.5 scale-[1.03]'
-                    : 'ring-1 ring-[var(--line)] hover:ring-[var(--fg-2)] hover:-translate-y-0.5'
-                }`}
-              >
-                <Image
-                  src={src}
-                  alt=""
-                  fill
-                  sizes="120px"
-                  className={`object-cover transition-all duration-300 ${
-                    active ? 'opacity-100' : 'opacity-55 saturate-75 group-hover:opacity-100'
-                  }`}
-                />
-                {/* Number badge on the active thumb */}
+              <div key={src} className="relative">
+                {/* Pointer above active thumb — unmistakable "you are here" signal */}
                 {active && (
-                  <span className="absolute bottom-1 left-1 font-mono text-[0.62rem] px-1.5 py-0.5 rounded bg-[var(--accent)] text-white tracking-wider">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
+                  <span
+                    aria-hidden
+                    className="absolute -top-2 left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 bg-[var(--accent)]"
+                  />
                 )}
-                {/* Dim veil on inactive so the active one really pops */}
-                {!active && (
-                  <span className="absolute inset-0 bg-[var(--bg)]/25 transition-opacity hover:opacity-0" aria-hidden />
-                )}
-              </button>
+                <button
+                  onClick={() => {
+                    setDirection(i > index ? 1 : -1);
+                    setIndex(i);
+                  }}
+                  aria-label={`Show image ${i + 1}`}
+                  aria-current={active ? 'true' : undefined}
+                  className={`group block relative aspect-[4/3] w-full rounded-xl overflow-hidden transition-all duration-300 ${
+                    active
+                      ? 'ring-[3px] ring-[var(--accent)] shadow-[0_16px_40px_rgba(14,124,136,0.4)] scale-[1.06]'
+                      : 'ring-1 ring-[var(--line)] hover:ring-[var(--fg-2)] hover:-translate-y-0.5 scale-95 hover:scale-100'
+                  }`}
+                  style={{ transformOrigin: 'center bottom' }}
+                >
+                  <Image
+                    src={src}
+                    alt=""
+                    fill
+                    sizes="120px"
+                    className={`object-cover transition-all duration-300 ${
+                      active
+                        ? 'opacity-100'
+                        : 'opacity-45 group-hover:opacity-100 [filter:grayscale(0.8)_brightness(0.85)] group-hover:[filter:none]'
+                    }`}
+                  />
+                  {/* Solid badge on the active thumb */}
+                  {active && (
+                    <span className="absolute bottom-1.5 left-1.5 font-mono text-[0.7rem] font-semibold px-2 py-0.5 rounded-md bg-[var(--accent)] text-white tracking-wider">
+                      {String(i + 1).padStart(2, '0')} / {String(images.length).padStart(2, '0')}
+                    </span>
+                  )}
+                </button>
+              </div>
             );
           })}
         </div>
