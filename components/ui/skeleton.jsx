@@ -20,6 +20,7 @@ export function Spinner({ className, size = 16 }) {
 export function Skeleton({ className, ...props }) {
   return (
     <div
+      data-slot="skeleton"
       className={cn(
         'relative overflow-hidden bg-[var(--surface-2)]',
         'before:absolute before:inset-0 before:-translate-x-full',
