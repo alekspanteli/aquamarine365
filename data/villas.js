@@ -44,7 +44,9 @@ export const villas = [
       { label: 'Bathrooms', value: '2' },
       { label: 'Size', value: '95 m²' },
       { label: 'Beach', value: '8 min walk' }
-    ]
+    ],
+    location_area: 'Nissi Beach, Ayia Napa, Cyprus',
+    coords: { lat: 34.9833, lng: 33.9575 }
   },
   {
     slug: 'dream-tropicana-villa',
@@ -91,7 +93,9 @@ export const villas = [
       { label: 'Bathrooms', value: '2' },
       { label: 'Size', value: '180 m²' },
       { label: 'Pool', value: 'Private, heated' }
-    ]
+    ],
+    location_area: 'Ayia Napa, Cyprus',
+    coords: { lat: 34.9920, lng: 34.0100 }
   },
   {
     slug: 'valerian-palm-villa',
@@ -138,7 +142,9 @@ export const villas = [
       { label: 'Bathrooms', value: '5' },
       { label: 'Size', value: '340 m²' },
       { label: 'Pool', value: '12×5m private' }
-    ]
+    ],
+    location_area: 'Ayia Napa, Cyprus',
+    coords: { lat: 34.9870, lng: 34.0055 }
   }
 ];
 

@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, Check } from '@phosphor-icons/react/dist/ssr';
 import VillaGallery from './VillaGallery';
+import MapEmbed from './MapEmbed';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { DatePicker } from '@/components/ui/date-picker';
@@ -109,33 +110,16 @@ export default function VillaBody({ villa }) {
             </ul>
 
             <h3 className="font-display text-xl mt-12 mb-4">Location</h3>
-            <div
-              className="relative aspect-[16/8] rounded-2xl border border-[var(--line)] overflow-hidden flex items-center justify-center bg-[var(--surface-2)]"
-              aria-label="Map placeholder"
-            >
-              <div
-                className="absolute inset-0"
-                style={{
-                  background:
-                    'linear-gradient(0deg, transparent 95%, color-mix(in srgb, var(--accent) 10%, transparent) 95%), linear-gradient(90deg, transparent 95%, color-mix(in srgb, var(--accent) 10%, transparent) 95%)',
-                  backgroundSize: '40px 40px'
-                }}
+            {villa.coords ? (
+              <MapEmbed
+                lat={villa.coords.lat}
+                lng={villa.coords.lng}
+                title={`${villa.name} — approximate location`}
+                label={villa.location_area ?? 'Ayia Napa, Cyprus'}
               />
-              <div
-                className="w-5 h-5 rounded-full bg-[var(--accent)] z-10"
-                style={{
-                  boxShadow:
-                    '0 0 0 8px color-mix(in srgb, var(--accent) 18%, transparent), 0 0 0 16px color-mix(in srgb, var(--accent) 8%, transparent)',
-                  animation: 'pulse 2s ease-in-out infinite'
-                }}
-              />
-              <span className="absolute bottom-4 right-4 font-display text-sm bg-[var(--surface)] border border-[var(--line)] rounded-full px-3 py-1.5">
-                Ayia Napa, Cyprus
-              </span>
-              <style>{`@keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }`}</style>
-            </div>
+            ) : null}
             <p className="text-sm text-[var(--fg-muted)] mt-3">
-              We share the exact address and a welcome pack after booking. Airport transfer (LCA, 45 min) from €65.
+              Map shows the approximate area. We share the exact address and a welcome pack after booking. Airport transfer (LCA, 45 min) from €65.
             </p>
           </motion.div>
 
