@@ -10,7 +10,8 @@ export function generateStaticParams() {
   return villas.map((v) => ({ slug: v.slug }));
 }
 
-export function generateMetadata({ params }) {
+export async function generateMetadata(props) {
+  const params = await props.params;
   const v = getVilla(params.slug);
   if (!v) return {};
   return {
@@ -19,7 +20,8 @@ export function generateMetadata({ params }) {
   };
 }
 
-export default function VillaPage({ params }) {
+export default async function VillaPage(props) {
+  const params = await props.params;
   const villa = getVilla(params.slug);
   if (!villa) notFound();
 
