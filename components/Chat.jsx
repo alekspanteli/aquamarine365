@@ -148,7 +148,7 @@ export default function Chat() {
                 </span>
                 <div className="flex flex-col leading-tight">
                   <span className="font-display text-[1.05rem] font-medium">Aquamarine concierge</span>
-                  <span className="text-xs text-white/75 font-mono">Demo · rule-based</span>
+                  <span className="text-xs text-white/75">Online · replies usually within an hour</span>
                 </div>
               </div>
               <button
