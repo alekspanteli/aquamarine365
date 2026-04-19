@@ -2,20 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Marquee from './Marquee';
 
 const quotes = [
   { q: "Check-in took ninety seconds. The fridge had the groceries we asked for. The sea was fifty steps from the door. I don't know what else you want from a holiday.", name: 'Marta K.', meta: 'Stockholm · Ocean Dreams · 7 nights' },
   { q: "Pool heater broke at 10pm. Someone turned up by 8am with a replacement part. That's the difference versus every other rental I've booked.", name: 'James R.', meta: 'London · Tropicana · 10 nights' },
   { q: "Brought my parents, my sister, her kids and our dog. Five bathrooms, one bill, zero arguments. We're rebooking for next summer.", name: 'Elena D.', meta: 'Athens · Valerian Palm · 14 nights' },
   { q: "They messaged me the morning of arrival with the forecast, a restaurant list, and a note that the road to the villa had fresh tarmac. That's hospitality.", name: 'Lucas M.', meta: 'Paris · Ocean Dreams · 5 nights' }
-];
-
-const trust = [
-  { k: '4.9 / 5', v: 'average rating' },
-  { k: '300+', v: 'stays hosted' },
-  { k: '68%', v: 'return or referred' },
-  { k: 'CY-DMT', v: 'licensed operator' }
 ];
 
 export default function Testimonials() {
@@ -112,17 +104,63 @@ export default function Testimonials() {
           </div>
         </div>
 
-        <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6 p-8 bg-[var(--surface)] border border-[var(--line)] rounded-2xl">
-          {trust.map((t) => (
-            <div key={t.k} className="flex flex-col items-center gap-1 text-center">
-              <strong className="font-display text-xl md:text-2xl font-medium">{t.k}</strong>
-              <span className="text-sm text-[var(--fg-muted)]">{t.v}</span>
-            </div>
-          ))}
-        </div>
-
-        <Marquee />
+        <TrustPanel />
       </div>
     </section>
+  );
+}
+
+/**
+ * Unified trust panel. Four stats on one horizontal rule, a short
+ * provenance line, and a quiet list of representative guest cities —
+ * static, informational, no more endless marquee.
+ */
+function TrustPanel() {
+  const stats = [
+    { k: '4.9', suffix: ' / 5', v: 'Average rating', aside: '300+ stays' },
+    { k: '12', suffix: ' yrs', v: 'Operating locally', aside: 'Ayia Napa' },
+    { k: '68', suffix: '%', v: 'Return or referred', aside: 'Repeat guests' },
+    { k: 'CY-DMT', suffix: '', v: 'Licensed operator', aside: 'Cypriot DMT' }
+  ];
+  const cities = [
+    'London', 'Stockholm', 'Paris', 'Berlin', 'Athens', 'Milan', 'Amsterdam',
+    'Zürich', 'Dublin', 'Madrid', 'Copenhagen', 'Vienna'
+  ];
+
+  return (
+    <div className="mt-14 rounded-2xl bg-[var(--surface)] border border-[var(--line)] overflow-hidden">
+      <dl className="grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-[var(--line)] [&>div]:border-b [&>div]:border-[var(--line)] md:[&>div]:border-b-0">
+        {stats.map((s, i) => (
+          <div
+            key={s.v}
+            className={`flex flex-col gap-1 p-6 md:p-7 ${
+              i % 2 === 1 ? 'border-l border-[var(--line)] md:border-l-0' : ''
+            }`}
+          >
+            <dt className="label !text-[0.65rem]">{s.v}</dt>
+            <dd className="font-display text-3xl md:text-[2.1rem] font-medium tracking-tight leading-none flex items-baseline gap-0.5">
+              <span>{s.k}</span>
+              <span className="text-[var(--fg-muted)] font-normal text-xl md:text-2xl">{s.suffix}</span>
+            </dd>
+            <span className="text-xs text-[var(--fg-muted)]">{s.aside}</span>
+          </div>
+        ))}
+      </dl>
+
+      <div className="border-t border-[var(--line)] px-6 md:px-7 py-5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+        <span className="label !text-[0.65rem]">Booked this year from</span>
+        <span className="text-sm text-[var(--fg-2)] leading-relaxed">
+          {cities.slice(0, 6).map((c, i) => (
+            <span key={c}>
+              <span className="font-display">{c}</span>
+              {i < 5 && <span className="text-[var(--fg-muted)] mx-1.5">·</span>}
+            </span>
+          ))}
+          <span className="text-[var(--fg-muted)] ml-1.5">
+            &amp; {cities.length - 6} more
+          </span>
+        </span>
+      </div>
+    </div>
   );
 }

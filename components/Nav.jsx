@@ -7,6 +7,7 @@ import { List, MagnifyingGlass, ArrowRight } from '@phosphor-icons/react/dist/ss
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import ThemeToggle from './ThemeToggle';
+import Logo from './Logo';
 
 const CommandPalette = dynamic(() => import('./CommandPalette'), { ssr: false });
 
@@ -51,17 +52,7 @@ export default function Nav() {
         }`}
       >
         <div className="container-x flex items-center justify-between h-16 md:h-20 gap-3">
-          <Link href="/" aria-label="Aquamarine home" className="inline-flex items-center gap-2.5 font-medium shrink-0">
-            <span
-              className="w-6 h-6 rounded-full"
-              style={{
-                background: 'radial-gradient(circle at 30% 30%, #B9E0DB, var(--accent) 70%)',
-                boxShadow: 'inset 0 0 0 2px var(--bg), 0 2px 8px rgba(39,101,96,0.35)'
-              }}
-              aria-hidden
-            />
-            <span className="font-display text-lg md:text-xl tracking-tight">Aquamarine</span>
-          </Link>
+          <Logo className="shrink-0" />
 
           {/* Desktop inline search pill */}
           <button
@@ -124,18 +115,8 @@ function DrawerContent({ close }) {
   return (
     <div className="flex flex-col h-full overflow-y-auto bg-[var(--bg)]">
       {/* Brand header — restrained lockup, no magazine headline */}
-      <div className="px-7 pt-7 pb-6">
-        <Link href="/" onClick={close} className="inline-flex items-center gap-2.5">
-          <span
-            className="w-6 h-6 rounded-full"
-            style={{
-              background: 'radial-gradient(circle at 30% 30%, #B9E0DB, var(--accent) 70%)',
-              boxShadow: 'inset 0 0 0 2px var(--bg), 0 2px 8px rgba(14,124,136,0.35)'
-            }}
-            aria-hidden
-          />
-          <span className="font-display text-xl tracking-tight">Aquamarine</span>
-        </Link>
+      <div className="px-7 pt-7 pb-6" onClick={close}>
+        <Logo />
       </div>
 
       {/* Primary navigation — the only thing in the drawer */}

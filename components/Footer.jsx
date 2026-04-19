@@ -1,23 +1,13 @@
 import Link from 'next/link';
 import { InstagramLogo, Envelope, ChatCircle } from '@phosphor-icons/react/dist/ssr';
+import Logo from './Logo';
 
 export default function Footer() {
   return (
     <footer id="contact" className="bg-[var(--color-ink-dark)] text-[var(--color-cream)]/75 pt-20 pb-7">
       <div className="container-x grid md:grid-cols-[1.6fr_1fr_1fr_1fr] gap-12 pb-12">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <span
-              className="w-6 h-6 rounded-full"
-              style={{
-                background: 'radial-gradient(circle at 30% 30%, #B9E0DB, var(--color-aqua) 70%)',
-                boxShadow: 'inset 0 0 0 2px #0a1721, 0 2px 8px rgba(127,201,184,0.35)'
-              }}
-              aria-hidden
-            />
-            <span className="font-display text-2xl text-white">Aquamarine</span>
-            <span className="font-mono text-xs tracking-widest uppercase text-[var(--color-cream)]/50 ml-1">365</span>
-          </div>
+        <div className="text-white">
+          <Logo invert className="text-white" />
           <p className="mt-4 text-[var(--color-cream)]/60 max-w-[32ch] leading-relaxed">
             Ayia Napa villas &amp; suites, managed by the people who own them.
           </p>
