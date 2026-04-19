@@ -79,7 +79,7 @@ export default function StayCarousel({ villas }) {
           </div>
         </div>
 
-        <div className="relative rounded-[28px] overflow-hidden min-h-[520px] md:min-h-[520px]">
+        <div className="relative rounded-[28px] overflow-hidden h-[720px] sm:h-[640px] lg:h-[520px]">
           {/* Persistent skeleton under the transition so there's never a bare gap */}
           {!coverLoaded && <ImageLoader className="absolute inset-0 z-[1]" />}
           <AnimatePresence custom={direction}>
@@ -88,13 +88,13 @@ export default function StayCarousel({ villas }) {
               custom={direction}
               variants={{
                 enter: (d) => ({ x: d > 0 ? 80 : -80, opacity: 0 }),
-                center: { x: 0, opacity: 1 },
-                exit: (d) => ({ x: d > 0 ? -80 : 80, opacity: 0 })
+                center: { x: 0, opacity: 1, zIndex: 2 },
+                exit: (d) => ({ x: d > 0 ? -80 : 80, opacity: 0, zIndex: 1 })
               }}
               initial="enter"
               animate="center"
               exit="exit"
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
               drag="x"
               dragConstraints={{ left: 0, right: 0 }}
               dragElastic={0.15}
@@ -102,14 +102,13 @@ export default function StayCarousel({ villas }) {
                 if (info.offset.x < -80) go(index + 1);
                 else if (info.offset.x > 80) go(index - 1);
               }}
-              className="grid lg:grid-cols-[1.25fr_1fr] bg-[var(--surface)] border border-[var(--line)] rounded-[28px] overflow-hidden cursor-grab active:cursor-grabbing"
+              className="absolute inset-0 grid lg:grid-cols-[1.25fr_1fr] bg-[var(--surface)] border border-[var(--line)] rounded-[28px] overflow-hidden cursor-grab active:cursor-grabbing"
             >
               <Link
                 href={`/stays/${villa.slug}`}
                 className="relative block min-h-[300px] lg:min-h-[520px] overflow-hidden group"
                 aria-label={`View ${villa.name}`}
               >
-                {!coverLoaded && <ImageLoader className="absolute inset-0 z-[1]" />}
                 <Image
                   src={villa.cover}
                   alt={villa.name}
