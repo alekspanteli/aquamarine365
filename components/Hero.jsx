@@ -57,12 +57,17 @@ export default function Hero() {
         />
       </motion.div>
 
-      {/* Quieter, more corporate scrim — restrained, not flashy */}
+      {/* Readable scrim: firm vertical dim across the whole frame,
+          plus a radial dark anchor behind the H1 so text never competes
+          with bright sky regions of the photo. */}
       <div
         className="absolute inset-0 -z-10"
         style={{
           background:
-            'linear-gradient(180deg, rgba(5,33,43,0.42) 0%, rgba(5,33,43,0.20) 35%, rgba(5,33,43,0.90) 100%)'
+            // Stronger vertical base — ~55% at top, ~48% through the content band, deep ink at the bottom
+            'linear-gradient(180deg, rgba(5,24,30,0.62) 0%, rgba(5,24,30,0.50) 42%, rgba(5,24,30,0.94) 100%),' +
+            // Left-anchored radial darkness — sits behind the headline/copy
+            'radial-gradient(900px 700px at 15% 65%, rgba(5,24,30,0.55), transparent 70%)'
         }}
         aria-hidden
       />
@@ -79,6 +84,7 @@ export default function Hero() {
 
         <motion.h1
           className="max-w-[18ch] leading-[1] tracking-[-0.028em] !text-white"
+          style={{ textShadow: '0 2px 28px rgba(0,0,0,0.35)' }}
           initial="hidden"
           animate="visible"
           variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
@@ -104,7 +110,8 @@ export default function Hero() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-7 md:mt-8 max-w-[56ch] text-base md:text-lg text-white/85 leading-relaxed font-sans"
+          className="mt-7 md:mt-8 max-w-[56ch] text-base md:text-lg text-white/90 leading-relaxed font-sans"
+          style={{ textShadow: '0 1px 20px rgba(0,0,0,0.35)' }}
         >
           A small, owner-operated collection of seafront homes. Cleaned before every arrival, stocked on request, backed by a real team on the island 24/7. Book direct — no platform fees.
         </motion.p>
