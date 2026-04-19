@@ -8,7 +8,7 @@ import { ArrowLeft, ArrowRight } from '@phosphor-icons/react/dist/ssr';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Skeleton } from '@/components/ui/skeleton';
+import { ImageLoader } from '@/components/ui/skeleton';
 
 export default function StayCarousel({ villas }) {
   const [index, setIndex] = useState(0);
@@ -81,7 +81,7 @@ export default function StayCarousel({ villas }) {
 
         <div className="relative rounded-[28px] overflow-hidden min-h-[520px] md:min-h-[520px]">
           {/* Persistent skeleton under the transition so there's never a bare gap */}
-          {!coverLoaded && <Skeleton className="absolute inset-0 z-[1]" />}
+          {!coverLoaded && <ImageLoader className="absolute inset-0 z-[1]" />}
           <AnimatePresence custom={direction}>
             <motion.div
               key={villa.slug}
@@ -109,7 +109,7 @@ export default function StayCarousel({ villas }) {
                 className="relative block min-h-[300px] lg:min-h-[520px] overflow-hidden group"
                 aria-label={`View ${villa.name}`}
               >
-                {!coverLoaded && <Skeleton className="absolute inset-0 z-0" />}
+                {!coverLoaded && <ImageLoader className="absolute inset-0 z-[1]" />}
                 <Image
                   src={villa.cover}
                   alt={villa.name}
