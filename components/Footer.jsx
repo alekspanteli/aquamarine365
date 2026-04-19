@@ -78,9 +78,9 @@ export default function Footer() {
       <div className="container-x flex flex-col md:flex-row justify-between gap-3 pt-6 border-t border-white/10 text-xs text-[var(--color-cream)]/45 font-mono">
         <small>© {new Date().getFullYear()} Aquamarine Holiday Rentals. All rights reserved.</small>
         <small className="flex gap-3">
-          <a href="#" className="hover:text-white">Privacy</a>
-          <a href="#" className="hover:text-white">Terms</a>
-          <a href="#" className="hover:text-white">House rules</a>
+          <Link href="/legal/privacy" className="hover:text-white">Privacy</Link>
+          <Link href="/legal/cookies" className="hover:text-white">Cookies</Link>
+          <Link href="/legal/terms" className="hover:text-white">Terms</Link>
         </small>
       </div>
     </footer>

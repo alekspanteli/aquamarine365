@@ -62,7 +62,7 @@ export default function CookieBanner() {
                 Essential only
               </Button>
               <a
-                href="#"
+                href="/legal/cookies"
                 className="inline-flex items-center px-3 h-9 text-sm text-[var(--fg-muted)] hover:text-[var(--fg)]"
               >
                 Details
