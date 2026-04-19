@@ -32,7 +32,7 @@ export default function Offer() {
     <section
       id="book"
       className="relative py-20 md:py-32 overflow-hidden isolate"
-      style={{ background: 'linear-gradient(135deg, var(--color-ink-dark) 0%, #172327 100%)' }}
+      style={{ background: 'linear-gradient(135deg, var(--color-ink-dark) 0%, #0E3A44 100%)' }}
     >
       <div
         aria-hidden

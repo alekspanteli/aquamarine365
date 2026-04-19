@@ -61,7 +61,8 @@ export default function Hero() {
         className="absolute inset-0 -z-10"
         style={{
           background:
-            'linear-gradient(180deg, rgba(10,19,24,0.45) 0%, rgba(10,19,24,0.18) 30%, rgba(10,19,24,0.9) 100%), radial-gradient(900px 500px at 110% 0%, rgba(30,79,107,0.35), transparent 60%)'
+            // Bottom navy wash (deep water) + top translucent seafoam breath + warm sun flare top-right
+            'linear-gradient(180deg, rgba(6,20,25,0.40) 0%, rgba(8,82,94,0.15) 30%, rgba(5,33,43,0.92) 100%), radial-gradient(900px 480px at 110% 0%, rgba(236,145,100,0.22), transparent 60%), radial-gradient(700px 400px at 0% 100%, rgba(14,124,136,0.35), transparent 60%)'
         }}
         aria-hidden
       />

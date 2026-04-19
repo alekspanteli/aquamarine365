@@ -5,31 +5,33 @@
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-plex-mono), "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
 
-  /* Light — limewash + Aegean + olive + terracotta (Mediterranean, considered) */
-  --color-bone: #F4ECDD;
-  --color-bone-2: #EDE2CC;
-  --color-ink: #0D1B24;
-  --color-ink-2: #2D3B44;
-  --color-muted: #4F5D64;
-  --color-line: #D9CDB4;
-  --color-aegean: #1E4F6B;     /* deep Mediterranean blue, primary accent */
-  --color-aegean-soft: #A7C3CF;
-  --color-terracotta: #C15836; /* warmer, dustier than before */
+  /* Light — sea glass + Aegean teal + whitewash + sun */
+  --color-bone: #F1ECDC;          /* bleached shore */
+  --color-bone-2: #E6DEC6;        /* dunes */
+  --color-ink: #05212B;           /* deep-sea navy, almost black */
+  --color-ink-2: #1F3A44;
+  --color-muted: #4A5D66;
+  --color-line: #D6CAB0;
+  --color-aegean: #0E7C88;        /* Mediterranean teal — richer, seawater-like */
+  --color-aegean-deep: #08525E;   /* trough */
+  --color-aegean-soft: #B8DEDF;   /* seafoam */
+  --color-seaglass: #7BB8B8;      /* shallow-water turquoise */
+  --color-terracotta: #C15836;    /* sun on clay, used sparingly */
   --color-terracotta-soft: #EAB59A;
   --color-olive: #7A7F3A;
   --color-olive-soft: #C4C68A;
 
-  /* Dark — night sea, limewash type, bright aqua + dusty coral */
-  --color-ink-dark: #0A1318;
-  --color-ink-dark-2: #111B21;
-  --color-ink-dark-3: #1A242B;
+  /* Dark — night sea, whitewash type, bright turquoise + sun-warm accent */
+  --color-ink-dark: #061419;      /* abyssal */
+  --color-ink-dark-2: #0C2028;    /* mid-water */
+  --color-ink-dark-3: #183038;    /* shelf */
   --color-cream: #F2E9D8;
   --color-cream-2: #D6CAB2;
-  --color-muted-dark: #95A0A5;
-  --color-line-dark: #243138;
-  --color-aqua: #7FC4D2;
-  --color-aqua-soft: #1E3D48;
-  --color-terracotta-dark: #E88A63;
+  --color-muted-dark: #96ACB3;
+  --color-line-dark: #22343C;
+  --color-aqua: #65CDD3;          /* brighter turquoise for dark */
+  --color-aqua-soft: #173841;
+  --color-terracotta-dark: #EC9164;
 
   --radius-xs: 4px;
   --radius-sm: 8px;
@@ -47,18 +49,20 @@
 /* Semantic tokens */
 :root {
   --bg: var(--color-bone);
-  --bg-2: var(--color-bone-2);
+  --bg-2: #E9E4D0;                /* slightly cooler alt band */
   --fg: var(--color-ink);
   --fg-2: var(--color-ink-2);
   --fg-muted: var(--color-muted);
   --line: var(--color-line);
   --accent: var(--color-aegean);
+  --accent-deep: var(--color-aegean-deep);
   --accent-soft: var(--color-aegean-soft);
+  --seaglass: var(--color-seaglass);
   --punch: var(--color-terracotta);
   --punch-soft: var(--color-terracotta-soft);
   --olive: var(--color-olive);
-  --surface: #FBF5E6;
-  --surface-2: #F2E7CC;
+  --surface: #FBF6E9;
+  --surface-2: #EFE6CA;
   color-scheme: light;
 }
 
@@ -70,7 +74,9 @@ html.dark {
   --fg-muted: var(--color-muted-dark);
   --line: var(--color-line-dark);
   --accent: var(--color-aqua);
+  --accent-deep: #08525E;
   --accent-soft: var(--color-aqua-soft);
+  --seaglass: #4EA8AE;
   --punch: var(--color-terracotta-dark);
   --punch-soft: color-mix(in srgb, var(--color-terracotta-dark) 25%, transparent);
   --olive: #B5BE7F;
