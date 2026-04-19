@@ -1,6 +1,6 @@
 'use client';
 
-import * as DialogPrimitive from '@radix-ui/react-dialog';
+import { Dialog as DialogPrimitive } from 'radix-ui';
 import { cn } from '@/lib/utils';
 
 const Dialog = DialogPrimitive.Root;
@@ -12,6 +12,7 @@ function DialogOverlay({ className, ref, ...props }) {
   return (
     <DialogPrimitive.Overlay
       ref={ref}
+      data-slot="dialog-overlay"
       data-aq-overlay=""
       className={cn('fixed inset-0 z-[90] bg-black/55 backdrop-blur-md', className)}
       {...props}
@@ -28,6 +29,7 @@ function DialogContent({ className, children, ref, ...props }) {
       <DialogOverlay />
       <DialogPrimitive.Content
         ref={ref}
+        data-slot="dialog-content"
         data-aq-dialog=""
         style={{ transform: 'translate(-50%, -50%)' }}
         className={cn(
@@ -44,11 +46,25 @@ function DialogContent({ className, children, ref, ...props }) {
 }
 
 function DialogTitle({ className, ref, ...props }) {
-  return <DialogPrimitive.Title ref={ref} className={cn('sr-only', className)} {...props} />;
+  return (
+    <DialogPrimitive.Title
+      ref={ref}
+      data-slot="dialog-title"
+      className={cn('sr-only', className)}
+      {...props}
+    />
+  );
 }
 
 function DialogDescription({ className, ref, ...props }) {
-  return <DialogPrimitive.Description ref={ref} className={cn('sr-only', className)} {...props} />;
+  return (
+    <DialogPrimitive.Description
+      ref={ref}
+      data-slot="dialog-description"
+      className={cn('sr-only', className)}
+      {...props}
+    />
+  );
 }
 
 export { Dialog, DialogTrigger, DialogClose, DialogContent, DialogOverlay, DialogTitle, DialogDescription };

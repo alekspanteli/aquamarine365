@@ -1,6 +1,6 @@
 'use client';
 
-import * as AccordionPrimitive from '@radix-ui/react-accordion';
+import { Accordion as AccordionPrimitive } from 'radix-ui';
 import { Plus } from '@phosphor-icons/react/dist/ssr';
 import { cn } from '@/lib/utils';
 
@@ -10,6 +10,7 @@ function AccordionItem({ className, ref, ...props }) {
   return (
     <AccordionPrimitive.Item
       ref={ref}
+      data-slot="accordion-item"
       className={cn('border-b border-[var(--line)]', className)}
       {...props}
     />
@@ -21,6 +22,7 @@ function AccordionTrigger({ className, children, ref, ...props }) {
     <AccordionPrimitive.Header className="flex">
       <AccordionPrimitive.Trigger
         ref={ref}
+        data-slot="accordion-trigger"
         className={cn(
           'group flex flex-1 items-center justify-between gap-6 py-6 md:py-7 text-left',
           'hover:text-[var(--accent)] transition-colors outline-none focus-visible:text-[var(--accent)]',
@@ -48,6 +50,7 @@ function AccordionContent({ className, children, ref, ...props }) {
   return (
     <AccordionPrimitive.Content
       ref={ref}
+      data-slot="accordion-content"
       className={cn(
         'overflow-hidden',
         'data-[state=open]:animate-[aq-acc-down_0.3s_cubic-bezier(0.22,1,0.36,1)]',

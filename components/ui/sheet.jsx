@@ -1,6 +1,6 @@
 'use client';
 
-import * as DialogPrimitive from '@radix-ui/react-dialog';
+import { Dialog as DialogPrimitive } from 'radix-ui';
 import { X } from '@phosphor-icons/react/dist/ssr';
 import { cn } from '@/lib/utils';
 
@@ -13,6 +13,7 @@ function SheetOverlay({ className, ref, ...props }) {
   return (
     <DialogPrimitive.Overlay
       ref={ref}
+      data-slot="sheet-overlay"
       data-aq-overlay=""
       className={cn('fixed inset-0 z-[90] bg-black/45 backdrop-blur-sm', className)}
       {...props}
@@ -33,6 +34,7 @@ function SheetContent({ side = 'right', className, children, ref, ...props }) {
       <SheetOverlay />
       <DialogPrimitive.Content
         ref={ref}
+        data-slot="sheet-content"
         data-aq-sheet=""
         data-side={side}
         className={cn(

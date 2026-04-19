@@ -1,6 +1,6 @@
 'use client';
 
-import * as SelectPrimitive from '@radix-ui/react-select';
+import { Select as SelectPrimitive } from 'radix-ui';
 import { Check, CaretDown, CaretUp } from '@phosphor-icons/react/dist/ssr';
 import { cn } from '@/lib/utils';
 
@@ -11,6 +11,7 @@ function SelectTrigger({ className, children, ref, ...props }) {
   return (
     <SelectPrimitive.Trigger
       ref={ref}
+      data-slot="select-trigger"
       className={cn(
         'flex h-12 w-full items-center justify-between rounded-xl border border-[var(--line)] bg-[var(--surface)] px-4 py-2 text-sm text-[var(--fg)]',
         'focus:outline-none focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/20',
@@ -32,6 +33,7 @@ function SelectContent({ className, children, position = 'popper', ref, ...props
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
         ref={ref}
+        data-slot="select-content"
         data-aq-dialog=""
         className={cn(
           'relative z-[95] min-w-[8rem] overflow-hidden rounded-xl border border-[var(--line)] bg-[var(--surface)] text-[var(--fg)] shadow-xl',
@@ -57,6 +59,7 @@ function SelectItem({ className, children, ref, ...props }) {
   return (
     <SelectPrimitive.Item
       ref={ref}
+      data-slot="select-item"
       className={cn(
         'relative flex w-full cursor-pointer select-none items-center rounded-lg py-2 pl-8 pr-3 text-sm outline-none',
         'focus:bg-[var(--surface-2)] data-[state=checked]:text-[var(--accent)]',

@@ -1,6 +1,6 @@
 'use client';
 
-import * as PopoverPrimitive from '@radix-ui/react-popover';
+import { Popover as PopoverPrimitive } from 'radix-ui';
 import { cn } from '@/lib/utils';
 
 const Popover = PopoverPrimitive.Root;
@@ -14,6 +14,7 @@ function PopoverContent({ className, align = 'start', sideOffset = 6, children, 
     <PopoverPrimitive.Portal>
       <PopoverPrimitive.Content
         ref={ref}
+        data-slot="popover-content"
         align={align}
         sideOffset={sideOffset}
         className="z-[95] outline-none"
