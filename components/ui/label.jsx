@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 const Label = React.forwardRef(({ className, ...props }, ref) => (
   <LabelPrimitive.Root
     ref={ref}
+    data-slot="label"
     className={cn('label !text-[0.68rem] !text-[var(--fg-muted)]', className)}
     {...props}
   />

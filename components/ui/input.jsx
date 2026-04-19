@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 const Input = React.forwardRef(({ className, type = 'text', ...props }, ref) => (
   <input
     ref={ref}
+    data-slot="input"
     type={type}
     className={cn(
       'flex h-12 w-full rounded-xl border border-[var(--line)] bg-[var(--surface)] px-4 py-2 text-base text-[var(--fg)]',

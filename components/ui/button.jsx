@@ -24,10 +24,14 @@ const buttonVariants = cva(
           'underline-offset-4 hover:underline text-[var(--accent)] p-0 h-auto'
       },
       size: {
-        default: 'h-11 px-5 text-[0.95rem] rounded-full',
+        xs: 'h-8 px-3 text-xs rounded-full',
         sm: 'h-9 px-4 text-sm rounded-full',
+        default: 'h-11 px-5 text-[0.95rem] rounded-full',
         lg: 'h-14 px-7 text-base rounded-full',
-        icon: 'h-10 w-10 rounded-full'
+        'icon-xs': 'h-8 w-8 rounded-full',
+        'icon-sm': 'h-9 w-9 rounded-full',
+        icon: 'h-10 w-10 rounded-full',
+        'icon-lg': 'h-12 w-12 rounded-full'
       }
     },
     defaultVariants: { variant: 'default', size: 'default' }
@@ -36,7 +40,14 @@ const buttonVariants = cva(
 
 const Button = React.forwardRef(({ className, variant, size, asChild = false, ...props }, ref) => {
   const Comp = asChild ? Slot : 'button';
-  return <Comp ref={ref} className={cn(buttonVariants({ variant, size }), className)} {...props} />;
+  return (
+    <Comp
+      ref={ref}
+      data-slot="button"
+      className={cn(buttonVariants({ variant, size }), className)}
+      {...props}
+    />
+  );
 });
 Button.displayName = 'Button';
 

@@ -86,8 +86,9 @@ export default function VillaGallery({ images, name }) {
                 priority={index === 0}
                 fetchPriority={index === 0 ? 'high' : 'auto'}
                 onLoad={() => markLoaded(index)}
-                onLoadingComplete={() => markLoaded(index)}
                 ref={(el) => {
+                  // Catch the cache-warm case where onLoad already fired
+                  // before React attached the listener.
                   if (el && el.complete && el.naturalWidth > 0) markLoaded(index);
                 }}
                 placeholder="blur"

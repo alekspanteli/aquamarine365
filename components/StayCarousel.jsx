@@ -117,10 +117,7 @@ export default function StayCarousel({ villas }) {
                   sizes="(max-width: 1024px) 100vw, 60vw"
                   priority={index === 0}
                   onLoad={() => markCoverLoaded(villa.slug)}
-                  onLoadingComplete={() => markCoverLoaded(villa.slug)}
                   ref={(el) => {
-                    // Catch the case where the browser already had this image in cache
-                    // before React attached listeners — onLoad won't fire then.
                     if (el && el.complete && el.naturalWidth > 0) markCoverLoaded(villa.slug);
                   }}
                   className={`object-cover transition-all duration-700 group-hover:scale-105 ${coverLoaded ? 'opacity-100' : 'opacity-0'}`}
