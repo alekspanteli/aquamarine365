@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 // don't bloat the initial JS bundle or block LCP.
 const Toaster = dynamic(() => import('@/components/ui/sonner').then((m) => m.Toaster), { ssr: false });
 const CookieBanner = dynamic(() => import('@/components/CookieBanner'), { ssr: false });
+const Chat = dynamic(() => import('@/components/Chat'), { ssr: false });
 
 export default function DeferredClient() {
   const [ready, setReady] = useState(false);
@@ -24,6 +25,7 @@ export default function DeferredClient() {
     <>
       <Toaster />
       <CookieBanner />
+      <Chat />
     </>
   );
 }
