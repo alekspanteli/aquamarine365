@@ -22,7 +22,7 @@
         { "key": "X-Frame-Options", "value": "DENY" },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; img-src 'self' https://images.unsplash.com https://plus.unsplash.com https://cdn.sanity.io data: blob:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
+          "value": "default-src 'self'; img-src 'self' https://images.unsplash.com https://plus.unsplash.com https://cdn.sanity.io https://*.sanity.io data: blob:; font-src 'self' https://*.sanity-cdn.com data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://*.sanity-cdn.com; connect-src 'self' https://*.sanity.io https://*.sanity-cdn.com wss://*.sanity.io; worker-src 'self' blob:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
         }
       ]
     }
