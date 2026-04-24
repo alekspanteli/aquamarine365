@@ -1,6 +1,12 @@
+import type { ComponentPropsWithoutRef } from 'react';
 import { cn } from '@/lib/utils';
 
-export function Spinner({ className, size = 16 }) {
+interface SpinnerProps {
+  className?: string;
+  size?: number;
+}
+
+export function Spinner({ className, size = 16 }: SpinnerProps) {
   return (
     <span
       className={cn('inline-block align-middle', className)}
@@ -17,7 +23,9 @@ export function Spinner({ className, size = 16 }) {
   );
 }
 
-export function Skeleton({ className, ...props }) {
+type SkeletonProps = ComponentPropsWithoutRef<'div'>;
+
+export function Skeleton({ className, ...props }: SkeletonProps) {
   return (
     <div
       data-slot="skeleton"
@@ -35,11 +43,7 @@ export function Skeleton({ className, ...props }) {
   );
 }
 
-/**
- * Skeleton for image slots: darker tint + centered spinner so the user
- * never wonders "is that image loading or just empty?"
- */
-export function ImageLoader({ className }) {
+export function ImageLoader({ className }: { className?: string }) {
   return (
     <div
       className={cn(

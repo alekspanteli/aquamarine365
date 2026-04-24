@@ -1,13 +1,15 @@
-import { ThemeProvider } from '@/components/ThemeProvider';
+import type { Metadata, Viewport } from 'next';
+import type { ReactNode } from 'react';
 import DeferredClient from '@/components/DeferredClient';
-import { VillasProvider } from '@/components/VillasProvider';
 import { SiteSettingsProvider } from '@/components/SiteSettingsProvider';
-import { getVillas } from '@/sanity/fetchVillas';
-import { getSiteSettings } from '@/sanity/fetchContent';
+import { ThemeProvider } from '@/components/ThemeProvider';
+import { VillasProvider } from '@/components/VillasProvider';
 import { DEFAULT_OG_IMAGE } from '@/sanity/defaults/siteSettings';
+import { getSiteSettings } from '@/sanity/fetchContent';
+import { getVillas } from '@/sanity/fetchVillas';
 import '../globals.css';
 
-export async function generateMetadata() {
+export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();
   const title = settings.seo.defaultTitle;
   const description = settings.seo.defaultDescription;
@@ -43,7 +45,7 @@ export async function generateMetadata() {
   };
 }
 
-export const viewport = {
+export const viewport: Viewport = {
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#FBFDFE' },
     { media: '(prefers-color-scheme: dark)', color: '#061419' }
@@ -52,11 +54,20 @@ export const viewport = {
   initialScale: 1
 };
 
-export default async function SiteLayout({ children }) {
+interface SiteLayoutProps {
+  children: ReactNode;
+}
+
+export default async function SiteLayout({ children }: SiteLayoutProps) {
   const [villas, settings] = await Promise.all([getVillas(), getSiteSettings()]);
 
   return (
-    <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange={false}>
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="light"
+      enableSystem
+      disableTransitionOnChange={false}
+    >
       <SiteSettingsProvider settings={settings}>
         <VillasProvider villas={villas}>
           {children}

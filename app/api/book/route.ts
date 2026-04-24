@@ -3,26 +3,45 @@ import { NextResponse } from 'next/server';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-// Naive in-memory rate limit: 5 requests per 10 minutes per IP.
-// Replace with Upstash Redis / Vercel KV in production.
 const WINDOW_MS = 10 * 60 * 1000;
 const MAX_PER_WINDOW = 5;
-const hits = new Map();
+const hits = new Map<string, { count: number; reset: number }>();
 
-function rateLimit(ip) {
+interface BookingRequestBody {
+  name?: unknown;
+  email?: unknown;
+  dates?: unknown;
+  code?: unknown;
+  website?: unknown;
+}
+
+interface ValidationResult {
+  errors: Partial<Record<'name' | 'email' | 'dates', string>>;
+  fields: {
+    name: string;
+    email: string;
+    dates: string;
+    code: string;
+  };
+  honeypot: string;
+}
+
+function rateLimit(ip: string): boolean {
   const now = Date.now();
-  const entry = hits.get(ip) || { count: 0, reset: now + WINDOW_MS };
+  const entry = hits.get(ip) ?? { count: 0, reset: now + WINDOW_MS };
+
   if (now > entry.reset) {
     entry.count = 0;
     entry.reset = now + WINDOW_MS;
   }
+
   entry.count += 1;
   hits.set(ip, entry);
   return entry.count <= MAX_PER_WINDOW;
 }
 
-function validate(body) {
-  const errors = {};
+function validate(body: BookingRequestBody): ValidationResult {
+  const errors: ValidationResult['errors'] = {};
   const name = typeof body.name === 'string' ? body.name.trim() : '';
   const email = typeof body.email === 'string' ? body.email.trim() : '';
   const dates = typeof body.dates === 'string' ? body.dates.trim() : '';
@@ -31,14 +50,18 @@ function validate(body) {
 
   if (!name || name.length < 2) errors.name = 'Please enter your name.';
   if (name.length > 120) errors.name = 'Name is too long.';
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = 'Please enter a valid email.';
-  if (!dates || dates.length < 4) errors.dates = 'Tell us your dates (e.g. 12–19 July, 4 adults).';
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    errors.email = 'Please enter a valid email.';
+  }
+  if (!dates || dates.length < 4) {
+    errors.dates = 'Tell us your dates (e.g. 12-19 July, 4 adults).';
+  }
   if (dates.length > 400) errors.dates = 'Dates & guests is too long.';
 
   return { errors, fields: { name, email, dates, code }, honeypot };
 }
 
-export async function POST(request) {
+export async function POST(request: Request) {
   const ip =
     request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
     request.headers.get('x-real-ip') ||
@@ -51,16 +74,15 @@ export async function POST(request) {
     );
   }
 
-  let body;
+  let body: BookingRequestBody;
   try {
-    body = await request.json();
+    body = (await request.json()) as BookingRequestBody;
   } catch {
     return NextResponse.json({ ok: false, error: 'Invalid payload.' }, { status: 400 });
   }
 
   const { errors, fields, honeypot } = validate(body);
 
-  // Honeypot — real users don't fill hidden fields; silently succeed for bots.
   if (honeypot) {
     return NextResponse.json({ ok: true });
   }
@@ -74,13 +96,13 @@ export async function POST(request) {
   //   await fetch('https://api.resend.com/emails', {
   //     method: 'POST',
   //     headers: {
-  //       'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+  //       Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
   //       'Content-Type': 'application/json'
   //     },
   //     body: JSON.stringify({
   //       from: 'bookings@aquamarine365.com',
   //       to: 'info@aquamarine365.com',
-  //       subject: `Booking enquiry — ${fields.code || 'web'}`,
+  //       subject: `Booking enquiry - ${fields.code || 'web'}`,
   //       reply_to: fields.email,
   //       text: `Name: ${fields.name}\nEmail: ${fields.email}\nDates: ${fields.dates}\nCode: ${fields.code}\nIP: ${ip}`
   //     })

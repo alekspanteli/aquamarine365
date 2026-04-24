@@ -1,5 +1,6 @@
 'use client';
 
+import * as React from 'react';
 import { Dialog as DialogPrimitive } from 'radix-ui';
 import { cn } from '@/lib/utils';
 
@@ -8,7 +9,10 @@ const DialogTrigger = DialogPrimitive.Trigger;
 const DialogClose = DialogPrimitive.Close;
 const DialogPortal = DialogPrimitive.Portal;
 
-function DialogOverlay({ className, ref, ...props }) {
+const DialogOverlay = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Overlay>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
+>(({ className, ...props }, ref) => {
   return (
     <DialogPrimitive.Overlay
       ref={ref}
@@ -18,12 +22,14 @@ function DialogOverlay({ className, ref, ...props }) {
       {...props}
     />
   );
-}
+});
 
-// Content is the centered box itself — clicks outside land on the Overlay
-// so Radix's onPointerDownOutside dismisses the dialog. Positioned via
-// inline-style translate so our CSS animation's transform isn't overridden.
-function DialogContent({ className, children, ref, ...props }) {
+DialogOverlay.displayName = 'DialogOverlay';
+
+const DialogContent = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
+>(({ className, children, ...props }, ref) => {
   return (
     <DialogPortal>
       <DialogOverlay />
@@ -34,7 +40,7 @@ function DialogContent({ className, children, ref, ...props }) {
         style={{ transform: 'translate(-50%, -50%)' }}
         className={cn(
           'fixed top-1/2 left-1/2 z-[95] w-[min(640px,calc(100vw-2rem))]',
-          'bg-[var(--surface)] text-[var(--fg)] border border-[var(--line)] rounded-2xl shadow-2xl overflow-hidden outline-none',
+          'overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--surface)] text-[var(--fg)] shadow-2xl outline-none',
           className
         )}
         {...props}
@@ -43,9 +49,14 @@ function DialogContent({ className, children, ref, ...props }) {
       </DialogPrimitive.Content>
     </DialogPortal>
   );
-}
+});
 
-function DialogTitle({ className, ref, ...props }) {
+DialogContent.displayName = 'DialogContent';
+
+const DialogTitle = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Title>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
+>(({ className, ...props }, ref) => {
   return (
     <DialogPrimitive.Title
       ref={ref}
@@ -54,9 +65,14 @@ function DialogTitle({ className, ref, ...props }) {
       {...props}
     />
   );
-}
+});
 
-function DialogDescription({ className, ref, ...props }) {
+DialogTitle.displayName = 'DialogTitle';
+
+const DialogDescription = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Description>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
+>(({ className, ...props }, ref) => {
   return (
     <DialogPrimitive.Description
       ref={ref}
@@ -65,6 +81,16 @@ function DialogDescription({ className, ref, ...props }) {
       {...props}
     />
   );
-}
+});
 
-export { Dialog, DialogTrigger, DialogClose, DialogContent, DialogOverlay, DialogTitle, DialogDescription };
+DialogDescription.displayName = 'DialogDescription';
+
+export {
+  Dialog,
+  DialogTrigger,
+  DialogClose,
+  DialogContent,
+  DialogOverlay,
+  DialogTitle,
+  DialogDescription
+};

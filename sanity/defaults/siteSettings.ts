@@ -1,11 +1,13 @@
-function withKeys(prefix, items) {
+import type { Keyed, OpenGraphImage, SiteSettings } from '@/types/domain';
+
+function withKeys<T extends Record<string, unknown>>(prefix: string, items: T[]): Array<Keyed<T>> {
   return items.map((item, index) => ({
     _key: `${prefix}-${index + 1}`,
     ...item
   }));
 }
 
-export const defaultSiteSettings = {
+export const defaultSiteSettings: SiteSettings = {
   title: 'Aquamarine',
   siteUrl: 'https://aquamarine365.com',
   seo: {
@@ -107,7 +109,7 @@ export const defaultSiteSettings = {
         number: '04',
         title: 'We know Ayia Napa.',
         description:
-          "Twelve years here. We will tell you which beach is quiet on a Saturday and which taverna is worth the drive."
+          'Twelve years here. We will tell you which beach is quiet on a Saturday and which taverna is worth the drive.'
       }
     ])
   },
@@ -115,8 +117,7 @@ export const defaultSiteSettings = {
     eyebrow: 'The honest comparison',
     title: 'Book direct.',
     highlight: "Here's what changes.",
-    body:
-      'Same villa either way. Different experience - and a different total at checkout.',
+    body: 'Same villa either way. Different experience - and a different total at checkout.',
     rows: withKeys('compare-row', [
       { label: 'Booking fees', direct: 'EUR 0', other: 'EUR 120 - EUR 240' },
       { label: 'Who cleans', direct: 'Our local team', other: 'Third-party contractor' },
@@ -223,7 +224,7 @@ export const defaultSiteSettings = {
       {
         question: 'What happens if something breaks during my stay?',
         answer:
-          "Message us on WhatsApp. We are on the island, so the average fix-time is under two hours for anything that matters (A/C, Wi-Fi, hot water). Our average guest-message response is under 10 minutes."
+          'Message us on WhatsApp. We are on the island, so the average fix-time is under two hours for anything that matters (A/C, Wi-Fi, hot water). Our average guest-message response is under 10 minutes.'
       },
       {
         question: 'Can I cancel if my plans change?',
@@ -282,6 +283,10 @@ const { ogImage, ...seoInitialValue } = defaultSiteSettings.seo;
 const { image: heroImage, ...heroInitialValue } = defaultSiteSettings.hero;
 const { image: clarityImage, ...clarityInitialValue } = defaultSiteSettings.clarity;
 
+void ogImage;
+void heroImage;
+void clarityImage;
+
 export const studioSiteSettingsInitialValue = {
   ...defaultSiteSettings,
   seo: seoInitialValue,
@@ -289,7 +294,7 @@ export const studioSiteSettingsInitialValue = {
   clarity: clarityInitialValue
 };
 
-export const DEFAULT_OG_IMAGE = {
+export const DEFAULT_OG_IMAGE: OpenGraphImage = {
   url: '/opengraph-image.jpg',
   width: 1200,
   height: 630,

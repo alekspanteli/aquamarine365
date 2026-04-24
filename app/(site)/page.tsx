@@ -1,25 +1,25 @@
-import Nav from '@/components/Nav';
-import ProgressBar from '@/components/ProgressBar';
-import Hero from '@/components/Hero';
+import type { Metadata } from 'next';
 import Clarity from '@/components/Clarity';
-import StayCarousel from '@/components/StayCarousel';
-import WhyUs from '@/components/WhyUs';
 import Compare from '@/components/Compare';
-import HowItWorks from '@/components/HowItWorks';
-import Testimonials from '@/components/Testimonials';
 import FAQ from '@/components/FAQ';
-import Offer from '@/components/Offer';
-import Footer from '@/components/Footer';
 import FloatingCTA from '@/components/FloatingCTA';
-import { getVillas } from '@/sanity/fetchVillas';
+import Footer from '@/components/Footer';
+import Hero from '@/components/Hero';
+import HowItWorks from '@/components/HowItWorks';
+import Nav from '@/components/Nav';
+import Offer from '@/components/Offer';
+import ProgressBar from '@/components/ProgressBar';
+import StayCarousel from '@/components/StayCarousel';
+import Testimonials from '@/components/Testimonials';
+import WhyUs from '@/components/WhyUs';
 import { getSiteSettings } from '@/sanity/fetchContent';
 
-export const metadata = {
+export const metadata: Metadata = {
   alternates: { canonical: '/' }
 };
 
 export default async function Page() {
-  const [villas, settings] = await Promise.all([getVillas(), getSiteSettings()]);
+  const settings = await getSiteSettings();
   const organizationJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'LodgingBusiness',
@@ -46,13 +46,15 @@ export default async function Page() {
 
   return (
     <>
-      <a className="skip" href="#main">Skip to content</a>
+      <a className="skip" href="#main">
+        Skip to content
+      </a>
       <ProgressBar />
       <Nav />
       <main id="main" className="relative">
         <Hero />
         <Clarity />
-        <StayCarousel villas={villas} />
+        <StayCarousel />
         <WhyUs />
         <Compare />
         <HowItWorks />

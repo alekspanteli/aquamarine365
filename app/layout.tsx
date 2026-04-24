@@ -1,5 +1,6 @@
-import { Source_Serif_4, IBM_Plex_Mono } from 'next/font/google';
+import type { ReactNode } from 'react';
 import { GeistSans } from 'geist/font/sans';
+import { Source_Serif_4, IBM_Plex_Mono } from 'next/font/google';
 
 const sourceSerif = Source_Serif_4({
   subsets: ['latin'],
@@ -15,7 +16,11 @@ const plex = IBM_Plex_Mono({
   display: 'swap'
 });
 
-export default function RootLayout({ children }) {
+interface RootLayoutProps {
+  children: ReactNode;
+}
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html
       lang="en"
