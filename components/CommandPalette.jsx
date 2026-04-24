@@ -11,12 +11,13 @@ import {
   CommandItem,
   CommandSeparator
 } from '@/components/ui/command';
-import { villas } from '@/data/villas';
+import { useVillas } from '@/components/VillasProvider';
 import { Bed, House, Info, Question, Phone, Envelope, ChatCircle, Sun, Moon, Laptop } from '@phosphor-icons/react/dist/ssr';
 
 export default function CommandPalette({ open, setOpen }) {
   const router = useRouter();
   const { setTheme } = useTheme();
+  const villas = useVillas();
 
   const run = (fn) => () => {
     setOpen(false);
@@ -25,8 +26,25 @@ export default function CommandPalette({ open, setOpen }) {
 
   const go = (href) => run(() => router.push(href));
 
+  // cmdk's default fuzzy was matching "ocean" against "Dream Tropicana"
+  // through the scattered letters o-c-e-a-n. Restrict to word-boundary
+  // prefix / substring matches so results are what users expect.
+  const filter = (value, search) => {
+    if (!search) return 1;
+    const haystack = value.toLowerCase();
+    const needle = search.trim().toLowerCase();
+    if (!needle) return 1;
+    // Full substring anywhere — strongest
+    if (haystack.includes(needle)) return 1;
+    // Every whitespace-separated term must hit a word that starts with it.
+    const words = haystack.split(/[\s·,/·_-]+/).filter(Boolean);
+    const terms = needle.split(/\s+/).filter(Boolean);
+    const allHit = terms.every((t) => words.some((w) => w.startsWith(t)));
+    return allHit ? 0.6 : 0;
+  };
+
   return (
-    <CommandDialog open={open} onOpenChange={setOpen}>
+    <CommandDialog open={open} onOpenChange={setOpen} filter={filter}>
       <CommandInput placeholder="Search villas, sections, actions…" autoFocus />
       <CommandList>
         <CommandEmpty>No results. Try &ldquo;pool&rdquo; or &ldquo;sea&rdquo;.</CommandEmpty>

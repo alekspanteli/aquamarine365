@@ -21,7 +21,7 @@ export default function Footer() {
                 key={label}
                 href={href}
                 target="_blank"
-                rel="noopener"
+                rel="noopener noreferrer"
                 aria-label={label}
                 className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-white/10 text-[var(--color-cream)]/70 hover:bg-[var(--color-aqua)] hover:border-[var(--color-aqua)] hover:text-[var(--color-ink-dark)] transition"
               >
@@ -37,7 +37,19 @@ export default function Footer() {
             <a href="tel:+35797494941" className="font-mono hover:text-white">+357 97 494 941</a>
           </p>
           <p className="text-sm mt-1">
-            <a href="mailto:info@aquamarine365.com" className="hover:text-white">info@aquamarine365.com</a>
+            <a
+              href="mailto:info@aquamarine365.com"
+              className="hover:text-white"
+              aria-label="Email info@aquamarine365.com"
+            >
+              {/* Displayed in parts so plaintext harvesters get nothing easy —
+                  click-through still works via the mailto: href. */}
+              info<span aria-hidden> [at] </span>
+              <span className="sr-only">@</span>
+              aquamarine365<span aria-hidden> [dot] </span>
+              <span className="sr-only">.</span>
+              com
+            </a>
           </p>
           <p className="text-sm mt-2 leading-relaxed">
             61 Tefkrou Anthia

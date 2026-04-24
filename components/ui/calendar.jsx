@@ -15,23 +15,23 @@ export function Calendar({ className, classNames, showOutsideDays = true, ...pro
     <DayPicker
       data-slot="calendar"
       showOutsideDays={showOutsideDays}
-      className={cn('p-3', className)}
+      className={cn('relative p-3', className)}
       classNames={{
-        root: cn('w-fit', def.root),
-        months: cn('flex flex-col sm:flex-row gap-4', def.months),
+        root: cn('relative w-fit', def.root),
+        months: cn('relative flex flex-col sm:flex-row gap-4', def.months),
         month: cn('flex flex-col gap-3', def.month),
         month_caption: cn(
           'flex h-9 items-center justify-center',
           def.month_caption
         ),
         caption_label: cn('text-sm font-display font-medium', def.caption_label),
-        nav: cn('absolute inset-x-0 top-0 flex items-center justify-between gap-1', def.nav),
+        nav: cn('absolute inset-x-3 top-3 z-10 flex items-center justify-between gap-1 pointer-events-none', def.nav),
         button_previous: cn(
-          'inline-flex h-7 w-7 items-center justify-center rounded-full border border-[var(--line)] bg-transparent hover:bg-[var(--surface-2)] transition opacity-70 hover:opacity-100 aria-disabled:opacity-30',
+          'pointer-events-auto inline-flex h-7 w-7 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--surface)] hover:bg-[var(--surface-2)] transition opacity-70 hover:opacity-100 aria-disabled:opacity-30',
           def.button_previous
         ),
         button_next: cn(
-          'inline-flex h-7 w-7 items-center justify-center rounded-full border border-[var(--line)] bg-transparent hover:bg-[var(--surface-2)] transition opacity-70 hover:opacity-100 aria-disabled:opacity-30',
+          'pointer-events-auto inline-flex h-7 w-7 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--surface)] hover:bg-[var(--surface-2)] transition opacity-70 hover:opacity-100 aria-disabled:opacity-30',
           def.button_next
         ),
         weekdays: cn('flex', def.weekdays),

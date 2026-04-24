@@ -7,26 +7,57 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
 import { Spinner } from '@/components/ui/skeleton';
 
 export default function Offer() {
   const [status, setStatus] = useState('idle');
+  const [errors, setErrors] = useState({});
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
+    if (status === 'loading') return;
+    setErrors({});
     setStatus('loading');
+
     const form = new FormData(e.currentTarget);
-    const subject = encodeURIComponent('Booking enquiry — DIRECT7');
-    const body = encodeURIComponent(
-      `Name: ${form.get('name')}\nEmail: ${form.get('email')}\nDates & guests: ${form.get('dates')}\n\nCode: DIRECT7`
-    );
-    toast.success('Opening your email client', {
-      description: "We'll reply within an hour, 8am–10pm Cyprus time."
-    });
-    window.location.href = `mailto:info@aquamarine365.com?subject=${subject}&body=${body}`;
-    setTimeout(() => setStatus('sent'), 600);
+    const payload = {
+      name: form.get('name'),
+      email: form.get('email'),
+      dates: form.get('dates'),
+      code: 'DIRECT7',
+      website: form.get('website') // honeypot
+    };
+
+    try {
+      const res = await fetch('/api/book', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        if (data?.errors) setErrors(data.errors);
+        throw new Error(data?.error || 'Could not send your enquiry.');
+      }
+
+      setStatus('sent');
+      toast.success('Enquiry received', {
+        description: "We'll reply within an hour, 8am–10pm Cyprus time."
+      });
+      e.target.reset();
+      // Reset to idle after a few seconds so the form is usable again.
+      setTimeout(() => setStatus('idle'), 4000);
+    } catch (err) {
+      setStatus('idle');
+      toast.error('Something went wrong', {
+        description: err.message || 'Please try again, or email info@aquamarine365.com.'
+      });
+    }
   };
+
+  const loading = status === 'loading';
+  const sent = status === 'sent';
 
   return (
     <section
@@ -57,10 +88,7 @@ export default function Offer() {
           </div>
           <h2 className="max-w-[18ch] !text-[var(--color-cream)]">
             <span className="block">Book direct.</span>
-            <span
-              className="block"
-              style={{ color: '#7FE0E8' }}
-            >
+            <span className="block" style={{ color: 'var(--color-aqua)' }}>
               Get the week for six.
             </span>
           </h2>
@@ -94,6 +122,7 @@ export default function Offer() {
 
         <motion.form
           onSubmit={submit}
+          noValidate
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -101,27 +130,81 @@ export default function Offer() {
           className="bg-[var(--color-cream)] p-8 md:p-10 rounded-3xl shadow-2xl flex flex-col gap-4"
           style={{ color: 'var(--color-ink)' }}
         >
+          {/* Honeypot — real users don't see this. Bots fill everything. */}
+          <div aria-hidden className="hidden" tabIndex={-1}>
+            <label htmlFor="offer-website">Leave this empty</label>
+            <input id="offer-website" name="website" type="text" autoComplete="off" tabIndex={-1} />
+          </div>
+
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="offer-name">Your name</Label>
-            <Input id="offer-name" name="name" required autoComplete="name" placeholder="Jane Doe" />
+            <Input
+              id="offer-name"
+              name="name"
+              required
+              autoComplete="name"
+              placeholder="Jane Doe"
+              aria-invalid={!!errors.name}
+              aria-describedby={errors.name ? 'offer-name-error' : undefined}
+              disabled={loading || sent}
+            />
+            {errors.name && (
+              <p id="offer-name-error" role="alert" className="text-xs text-red-700 mt-1">
+                {errors.name}
+              </p>
+            )}
           </div>
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="offer-email">Email</Label>
-            <Input id="offer-email" name="email" type="email" required autoComplete="email" placeholder="jane@example.com" />
+            <Input
+              id="offer-email"
+              name="email"
+              type="email"
+              required
+              autoComplete="email"
+              placeholder="jane@example.com"
+              aria-invalid={!!errors.email}
+              aria-describedby={errors.email ? 'offer-email-error' : undefined}
+              disabled={loading || sent}
+            />
+            {errors.email && (
+              <p id="offer-email-error" role="alert" className="text-xs text-red-700 mt-1">
+                {errors.email}
+              </p>
+            )}
           </div>
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="offer-dates">Dates &amp; guests</Label>
-            <Input id="offer-dates" name="dates" required placeholder="e.g. 12–19 July, 4 adults" />
+            <Input
+              id="offer-dates"
+              name="dates"
+              required
+              placeholder="e.g. 12–19 July, 4 adults"
+              aria-invalid={!!errors.dates}
+              aria-describedby={errors.dates ? 'offer-dates-error' : undefined}
+              disabled={loading || sent}
+            />
+            {errors.dates && (
+              <p id="offer-dates-error" role="alert" className="text-xs text-red-700 mt-1">
+                {errors.dates}
+              </p>
+            )}
           </div>
           <Button
             type="submit"
             size="lg"
+            disabled={loading || sent}
             className="mt-2 bg-[var(--color-ink)] text-[var(--color-cream)] hover:bg-[var(--color-aegean)]"
           >
-            {status === 'loading' || status === 'sent' ? (
+            {loading ? (
               <>
                 <Spinner size={14} />
-                {status === 'sent' ? 'Opening your email…' : 'Preparing…'}
+                Sending…
+              </>
+            ) : sent ? (
+              <>
+                <Check size={16} />
+                Enquiry sent — check your inbox
               </>
             ) : (
               'Check my dates'

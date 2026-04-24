@@ -14,24 +14,35 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { QUIZ, recommendVilla } from '@/lib/villaMatcher';
+import { useVillas } from '@/components/VillasProvider';
 
 export default function FindMyVilla({ children, className }) {
+  const villas = useVillas();
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState({});
+  const [advancing, setAdvancing] = useState(false);
   const done = step >= QUIZ.length;
 
   const reset = () => {
     setStep(0);
     setAnswers({});
+    setAdvancing(false);
   };
 
+  // Guard: a second click during the 180ms step-advance delay was registering
+  // twice — option clicks are locked while `advancing` is true.
   const choose = (qId, optId) => {
+    if (advancing) return;
+    setAdvancing(true);
     setAnswers((a) => ({ ...a, [qId]: optId }));
-    setTimeout(() => setStep((s) => s + 1), 180);
+    setTimeout(() => {
+      setStep((s) => s + 1);
+      setAdvancing(false);
+    }, 180);
   };
 
-  const recommendation = done ? recommendVilla(answers) : null;
+  const recommendation = done && villas.length ? recommendVilla(villas, answers) : null;
 
   return (
     <Dialog
@@ -97,8 +108,10 @@ export default function FindMyVilla({ children, className }) {
                     return (
                       <button
                         key={opt.id}
+                        type="button"
                         onClick={() => choose(QUIZ[step].id, opt.id)}
-                        className={`group flex items-center justify-between gap-4 text-left rounded-xl border px-4 py-3.5 transition ${
+                        disabled={advancing}
+                        className={`group flex items-center justify-between gap-4 text-left rounded-xl border px-4 py-3.5 transition disabled:cursor-not-allowed disabled:opacity-80 ${
                           selected
                             ? 'border-[var(--accent)] bg-[color:var(--accent)]/5'
                             : 'border-[var(--line)] bg-[var(--bg)] hover:border-[var(--fg-2)]'

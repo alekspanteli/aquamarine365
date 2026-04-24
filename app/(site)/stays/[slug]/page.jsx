@@ -4,17 +4,19 @@ import ProgressBar from '@/components/ProgressBar';
 import Footer from '@/components/Footer';
 import VillaBody from '@/components/VillaBody';
 import FloatingCTA from '@/components/FloatingCTA';
-import { villas, getVilla } from '@/data/villas';
+import { getVilla, getVillaSlugs } from '@/sanity/fetchVillas';
 
-export function generateStaticParams() {
-  return villas.map((v) => ({ slug: v.slug }));
+export async function generateStaticParams() {
+  const slugs = await getVillaSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata(props) {
   const params = await props.params;
-  const v = getVilla(params.slug);
+  const v = await getVilla(params.slug);
   if (!v) return {};
-  const title = `${v.name} — Aquamarine Ayia Napa`;
+  // Page title omits the brand — root layout's `%s · Aquamarine` template adds it.
+  const title = `${v.name} · Ayia Napa, Cyprus`;
   const url = `/stays/${v.slug}`;
   const image = v.cover;
   return {
@@ -66,14 +68,14 @@ function villaJsonLd(v) {
 
 export default async function VillaPage(props) {
   const params = await props.params;
-  const villa = getVilla(params.slug);
+  const villa = await getVilla(params.slug);
   if (!villa) notFound();
 
   return (
     <>
       <ProgressBar />
       <Nav />
-      <main>
+      <main className="relative">
         <VillaBody villa={villa} />
       </main>
       <Footer />

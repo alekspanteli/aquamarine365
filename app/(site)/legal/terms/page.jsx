@@ -1,7 +1,8 @@
 export const metadata = {
-  title: 'Booking terms — Aquamarine',
+  title: 'Booking terms',
   description:
-    'Booking terms, payment, cancellation, and house rules for Aquamarine Holiday Rentals villas in Ayia Napa.'
+    'Booking terms, payment, cancellation, and house rules for Aquamarine Holiday Rentals villas in Ayia Napa.',
+  alternates: { canonical: '/legal/terms' }
 };
 
 export default function TermsPage() {

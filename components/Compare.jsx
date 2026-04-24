@@ -36,57 +36,71 @@ export default function Compare() {
           </p>
         </motion.div>
 
-        <div
-          className="rounded-3xl overflow-hidden border border-[var(--line)] bg-[var(--surface)] shadow-sm"
-          
-          aria-label="Aquamarine direct vs booking platforms"
-        >
-          <div
-            className="hidden md:grid grid-cols-[1.2fr_1.3fr_1fr] gap-4 px-8 py-4 border-b border-[var(--line)] bg-[var(--surface-2)] label"
-            
-          >
-            <div >Comparison</div>
-            <div  className="label-accent flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[var(--accent)] shadow-[0_0_0_4px_color-mix(in_srgb,var(--accent)_18%,transparent)]" />
-              Aquamarine direct
-            </div>
-            <div >Airbnb / Booking</div>
-          </div>
-
-          {rows.map((r, i) => (
-            <motion.div
-              key={r.label}
-              
-              initial={{ opacity: 0, y: 8 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.4, delay: i * 0.04 }}
-              className="grid md:grid-cols-[1.2fr_1.3fr_1fr] gap-2 md:gap-4 px-5 md:px-8 py-4 md:py-5 border-b border-[var(--line)] last:border-b-0 items-center"
-            >
-              <div
-                className="font-medium text-[var(--fg)] md:text-base text-[0.68rem] md:tracking-normal md:normal-case md:font-medium uppercase tracking-wider font-mono md:font-sans text-[var(--fg-muted)] md:text-[var(--fg)]"
-                
-              >
-                {r.label}
-              </div>
-              <div
-                className="inline-flex items-center gap-2.5 text-[var(--fg)] font-medium"
-                
-              >
-                <Check size={16} className="text-[var(--accent)] shrink-0" />
-                <span className="md:before:hidden before:content-['DIRECT__'] before:font-mono before:text-[0.6rem] before:text-[var(--accent)] before:tracking-widest md:before:mr-0">
-                  {r.direct}
-                </span>
-              </div>
-              <div
-                className="inline-flex items-center gap-2.5 text-[var(--fg-muted)] line-through decoration-[color:var(--fg-muted)]/40"
-                
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-[var(--fg-muted)]/40 shrink-0" />
-                {r.other}
-              </div>
-            </motion.div>
-          ))}
+        <div className="rounded-3xl overflow-hidden border border-[var(--line)] bg-[var(--surface)] shadow-sm">
+          <table className="w-full border-collapse">
+            <caption className="sr-only">
+              Aquamarine direct booking compared with major platforms.
+            </caption>
+            <thead className="hidden md:table-header-group">
+              <tr className="bg-[var(--surface-2)]">
+                <th scope="col" className="text-left px-8 py-4 label font-normal">
+                  Comparison
+                </th>
+                <th scope="col" className="text-left px-8 py-4 label label-accent font-normal">
+                  <span className="inline-flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-[var(--accent)] shadow-[0_0_0_4px_color-mix(in_srgb,var(--accent)_18%,transparent)]" />
+                    Aquamarine direct
+                  </span>
+                </th>
+                <th scope="col" className="text-left px-8 py-4 label font-normal">
+                  Airbnb / Booking
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((r, i) => (
+                <motion.tr
+                  key={r.label}
+                  initial={{ opacity: 0, y: 8 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.4, delay: i * 0.04 }}
+                  className="grid md:table-row grid-cols-1 gap-2 px-5 md:px-0 py-4 md:py-0 border-b border-[var(--line)] last:border-b-0 md:hover:bg-[var(--bg-2)]/60 transition-colors"
+                >
+                  <th
+                    scope="row"
+                    className="md:px-8 md:py-5 text-left font-medium text-[var(--fg)] md:text-base text-[0.68rem] md:tracking-normal md:normal-case md:font-medium uppercase tracking-wider font-mono md:font-sans text-[var(--fg-muted)] md:text-[var(--fg)] md:w-[40%]"
+                  >
+                    {r.label}
+                  </th>
+                  <td className="md:px-8 md:py-5 md:align-middle md:w-[35%]">
+                    <span className="inline-flex items-baseline gap-2 md:gap-2.5 text-[var(--fg)] font-medium">
+                      <span
+                        aria-hidden
+                        className="md:hidden font-mono text-[0.58rem] tracking-widest text-[var(--accent)] uppercase shrink-0 w-14"
+                      >
+                        Direct
+                      </span>
+                      <Check size={16} className="text-[var(--accent)] shrink-0 self-center" />
+                      <span>{r.direct}</span>
+                    </span>
+                  </td>
+                  <td className="md:px-8 md:py-5 md:align-middle">
+                    <span className="inline-flex items-baseline gap-2 md:gap-2.5 text-[var(--fg-muted)]">
+                      <span
+                        aria-hidden
+                        className="md:hidden font-mono text-[0.58rem] tracking-widest text-[var(--fg-muted)] uppercase shrink-0 w-14"
+                      >
+                        Airbnb
+                      </span>
+                      <span className="w-1.5 h-1.5 rounded-full bg-[var(--fg-muted)]/40 shrink-0 self-center" />
+                      <span className="line-through decoration-[color:var(--fg-muted)]/40">{r.other}</span>
+                    </span>
+                  </td>
+                </motion.tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </section>

@@ -34,7 +34,7 @@ function SelectContent({ className, children, position = 'popper', ref, ...props
       <SelectPrimitive.Content
         ref={ref}
         data-slot="select-content"
-        data-aq-dialog=""
+        data-aq-pop=""
         className={cn(
           'relative z-[95] min-w-[8rem] overflow-hidden rounded-xl border border-[var(--line)] bg-[var(--surface)] text-[var(--fg)] shadow-xl',
           'max-h-64',

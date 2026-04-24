@@ -44,6 +44,10 @@ export default function Testimonials() {
           className="relative bg-[var(--surface)] border border-[var(--line)] rounded-3xl px-6 md:px-14 pt-14 pb-10 max-w-4xl mx-auto overflow-hidden"
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
+          onFocusCapture={() => setPaused(true)}
+          onBlurCapture={(e) => {
+            if (!e.currentTarget.contains(e.relatedTarget)) setPaused(false);
+          }}
         >
           <svg className="absolute top-6 left-6 w-12 h-auto text-[var(--punch-soft)]" viewBox="0 0 64 48" aria-hidden>
             <path
@@ -55,6 +59,10 @@ export default function Testimonials() {
           <AnimatePresence mode="wait">
             <motion.figure
               key={i}
+              id={`testimonial-panel-${i}`}
+              role="tabpanel"
+              aria-labelledby={`testimonial-tab-${i}`}
+              aria-live="polite"
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -16 }}
@@ -82,10 +90,13 @@ export default function Testimonials() {
             {quotes.map((_, n) => (
               <button
                 key={n}
+                id={`testimonial-tab-${n}`}
                 onClick={() => setI(n)}
                 aria-selected={n === i}
+                aria-controls={`testimonial-panel-${n}`}
                 aria-label={`Show testimonial ${n + 1}`}
                 role="tab"
+                tabIndex={n === i ? 0 : -1}
                 className={`relative h-1.5 flex-1 max-w-[64px] rounded-full overflow-hidden transition-colors ${
                   n === i ? 'bg-[var(--accent)]/25' : 'bg-[var(--fg-muted)]/30 hover:bg-[var(--fg-muted)]/50'
                 }`}

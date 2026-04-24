@@ -30,24 +30,42 @@ export default function VillaGallery({ images, name }) {
     [index, images.length]
   );
 
+  // Arrow keys are scoped to the gallery container (tabIndex=0) — global
+  // window-level keydown was hijacking arrow-key scroll on pages with a
+  // gallery. Lightbox Escape is still window-level while open so you can
+  // always dismiss it.
   useEffect(() => {
+    if (!lightbox) return;
     const onKey = (e) => {
+      if (e.key === 'Escape') setLightbox(false);
       if (e.key === 'ArrowRight') go(index + 1);
       if (e.key === 'ArrowLeft') go(index - 1);
-      if (e.key === 'Escape') setLightbox(false);
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [index, go]);
+  }, [lightbox, index, go]);
 
   useEffect(() => {
     document.body.style.overflow = lightbox ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [lightbox]);
 
+  const onGalleryKeyDown = (e) => {
+    if (lightbox) return;
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(index + 1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(index - 1); }
+  };
+
   return (
     <>
-      <div className="flex flex-col gap-3">
+      <div
+        className="flex flex-col gap-3 outline-none"
+        tabIndex={0}
+        role="region"
+        aria-label={`${name} gallery`}
+        aria-roledescription="carousel"
+        onKeyDown={onGalleryKeyDown}
+      >
         <div className="relative aspect-[16/10] rounded-3xl overflow-hidden bg-[var(--color-ink)] cursor-grab active:cursor-grabbing shadow-xl">
           {/* Visible loader behind the slide — covers the gap while the next
               image is sliding in or hasn't loaded yet. Shimmer + spinner +
@@ -75,6 +93,15 @@ export default function VillaGallery({ images, name }) {
                 else if (info.offset.x > 80) go(index - 1);
               }}
               onClick={() => setLightbox(true)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  setLightbox(true);
+                }
+              }}
+              role="button"
+              tabIndex={0}
+              aria-label={`Open ${name} — image ${index + 1} at full size`}
               className="absolute inset-0"
             >
               <Image

@@ -29,7 +29,14 @@ export default function Hero() {
     return () => mq.removeEventListener('change', update);
   }, [reduce]);
 
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start start', 'end start'],
+    // Avoids a framer-motion v11 false-positive warning about non-static
+    // container position when the target's offsetParent chain is already
+    // correctly positioned — target itself has `relative isolate` below.
+    layoutEffect: false
+  });
   const y = useTransform(scrollYProgress, [0, 1], [0, 90]);
   const scale = useTransform(scrollYProgress, [0, 1], [1.02, 1.1]);
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0.3]);
@@ -45,7 +52,7 @@ export default function Hero() {
         aria-hidden
       >
         <Image
-          src="https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=1400&q=55"
+          src="https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=2400&q=70"
           alt=""
           fill
           priority
@@ -77,7 +84,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="label !text-white/70 mb-6"
+          className="label !text-white/80 mb-6"
         >
           Ayia Napa · Cyprus
         </motion.div>
@@ -110,7 +117,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-7 md:mt-8 max-w-[56ch] text-base md:text-lg text-white/90 leading-relaxed font-sans"
+          className="mt-7 md:mt-8 max-w-[56ch] text-base md:text-lg text-white/95 leading-relaxed font-sans"
           style={{ textShadow: '0 1px 20px rgba(0,0,0,0.35)' }}
         >
           A small, owner-operated collection of seafront homes. Cleaned before every arrival, stocked on request, backed by a real team on the island 24/7. Book direct — no platform fees.
@@ -131,10 +138,11 @@ export default function Hero() {
           <FindMyVilla>
             <Button
               size="lg"
-              className="bg-white/10 text-white border border-white/25 backdrop-blur-md hover:bg-white/20 hover:text-white"
+              variant="ghost"
+              className="text-white/90 hover:text-white hover:bg-white/10 underline underline-offset-[6px] decoration-white/30 hover:decoration-white/60"
             >
               <Sparkle size={16} weight="regular" />
-              Find your villa
+              Or let us match you
             </Button>
           </FindMyVilla>
         </motion.div>

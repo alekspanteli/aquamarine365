@@ -7,3 +7,8 @@ out
 .vercel
 test-results
 playwright-report
+.env*.local
+.playwright-mcp
+skills
+skills-lock.json
+/*.png

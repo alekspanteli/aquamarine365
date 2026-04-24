@@ -1,7 +1,8 @@
 export const metadata = {
-  title: 'Privacy policy — Aquamarine',
+  title: 'Privacy policy',
   description:
-    "How Aquamarine Holiday Rentals handles your personal data: what we collect, why, who it's shared with, and your rights under GDPR."
+    "How Aquamarine Holiday Rentals handles your personal data: what we collect, why, who it's shared with, and your rights under GDPR.",
+  alternates: { canonical: '/legal/privacy' }
 };
 
 export default function PrivacyPage() {

@@ -33,7 +33,7 @@ export default function CookieBanner() {
           exit={{ opacity: 0, y: 40 }}
           transition={{ type: 'spring', stiffness: 220, damping: 28 }}
           className="fixed left-4 right-[5.5rem] md:left-6 md:right-auto bottom-4 md:bottom-6 z-[60] max-w-md"
-          role="dialog"
+          role="region"
           aria-label="Cookie notice"
         >
           <div className="relative bg-[var(--surface)] border border-[var(--line)] shadow-[0_20px_60px_rgba(14,29,34,0.25)] rounded-2xl p-5 md:p-6">

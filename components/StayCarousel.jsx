@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { ArrowLeft, ArrowRight } from '@phosphor-icons/react/dist/ssr';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -32,19 +32,24 @@ export default function StayCarousel({ villas }) {
     [index, villas.length]
   );
 
-  useEffect(() => {
-    const onKey = (e) => {
-      if (e.key === 'ArrowRight') go(index + 1);
-      if (e.key === 'ArrowLeft') go(index - 1);
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [index, go]);
+  // Arrow keys scoped to the section (tabIndex=0) — no global hijack.
+  const onKeyDown = (e) => {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(index + 1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(index - 1); }
+  };
 
   const villa = villas[index];
 
   return (
-    <section className="py-20 md:py-32 bg-[var(--bg-2)] relative" id="stays">
+    <section
+      className="py-20 md:py-32 bg-[var(--bg-2)] relative outline-none"
+      id="stays"
+      tabIndex={0}
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="Browse villas"
+      onKeyDown={onKeyDown}
+    >
       <div className="container-x">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
           <div>

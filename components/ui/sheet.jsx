@@ -8,6 +8,8 @@ const Sheet = DialogPrimitive.Root;
 const SheetTrigger = DialogPrimitive.Trigger;
 const SheetClose = DialogPrimitive.Close;
 const SheetPortal = DialogPrimitive.Portal;
+const SheetTitle = DialogPrimitive.Title;
+const SheetDescription = DialogPrimitive.Description;
 
 function SheetOverlay({ className, ref, ...props }) {
   return (
@@ -28,7 +30,14 @@ const sidePos = {
   bottom: 'inset-x-0 bottom-0 border-t'
 };
 
-function SheetContent({ side = 'right', className, children, ref, ...props }) {
+function SheetContent({
+  side = 'right',
+  className,
+  children,
+  ref,
+  hideClose = false,
+  ...props
+}) {
   return (
     <SheetPortal>
       <SheetOverlay />
@@ -45,13 +54,23 @@ function SheetContent({ side = 'right', className, children, ref, ...props }) {
         {...props}
       >
         {children}
-        <DialogPrimitive.Close className="absolute top-5 right-5 z-10 rounded-full h-10 w-10 inline-flex items-center justify-center hover:bg-[var(--surface-2)] text-[var(--fg)] transition">
-          <X className="h-5 w-5" />
-          <span className="sr-only">Close</span>
-        </DialogPrimitive.Close>
+        {!hideClose && (
+          <DialogPrimitive.Close className="absolute top-5 right-5 z-10 rounded-full h-10 w-10 inline-flex items-center justify-center hover:bg-[var(--surface-2)] text-[var(--fg)] transition">
+            <X className="h-5 w-5" />
+            <span className="sr-only">Close</span>
+          </DialogPrimitive.Close>
+        )}
       </DialogPrimitive.Content>
     </SheetPortal>
   );
 }
 
-export { Sheet, SheetTrigger, SheetClose, SheetContent, SheetOverlay };
+export {
+  Sheet,
+  SheetTrigger,
+  SheetClose,
+  SheetContent,
+  SheetOverlay,
+  SheetTitle,
+  SheetDescription
+};

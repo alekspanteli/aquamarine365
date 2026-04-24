@@ -1,7 +1,8 @@
 export const metadata = {
-  title: 'Cookie policy — Aquamarine',
+  title: 'Cookie policy',
   description:
-    "Exactly what Aquamarine stores on your device and why. No third-party tracking, no analytics, no marketing cookies."
+    "Exactly what Aquamarine stores on your device and why. No third-party tracking, no analytics, no marketing cookies.",
+  alternates: { canonical: '/legal/cookies' }
 };
 
 export default function CookiesPage() {

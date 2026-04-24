@@ -11,7 +11,7 @@ import FAQ from '@/components/FAQ';
 import Offer from '@/components/Offer';
 import Footer from '@/components/Footer';
 import FloatingCTA from '@/components/FloatingCTA';
-import { villas } from '@/data/villas';
+import { getVillas } from '@/sanity/fetchVillas';
 
 export const metadata = {
   alternates: { canonical: '/' }
@@ -41,13 +41,14 @@ const organizationJsonLd = {
   areaServed: 'Ayia Napa, Cyprus'
 };
 
-export default function Page() {
+export default async function Page() {
+  const villas = await getVillas();
   return (
     <>
       <a className="skip" href="#main">Skip to content</a>
       <ProgressBar />
       <Nav />
-      <main id="main">
+      <main id="main" className="relative">
         <Hero />
         <Clarity />
         <StayCarousel villas={villas} />

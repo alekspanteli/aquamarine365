@@ -20,6 +20,7 @@ function CommandDialog({
   onOpenChange,
   title = 'Search Aquamarine',
   description = 'Search villas, sections, and actions.',
+  filter,
   children
 }) {
   return (
@@ -27,7 +28,7 @@ function CommandDialog({
       <DialogContent>
         <DialogTitle>{title}</DialogTitle>
         <DialogDescription>{description}</DialogDescription>
-        <Command>{children}</Command>
+        <Command filter={filter}>{children}</Command>
       </DialogContent>
     </Dialog>
   );
