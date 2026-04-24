@@ -2,16 +2,32 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Check } from '@phosphor-icons/react/dist/ssr';
+import { Check, CalendarBlank, Minus, Plus } from '@phosphor-icons/react/dist/ssr';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/skeleton';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
+
+const fmtDay = (d) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+
+function formatDatesValue(range, guests) {
+  const parts = [];
+  if (range?.from && range?.to) parts.push(`${fmtDay(range.from)} – ${fmtDay(range.to)}`);
+  else if (range?.from) parts.push(fmtDay(range.from));
+  if (guests > 0) parts.push(`${guests} ${guests === 1 ? 'guest' : 'guests'}`);
+  return parts.join(' · ');
+}
 
 export default function Offer() {
   const [status, setStatus] = useState('idle');
   const [errors, setErrors] = useState({});
+  const [range, setRange] = useState();
+  const [guests, setGuests] = useState(2);
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const datesValue = formatDatesValue(range, guests);
 
   const submit = async (e) => {
     e.preventDefault();
@@ -175,15 +191,71 @@ export default function Offer() {
           </div>
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="offer-dates">Dates &amp; guests</Label>
-            <Input
-              id="offer-dates"
-              name="dates"
-              required
-              placeholder="e.g. 12–19 July, 4 adults"
-              aria-invalid={!!errors.dates}
-              aria-describedby={errors.dates ? 'offer-dates-error' : undefined}
-              disabled={loading || sent}
-            />
+            <Popover open={pickerOpen} onOpenChange={setPickerOpen}>
+              <PopoverTrigger asChild>
+                <button
+                  id="offer-dates"
+                  type="button"
+                  disabled={loading || sent}
+                  aria-invalid={!!errors.dates}
+                  aria-describedby={errors.dates ? 'offer-dates-error' : undefined}
+                  className="flex h-12 w-full items-center justify-between gap-3 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-4 py-2 text-left text-base text-[var(--fg)] transition-colors focus-visible:border-[var(--accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]/20 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  <span className={datesValue ? '' : 'text-[var(--fg-muted)]'}>
+                    {datesValue || 'e.g. 12–19 July · 4 guests'}
+                  </span>
+                  <CalendarBlank size={16} className="shrink-0 text-[var(--fg-muted)]" aria-hidden />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent align="start" className="w-auto p-0">
+                <Calendar
+                  mode="range"
+                  selected={range}
+                  onSelect={setRange}
+                  numberOfMonths={1}
+                  disabled={{ before: new Date() }}
+                />
+                <div className="flex items-center justify-between border-t border-[var(--line)] px-4 py-3">
+                  <div>
+                    <div className="text-sm font-medium text-[var(--fg)]">Guests</div>
+                    <div className="text-xs text-[var(--fg-muted)]">Ages 2+</div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setGuests((g) => Math.max(1, g - 1))}
+                      disabled={guests <= 1}
+                      aria-label="Decrease guests"
+                      className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--surface)] text-[var(--fg)] transition hover:bg-[var(--surface-2)] disabled:cursor-not-allowed disabled:opacity-40"
+                    >
+                      <Minus size={14} />
+                    </button>
+                    <span className="w-5 text-center font-mono text-sm tabular-nums">{guests}</span>
+                    <button
+                      type="button"
+                      onClick={() => setGuests((g) => Math.min(16, g + 1))}
+                      disabled={guests >= 16}
+                      aria-label="Increase guests"
+                      className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--surface)] text-[var(--fg)] transition hover:bg-[var(--surface-2)] disabled:cursor-not-allowed disabled:opacity-40"
+                    >
+                      <Plus size={14} />
+                    </button>
+                  </div>
+                </div>
+                <div className="flex justify-end border-t border-[var(--line)] px-4 py-3">
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="sea"
+                    onClick={() => setPickerOpen(false)}
+                    disabled={!range?.from}
+                  >
+                    Done
+                  </Button>
+                </div>
+              </PopoverContent>
+            </Popover>
+            <input type="hidden" name="dates" value={datesValue} />
             {errors.dates && (
               <p id="offer-dates-error" role="alert" className="text-xs text-red-700 mt-1">
                 {errors.dates}

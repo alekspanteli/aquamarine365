@@ -207,10 +207,11 @@ html.dark {
   text-decoration: none;
 }
 
+/* Outline follows each element's own border-radius — don't override it,
+   or shadcn inputs (rounded-xl) snap to a 4px rectangle on focus. */
 :where(a, button, input, select, textarea):focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
-  border-radius: 4px;
 }
 
 /* Warm paper-grain overlay */
