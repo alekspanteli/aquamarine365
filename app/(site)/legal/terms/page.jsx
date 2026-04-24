@@ -1,11 +1,28 @@
-export const metadata = {
+import LegalPageCmsContent from '@/components/LegalPageCmsContent';
+import { getTermsPage } from '@/sanity/fetchContent';
+
+const FALLBACK = {
   title: 'Booking terms',
   description:
-    'Booking terms, payment, cancellation, and house rules for Aquamarine Holiday Rentals villas in Ayia Napa.',
-  alternates: { canonical: '/legal/terms' }
+    'Booking terms, payment, cancellation, and house rules for Aquamarine Holiday Rentals villas in Ayia Napa.'
 };
 
-export default function TermsPage() {
+export async function generateMetadata() {
+  const page = await getTermsPage();
+
+  return {
+    title: page?.title || FALLBACK.title,
+    description: page?.description || FALLBACK.description,
+    alternates: { canonical: '/legal/terms' }
+  };
+}
+
+export default async function TermsPage() {
+  const page = await getTermsPage();
+  if (page?.body?.length) {
+    return <LegalPageCmsContent page={page} />;
+  }
+
   return (
     <>
       <p className="label label-accent mb-3">Booking terms</p>
@@ -20,14 +37,14 @@ export default function TermsPage() {
         <li><strong>30% deposit</strong> confirms your dates.</li>
         <li><strong>Balance due 14 days before arrival.</strong> If you book inside 14 days, the full amount is due at booking.</li>
         <li>We use <a href="https://stripe.com" target="_blank" rel="noopener noreferrer">Stripe</a> for card payments (Visa, Mastercard, Amex, Apple Pay, Google Pay). No bank transfers, no cash, no crypto.</li>
-        <li>Prices are per night in EUR and include VAT. Cleaning is included — no extra fee at checkout.</li>
-        <li>A refundable security deposit (€300–€500 depending on villa) is pre-authorised on arrival and released within 7 days of checkout, assuming no damage.</li>
+        <li>Prices are per night in EUR and include VAT. Cleaning is included - no extra fee at checkout.</li>
+        <li>A refundable security deposit (EUR 300-EUR 500 depending on villa) is pre-authorised on arrival and released within 7 days of checkout, assuming no damage.</li>
       </ul>
 
       <h2>Cancellation</h2>
       <ul>
         <li><strong>31+ days before arrival:</strong> full refund of the deposit.</li>
-        <li><strong>15–30 days before arrival:</strong> deposit kept; balance not due.</li>
+        <li><strong>15-30 days before arrival:</strong> deposit kept; balance not due.</li>
         <li><strong>14 days or less:</strong> total rental is due. We refund whatever we can re-book for and return the difference.</li>
         <li><strong>Force-majeure events</strong> (natural disasters, government travel restrictions, airport closures beyond 48 hours): we&apos;ll offer a full credit for a future stay within 12 months.</li>
       </ul>
@@ -36,21 +53,21 @@ export default function TermsPage() {
       <h2>Arrival &amp; departure</h2>
       <ul>
         <li><strong>Check-in:</strong> 16:00 onwards. Self check-in with a door code, or a meet-and-greet on request.</li>
-        <li><strong>Check-out:</strong> by 11:00. Late check-out subject to availability — ask us.</li>
+        <li><strong>Check-out:</strong> by 11:00. Late check-out subject to availability - ask us.</li>
         <li>We share the exact address, Google Maps pin, and the key-code 24 hours before arrival.</li>
-        <li>Airport transfer from LCA (Larnaca): €65 one-way, €110 round-trip — bookable in advance.</li>
+        <li>Airport transfer from LCA (Larnaca): EUR 65 one-way, EUR 110 round-trip - bookable in advance.</li>
       </ul>
 
       <h2>During your stay</h2>
       <ul>
         <li>Maximum occupancy is listed on each villa page (2 / 6 / 10 guests). No extra unregistered overnight guests.</li>
         <li>
-          <strong>No parties, no events</strong> — these are residential properties in quiet
+          <strong>No parties, no events</strong> - these are residential properties in quiet
           neighbourhoods. If noise exceeds reasonable levels after 23:00, we reserve the right to
           end the stay without refund.
         </li>
         <li><strong>Smoking</strong> only in the outdoor areas, and never near dry vegetation.</li>
-        <li><strong>Pets</strong> — dogs welcome at Valerian Palm only; must be declared at booking.</li>
+        <li><strong>Pets</strong> - dogs welcome at Valerian Palm only; must be declared at booking.</li>
         <li>Breakages happen. Tell us; honest disclosure is always cheaper than discovery.</li>
         <li>The pool is unsupervised. Children must be accompanied by an adult at all times.</li>
       </ul>
@@ -59,7 +76,7 @@ export default function TermsPage() {
       <p>
         Cypriot law requires us to register every guest with the national tourism authority. At
         booking we&apos;ll ask for each guest&apos;s full name and passport / ID number. This is a
-        legal obligation; we don&apos;t use this information for anything else. See our{' '}
+        legal obligation; we do not use this information for anything else. See our{' '}
         <a href="/legal/privacy">privacy policy</a>.
       </p>
 

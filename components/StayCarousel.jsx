@@ -7,10 +7,11 @@ import { useState, useCallback } from 'react';
 import { ArrowLeft, ArrowRight } from '@phosphor-icons/react/dist/ssr';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
 import { ImageLoader } from '@/components/ui/skeleton';
+import { useSiteSettings } from '@/components/SiteSettingsProvider';
 
 export default function StayCarousel({ villas }) {
+  const settings = useSiteSettings();
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [loadedCovers, setLoadedCovers] = useState(() => new Set());
@@ -32,10 +33,14 @@ export default function StayCarousel({ villas }) {
     [index, villas.length]
   );
 
-  // Arrow keys scoped to the section (tabIndex=0) — no global hijack.
   const onKeyDown = (e) => {
-    if (e.key === 'ArrowRight') { e.preventDefault(); go(index + 1); }
-    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(index - 1); }
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      go(index + 1);
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      go(index - 1);
+    }
   };
 
   const villa = villas[index];
@@ -55,10 +60,10 @@ export default function StayCarousel({ villas }) {
           <div>
             <div className="label label-accent mb-4 flex items-center gap-2">
               <span className="w-6 h-px bg-[var(--accent)]" />
-              The homes
+              {settings.stays.eyebrow}
             </div>
             <h2 className="max-w-[18ch]">
-              Three villas. All ours. <span className="text-[var(--accent)]">None resold.</span>
+              {settings.stays.title} <span className="text-[var(--accent)]">{settings.stays.highlight}</span>
             </h2>
           </div>
           <div className="flex items-center gap-3" aria-label="Carousel controls">
@@ -85,7 +90,6 @@ export default function StayCarousel({ villas }) {
         </div>
 
         <div className="relative rounded-[28px] overflow-hidden h-[820px] sm:h-[700px] lg:h-[520px]">
-          {/* Persistent skeleton under the transition so there's never a bare gap */}
           {!coverLoaded && <ImageLoader className="absolute inset-0 z-[1]" />}
           <AnimatePresence custom={direction}>
             <motion.div
@@ -136,7 +140,7 @@ export default function StayCarousel({ villas }) {
                 </Badge>
                 <div className="absolute top-5 right-5 flex items-baseline gap-1 bg-[var(--color-ink)] text-white px-4 py-2.5 rounded-2xl shadow-xl">
                   <span className="font-mono text-[0.65rem] uppercase tracking-wider text-white/70">From</span>
-                  <strong className="font-display text-xl font-medium ml-1">€{villa.priceFrom}</strong>
+                  <strong className="font-display text-xl font-medium ml-1">EUR {villa.priceFrom}</strong>
                   <span className="text-[0.7rem] text-white/70">/night</span>
                 </div>
               </Link>
@@ -160,7 +164,7 @@ export default function StayCarousel({ villas }) {
                 <div className="mt-auto flex items-center justify-between">
                   <div className="flex items-baseline gap-1">
                     <span className="label !text-[0.68rem]">from</span>
-                    <strong className="font-display text-2xl font-medium">€{villa.priceFrom}</strong>
+                    <strong className="font-display text-2xl font-medium">EUR {villa.priceFrom}</strong>
                     <span className="text-sm text-[var(--fg-muted)]">/ night</span>
                   </div>
                   <Button asChild variant="default">
@@ -197,7 +201,7 @@ export default function StayCarousel({ villas }) {
               <span className="flex flex-col gap-0.5 min-w-0">
                 <strong className="text-sm font-medium truncate">{v.name}</strong>
                 <span className="text-xs text-[var(--fg-muted)] font-mono">
-                  Sleeps {v.sleeps} · €{v.priceFrom}
+                  Sleeps {v.sleeps} - EUR {v.priceFrom}
                 </span>
               </span>
             </button>

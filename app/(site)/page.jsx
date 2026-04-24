@@ -12,37 +12,38 @@ import Offer from '@/components/Offer';
 import Footer from '@/components/Footer';
 import FloatingCTA from '@/components/FloatingCTA';
 import { getVillas } from '@/sanity/fetchVillas';
+import { getSiteSettings } from '@/sanity/fetchContent';
 
 export const metadata = {
   alternates: { canonical: '/' }
 };
 
-const organizationJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'LodgingBusiness',
-  name: 'Aquamarine',
-  url: 'https://aquamarine365.com',
-  telephone: '+35797494941',
-  email: 'info@aquamarine365.com',
-  priceRange: '€€€',
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: '61 Tefkrou Anthia',
-    addressLocality: 'Ayia Napa',
-    postalCode: '5330',
-    addressCountry: 'CY'
-  },
-  aggregateRating: {
-    '@type': 'AggregateRating',
-    ratingValue: '4.9',
-    reviewCount: '300',
-    bestRating: '5'
-  },
-  areaServed: 'Ayia Napa, Cyprus'
-};
-
 export default async function Page() {
-  const villas = await getVillas();
+  const [villas, settings] = await Promise.all([getVillas(), getSiteSettings()]);
+  const organizationJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'LodgingBusiness',
+    name: settings.organization.legalName || settings.title,
+    url: settings.siteUrl,
+    telephone: settings.contact.phone.replace(/\s+/g, ''),
+    email: settings.contact.email,
+    priceRange: settings.organization.priceRange,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: settings.organization.streetAddress,
+      addressLocality: settings.organization.addressLocality,
+      postalCode: settings.organization.postalCode,
+      addressCountry: settings.organization.addressCountry
+    },
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: settings.organization.ratingValue,
+      reviewCount: settings.organization.reviewCount,
+      bestRating: settings.organization.bestRating
+    },
+    areaServed: settings.organization.areaServed
+  };
+
   return (
     <>
       <a className="skip" href="#main">Skip to content</a>

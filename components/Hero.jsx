@@ -6,17 +6,11 @@ import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion
 import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, Sparkle } from '@phosphor-icons/react/dist/ssr';
 import { Button } from '@/components/ui/button';
-import Counter from './Counter';
+import { useSiteSettings } from '@/components/SiteSettingsProvider';
 import FindMyVilla from './FindMyVilla';
 
-const proof = [
-  { render: () => <Counter to={4.9} decimals={1} />, v: 'Guest rating · 300+ stays' },
-  { render: () => <Counter to={12} suffix=" yrs" />, v: 'Operating in Ayia Napa' },
-  { render: () => <Counter to={0} suffix="%" />, v: 'Platform fees when direct' },
-  { render: () => '24/7', v: 'On-island guest support' }
-];
-
 export default function Hero() {
+  const settings = useSiteSettings();
   const ref = useRef(null);
   const reduce = useReducedMotion();
   const [allowParallax, setAllowParallax] = useState(false);
@@ -32,9 +26,6 @@ export default function Hero() {
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start start', 'end start'],
-    // Avoids a framer-motion v11 false-positive warning about non-static
-    // container position when the target's offsetParent chain is already
-    // correctly positioned — target itself has `relative isolate` below.
     layoutEffect: false
   });
   const y = useTransform(scrollYProgress, [0, 1], [0, 90]);
@@ -52,8 +43,8 @@ export default function Hero() {
         aria-hidden
       >
         <Image
-          src="https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=2400&q=70"
-          alt=""
+          src={settings.hero.image}
+          alt={settings.hero.imageAlt}
           fill
           priority
           fetchPriority="high"
@@ -64,16 +55,11 @@ export default function Hero() {
         />
       </motion.div>
 
-      {/* Readable scrim: firm vertical dim across the whole frame,
-          plus a radial dark anchor behind the H1 so text never competes
-          with bright sky regions of the photo. */}
       <div
         className="absolute inset-0 -z-10"
         style={{
           background:
-            // Stronger vertical base — ~55% at top, ~48% through the content band, deep ink at the bottom
             'linear-gradient(180deg, rgba(5,24,30,0.62) 0%, rgba(5,24,30,0.50) 42%, rgba(5,24,30,0.94) 100%),' +
-            // Left-anchored radial darkness — sits behind the headline/copy
             'radial-gradient(900px 700px at 15% 65%, rgba(5,24,30,0.55), transparent 70%)'
         }}
         aria-hidden
@@ -86,7 +72,7 @@ export default function Hero() {
           transition={{ duration: 0.5 }}
           className="label !text-white/80 mb-6"
         >
-          Ayia Napa · Cyprus
+          {settings.hero.eyebrow}
         </motion.div>
 
         <motion.h1
@@ -101,7 +87,7 @@ export default function Hero() {
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="block"
           >
-            Private villas in Ayia Napa,
+            {settings.hero.headingLine1}
           </motion.span>
           <motion.span
             variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }}
@@ -109,7 +95,7 @@ export default function Hero() {
             className="block"
             style={{ color: 'var(--color-aqua)' }}
           >
-            managed like a hotel.
+            {settings.hero.headingLine2}
           </motion.span>
         </motion.h1>
 
@@ -120,7 +106,7 @@ export default function Hero() {
           className="mt-7 md:mt-8 max-w-[56ch] text-base md:text-lg text-white/95 leading-relaxed font-sans"
           style={{ textShadow: '0 1px 20px rgba(0,0,0,0.35)' }}
         >
-          A small, owner-operated collection of seafront homes. Cleaned before every arrival, stocked on request, backed by a real team on the island 24/7. Book direct — no platform fees.
+          {settings.hero.body}
         </motion.p>
 
         <motion.div
@@ -131,7 +117,7 @@ export default function Hero() {
         >
           <Button asChild variant="sea" size="lg">
             <Link href="#book">
-              Check availability
+              {settings.hero.primaryCtaLabel}
               <ArrowRight size={16} weight="regular" />
             </Link>
           </Button>
@@ -142,7 +128,7 @@ export default function Hero() {
               className="text-white/90 hover:text-white hover:bg-white/10 underline underline-offset-[6px] decoration-white/30 hover:decoration-white/60"
             >
               <Sparkle size={16} weight="regular" />
-              Or let us match you
+              {settings.hero.secondaryCtaLabel}
             </Button>
           </FindMyVilla>
         </motion.div>
@@ -154,17 +140,17 @@ export default function Hero() {
           className="mt-14 pt-7 border-t border-white/20 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl"
           aria-label="At a glance"
         >
-          {proof.map((p, i) => (
+          {settings.hero.stats.map((stat, i) => (
             <motion.li
-              key={i}
+              key={`${stat.value}-${i}`}
               variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
               transition={{ duration: 0.45 }}
               className="flex flex-col gap-1"
             >
               <strong className="font-display text-2xl md:text-3xl font-medium !text-white">
-                {p.render()}
+                {stat.value}
               </strong>
-              <span className="text-xs md:text-sm text-white/70">{p.v}</span>
+              <span className="text-xs md:text-sm text-white/70">{stat.label}</span>
             </motion.li>
           ))}
         </motion.ul>

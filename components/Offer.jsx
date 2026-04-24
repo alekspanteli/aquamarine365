@@ -10,18 +10,20 @@ import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/skeleton';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
+import { useSiteSettings } from '@/components/SiteSettingsProvider';
 
 const fmtDay = (d) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
 
 function formatDatesValue(range, guests) {
   const parts = [];
-  if (range?.from && range?.to) parts.push(`${fmtDay(range.from)} – ${fmtDay(range.to)}`);
+  if (range?.from && range?.to) parts.push(`${fmtDay(range.from)} - ${fmtDay(range.to)}`);
   else if (range?.from) parts.push(fmtDay(range.from));
   if (guests > 0) parts.push(`${guests} ${guests === 1 ? 'guest' : 'guests'}`);
-  return parts.join(' · ');
+  return parts.join(' - ');
 }
 
 export default function Offer() {
+  const settings = useSiteSettings();
   const [status, setStatus] = useState('idle');
   const [errors, setErrors] = useState({});
   const [range, setRange] = useState();
@@ -40,8 +42,8 @@ export default function Offer() {
       name: form.get('name'),
       email: form.get('email'),
       dates: form.get('dates'),
-      code: 'DIRECT7',
-      website: form.get('website') // honeypot
+      code: settings.offer.code,
+      website: form.get('website')
     };
 
     try {
@@ -59,15 +61,14 @@ export default function Offer() {
 
       setStatus('sent');
       toast.success('Enquiry received', {
-        description: "We'll reply within an hour, 8am–10pm Cyprus time."
+        description: settings.offer.replyNote
       });
       e.target.reset();
-      // Reset to idle after a few seconds so the form is usable again.
       setTimeout(() => setStatus('idle'), 4000);
     } catch (err) {
       setStatus('idle');
       toast.error('Something went wrong', {
-        description: err.message || 'Please try again, or email info@aquamarine365.com.'
+        description: err.message || `Please try again, or email ${settings.contact.email}.`
       });
     }
   };
@@ -100,16 +101,16 @@ export default function Offer() {
         >
           <div className="label mb-4 flex items-center gap-2" style={{ color: 'var(--color-terracotta-dark)' }}>
             <span className="w-6 h-px" style={{ background: 'var(--color-terracotta-dark)' }} />
-            Direct offer
+            {settings.offer.eyebrow}
           </div>
           <h2 className="max-w-[18ch] !text-[var(--color-cream)]">
-            <span className="block">Book direct.</span>
+            <span className="block">{settings.offer.titleLine1}</span>
             <span className="block" style={{ color: 'var(--color-aqua)' }}>
-              Get the week for six.
+              {settings.offer.titleLine2}
             </span>
           </h2>
           <p className="mt-6 text-lg text-[var(--color-cream)]/80 max-w-[52ch] leading-relaxed">
-            Mention code{' '}
+            {settings.offer.bodyPrefix}{' '}
             <strong
               className="font-mono px-2.5 py-1 rounded tracking-wider"
               style={{
@@ -117,20 +118,16 @@ export default function Offer() {
                 background: 'color-mix(in srgb, var(--color-terracotta-dark) 15%, transparent)'
               }}
             >
-              DIRECT7
+              {settings.offer.code}
             </strong>{' '}
-            when you enquire. Valid on stays of 7+ nights, May through October. No platform fees, ever.
+            {settings.offer.bodySuffix}
           </p>
 
           <ul className="mt-8 flex flex-col gap-3">
-            {[
-              'One-hour reply, 8am–10pm Cyprus time',
-              '30% deposit · free cancellation 30 days out',
-              'Airport pickup & grocery stocking on request'
-            ].map((t) => (
-              <li key={t} className="flex items-center gap-3 text-[var(--color-cream)]/90">
+            {settings.offer.benefits.map((benefit) => (
+              <li key={benefit} className="flex items-center gap-3 text-[var(--color-cream)]/90">
                 <Check size={18} className="shrink-0" style={{ color: 'var(--color-terracotta-dark)' }} />
-                {t}
+                {benefit}
               </li>
             ))}
           </ul>
@@ -146,7 +143,6 @@ export default function Offer() {
           className="bg-[var(--color-cream)] p-8 md:p-10 rounded-3xl shadow-2xl flex flex-col gap-4"
           style={{ color: 'var(--color-ink)' }}
         >
-          {/* Honeypot — real users don't see this. Bots fill everything. */}
           <div aria-hidden className="hidden" tabIndex={-1}>
             <label htmlFor="offer-website">Leave this empty</label>
             <input id="offer-website" name="website" type="text" autoComplete="off" tabIndex={-1} />
@@ -197,12 +193,10 @@ export default function Offer() {
                   id="offer-dates"
                   type="button"
                   disabled={loading || sent}
-                  aria-invalid={!!errors.dates}
-                  aria-describedby={errors.dates ? 'offer-dates-error' : undefined}
                   className="flex h-12 w-full items-center justify-between gap-3 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-4 py-2 text-left text-base text-[var(--fg)] transition-colors focus-visible:border-[var(--accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]/20 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   <span className={datesValue ? '' : 'text-[var(--fg-muted)]'}>
-                    {datesValue || 'e.g. 12–19 July · 4 guests'}
+                    {datesValue || 'e.g. 12-19 July - 4 guests'}
                   </span>
                   <CalendarBlank size={16} className="shrink-0 text-[var(--fg-muted)]" aria-hidden />
                 </button>
@@ -271,19 +265,19 @@ export default function Offer() {
             {loading ? (
               <>
                 <Spinner size={14} />
-                Sending…
+                Sending...
               </>
             ) : sent ? (
               <>
                 <Check size={16} />
-                Enquiry sent — check your inbox
+                {settings.offer.successLabel}
               </>
             ) : (
-              'Check my dates'
+              settings.offer.submitLabel
             )}
           </Button>
           <p className="text-xs text-[var(--color-muted)] text-center mt-1">
-            We reply within one hour, 8am–10pm Cyprus time.
+            {settings.offer.replyNote}
           </p>
         </motion.form>
       </div>

@@ -1,4 +1,4 @@
-export default {
+const villa = {
   name: 'villa',
   title: 'Villa',
   type: 'document',
@@ -125,3 +125,5 @@ export default {
     select: { title: 'name', subtitle: 'location' }
   }
 };
+
+export default villa;

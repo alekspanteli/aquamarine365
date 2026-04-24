@@ -13,20 +13,15 @@ import {
   SheetClose
 } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
+import { useSiteSettings } from '@/components/SiteSettingsProvider';
 import ThemeToggle from './ThemeToggle';
 import Logo from './Logo';
 
 const CommandPalette = dynamic(() => import('./CommandPalette'), { ssr: false });
 
-const navItems = [
-  { href: '/#stays', label: 'Stays' },
-  { href: '/#why', label: 'Why us' },
-  { href: '/#how', label: 'How it works' },
-  { href: '/#faq', label: 'FAQ' },
-  { href: '/#contact', label: 'Contact' }
-];
-
 export default function Nav() {
+  const settings = useSiteSettings();
+  const navItems = settings.nav.items;
   const [scrolled, setScrolled] = useState(false);
   const [cmdOpen, setCmdOpen] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -43,33 +38,31 @@ export default function Nav() {
     const onKey = (e) => {
       if ((e.key === 'k' || e.key === 'K') && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
-        setCmdOpen((o) => !o);
+        setCmdOpen((open) => !open);
       }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
-  // Highlight the nav link whose section is currently on-screen.
-  // Runs only on the homepage (where the hash targets exist).
   useEffect(() => {
     const ids = navItems.map((n) => n.href.split('#')[1]).filter(Boolean);
-    const els = ids
-      .map((id) => document.getElementById(id))
-      .filter(Boolean);
+    const els = ids.map((id) => document.getElementById(id)).filter(Boolean);
     if (!els.length) return;
+
     const obs = new IntersectionObserver(
       (entries) => {
-        const visible = entries.filter((e) => e.isIntersecting);
+        const visible = entries.filter((entry) => entry.isIntersecting);
         if (!visible.length) return;
         visible.sort((a, b) => b.intersectionRatio - a.intersectionRatio);
         setActiveSection(visible[0].target.id);
       },
       { rootMargin: '-40% 0px -50% 0px', threshold: [0, 0.25, 0.5, 0.75, 1] }
     );
+
     els.forEach((el) => obs.observe(el));
     return () => obs.disconnect();
-  }, []);
+  }, [navItems]);
 
   return (
     <>
@@ -83,20 +76,20 @@ export default function Nav() {
         <div className="container-x flex items-center justify-between h-16 md:h-20 gap-3">
           <Logo className="shrink-0" />
 
-          {/* Desktop inline search pill */}
           <button
             onClick={() => setCmdOpen(true)}
             className="hidden md:inline-flex items-center gap-2 h-10 pl-3 pr-2 rounded-full border border-[var(--line)] text-[var(--fg-muted)] hover:text-[var(--fg)] hover:border-[var(--fg)] transition text-sm bg-[var(--surface)] flex-1 max-w-sm"
           >
             <MagnifyingGlass size={14} />
-            <span className="mr-auto">Search villas, FAQs, contact…</span>
-            <kbd className="font-mono text-[0.65rem] px-1.5 py-0.5 rounded border border-[var(--line)] bg-[var(--bg)]">⌘K</kbd>
+            <span className="mr-auto">{settings.nav.searchPlaceholder}</span>
+            <kbd className="font-mono text-[0.65rem] px-1.5 py-0.5 rounded border border-[var(--line)] bg-[var(--bg)]">Ctrl+K</kbd>
           </button>
 
           <nav className="hidden xl:flex items-center gap-7" aria-label="Primary">
             {navItems.slice(0, 3).map((n) => {
               const sectionId = n.href.split('#')[1];
               const isActive = sectionId && sectionId === activeSection;
+
               return (
                 <Link
                   key={n.href}
@@ -115,7 +108,6 @@ export default function Nav() {
           </nav>
 
           <div className="flex items-center gap-2 shrink-0">
-            {/* Mobile search icon — always visible on top */}
             <button
               onClick={() => setCmdOpen(true)}
               aria-label="Open search"
@@ -125,7 +117,7 @@ export default function Nav() {
             </button>
             <ThemeToggle />
             <Button asChild className="hidden sm:inline-flex">
-              <Link href="/#book">Check availability</Link>
+              <Link href="/#book">{settings.nav.primaryCtaLabel}</Link>
             </Button>
             <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
               <SheetTrigger asChild>
@@ -145,7 +137,7 @@ export default function Nav() {
                 <SheetDescription className="sr-only">
                   Primary navigation. Browse villas, learn how we work, and get in touch.
                 </SheetDescription>
-                <DrawerContent close={() => setSheetOpen(false)} />
+                <DrawerContent close={() => setSheetOpen(false)} navItems={navItems} />
               </SheetContent>
             </Sheet>
           </div>
@@ -157,11 +149,9 @@ export default function Nav() {
   );
 }
 
-function DrawerContent({ close }) {
+function DrawerContent({ close, navItems }) {
   return (
     <div className="flex flex-col h-full overflow-y-auto bg-[var(--bg)]">
-      {/* Brand header — logo + explicit close. Replaces the default Sheet X
-          so the close control is visually discoverable on touch. */}
       <div className="px-7 pt-7 pb-6 flex items-center justify-between">
         <Logo onNavigate={close} />
         <SheetClose asChild>
@@ -175,7 +165,6 @@ function DrawerContent({ close }) {
         </SheetClose>
       </div>
 
-      {/* Primary navigation — the only thing in the drawer */}
       <nav className="border-t border-[var(--line)]" aria-label="Primary">
         {navItems.map((n) => (
           <Link

@@ -3,15 +3,11 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
-
-const quotes = [
-  { q: "Check-in took ninety seconds. The fridge had the groceries we asked for. The sea was fifty steps from the door. I don't know what else you want from a holiday.", name: 'Marta K.', meta: 'Stockholm · Ocean Dreams · 7 nights' },
-  { q: "Pool heater broke at 10pm. Someone turned up by 8am with a replacement part. That's the difference versus every other rental I've booked.", name: 'James R.', meta: 'London · Tropicana · 10 nights' },
-  { q: "Brought my parents, my sister, her kids and our dog. Five bathrooms, one bill, zero arguments. We're rebooking for next summer.", name: 'Elena D.', meta: 'Athens · Valerian Palm · 14 nights' },
-  { q: "They messaged me the morning of arrival with the forecast, a restaurant list, and a note that the road to the villa had fresh tarmac. That's hospitality.", name: 'Lucas M.', meta: 'Paris · Ocean Dreams · 5 nights' }
-];
+import { useSiteSettings } from '@/components/SiteSettingsProvider';
 
 export default function Testimonials() {
+  const settings = useSiteSettings();
+  const quotes = settings.testimonials.quotes;
   const [i, setI] = useState(0);
   const [paused, setPaused] = useState(false);
 
@@ -19,7 +15,7 @@ export default function Testimonials() {
     if (paused) return;
     const t = setInterval(() => setI((n) => (n + 1) % quotes.length), 6000);
     return () => clearInterval(t);
-  }, [paused]);
+  }, [paused, quotes.length]);
 
   return (
     <section id="guests" className="py-20 md:py-32">
@@ -33,10 +29,11 @@ export default function Testimonials() {
         >
           <div className="label label-accent mb-4 flex items-center gap-2">
             <span className="w-6 h-px bg-[var(--accent)]" />
-            What guests say
+            {settings.testimonials.eyebrow}
           </div>
           <h2>
-            Real reviews from <span className="text-[var(--accent)]">real stays.</span>
+            {settings.testimonials.title}{' '}
+            <span className="text-[var(--accent)]">{settings.testimonials.highlight}</span>
           </h2>
         </motion.div>
 
@@ -77,7 +74,7 @@ export default function Testimonials() {
                 ))}
               </div>
               <blockquote className="font-display text-xl md:text-2xl leading-tight m-0">
-                &ldquo;{quotes[i].q}&rdquo;
+                &ldquo;{quotes[i].quote}&rdquo;
               </blockquote>
               <figcaption className="flex flex-col gap-0.5">
                 <strong className="text-[var(--fg)] font-medium">{quotes[i].name}</strong>
@@ -116,28 +113,15 @@ export default function Testimonials() {
           </div>
         </div>
 
-        <TrustPanel />
+        <TrustPanel settings={settings} />
       </div>
     </section>
   );
 }
 
-/**
- * Unified trust panel. Four stats on one horizontal rule, a short
- * provenance line, and a quiet list of representative guest cities —
- * static, informational, no more endless marquee.
- */
-function TrustPanel() {
-  const stats = [
-    { value: '4.9', unit: '/5', label: 'Average rating' },
-    { value: '300', unit: '+', label: 'Stays hosted' },
-    { value: '68', unit: '%', label: 'Return or referred' },
-    { value: '12', unit: ' yrs', label: 'Operating in Ayia Napa' }
-  ];
-  const cities = [
-    'London', 'Stockholm', 'Paris', 'Berlin', 'Athens', 'Milan', 'Amsterdam',
-    'Zürich', 'Dublin', 'Madrid', 'Copenhagen', 'Vienna'
-  ];
+function TrustPanel({ settings }) {
+  const stats = settings.testimonials.trustStats;
+  const cities = settings.testimonials.cities;
 
   return (
     <div className="mt-14 rounded-2xl bg-[var(--surface)] border border-[var(--line)] overflow-hidden">
@@ -147,7 +131,6 @@ function TrustPanel() {
             key={s.label}
             className={cn(
               'flex flex-col gap-1.5 p-5 md:p-7',
-              // Inner dividers — right + bottom — applied only where needed on each breakpoint
               i % 2 === 0 && 'border-r border-[var(--line)] md:border-r md:last:border-r-0',
               i < 2 && 'border-b border-[var(--line)] md:border-b-0',
               i === 2 && 'md:border-r border-[var(--line)]',
@@ -164,12 +147,12 @@ function TrustPanel() {
       </dl>
 
       <div className="border-t border-[var(--line)] px-5 md:px-7 py-4 flex flex-wrap items-center gap-x-2 gap-y-1 bg-[var(--bg-2)]">
-        <span className="label !text-[0.62rem]">Licensed CY-DMT · Booked this year from</span>
+        <span className="label !text-[0.62rem]">{settings.testimonials.locationsLabel}</span>
         <span className="text-sm text-[var(--fg-2)] leading-relaxed">
-          {cities.slice(0, 5).map((c, i) => (
-            <span key={c}>
-              <span className="font-display">{c}</span>
-              {i < 4 && <span className="text-[var(--fg-muted)] mx-1.5">·</span>}
+          {cities.slice(0, 5).map((city, idx) => (
+            <span key={city}>
+              <span className="font-display">{city}</span>
+              {idx < 4 && <span className="text-[var(--fg-muted)] mx-1.5">.</span>}
             </span>
           ))}
           <span className="text-[var(--fg-muted)] ml-1.5">

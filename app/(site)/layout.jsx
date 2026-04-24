@@ -1,48 +1,47 @@
 import { ThemeProvider } from '@/components/ThemeProvider';
 import DeferredClient from '@/components/DeferredClient';
 import { VillasProvider } from '@/components/VillasProvider';
+import { SiteSettingsProvider } from '@/components/SiteSettingsProvider';
 import { getVillas } from '@/sanity/fetchVillas';
+import { getSiteSettings } from '@/sanity/fetchContent';
+import { DEFAULT_OG_IMAGE } from '@/sanity/defaults/siteSettings';
 import '../globals.css';
 
-const SITE_NAME = 'Aquamarine';
-const SITE_URL = 'https://aquamarine365.com';
-const DEFAULT_TITLE = 'Aquamarine — Private Villas in Ayia Napa, Cyprus';
-const DEFAULT_DESCRIPTION =
-  'Owner-operated villas and seafront suites in Ayia Napa. Direct booking, no platform fees, on-island support 24/7.';
+export async function generateMetadata() {
+  const settings = await getSiteSettings();
+  const title = settings.seo.defaultTitle;
+  const description = settings.seo.defaultDescription;
+  const ogImage = settings.seo.ogImage
+    ? { ...DEFAULT_OG_IMAGE, url: settings.seo.ogImage }
+    : DEFAULT_OG_IMAGE;
 
-const DEFAULT_OG_IMAGE = {
-  url: '/opengraph-image.jpg',
-  width: 1200,
-  height: 630,
-  alt: 'Aquamarine — private villas in Ayia Napa'
-};
-
-export const metadata = {
-  metadataBase: new URL(SITE_URL),
-  title: { default: DEFAULT_TITLE, template: '%s · Aquamarine' },
-  description: DEFAULT_DESCRIPTION,
-  applicationName: SITE_NAME,
-  alternates: {
-    canonical: '/',
-    languages: { 'en-GB': '/', 'x-default': '/' }
-  },
-  openGraph: {
-    type: 'website',
-    siteName: SITE_NAME,
-    url: SITE_URL,
-    title: DEFAULT_TITLE,
-    description: DEFAULT_DESCRIPTION,
-    locale: 'en_GB',
-    images: [DEFAULT_OG_IMAGE]
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: DEFAULT_TITLE,
-    description: DEFAULT_DESCRIPTION,
-    images: [DEFAULT_OG_IMAGE.url]
-  },
-  robots: { index: true, follow: true }
-};
+  return {
+    metadataBase: new URL(settings.siteUrl),
+    title: { default: title, template: `%s | ${settings.title}` },
+    description,
+    applicationName: settings.title,
+    alternates: {
+      canonical: '/',
+      languages: { 'en-GB': '/', 'x-default': '/' }
+    },
+    openGraph: {
+      type: 'website',
+      siteName: settings.title,
+      url: settings.siteUrl,
+      title,
+      description,
+      locale: 'en_GB',
+      images: [ogImage]
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [ogImage.url]
+    },
+    robots: { index: true, follow: true }
+  };
+}
 
 export const viewport = {
   themeColor: [
@@ -54,13 +53,16 @@ export const viewport = {
 };
 
 export default async function SiteLayout({ children }) {
-  const villas = await getVillas();
+  const [villas, settings] = await Promise.all([getVillas(), getSiteSettings()]);
+
   return (
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange={false}>
-      <VillasProvider villas={villas}>
-        {children}
-        <DeferredClient />
-      </VillasProvider>
+      <SiteSettingsProvider settings={settings}>
+        <VillasProvider villas={villas}>
+          {children}
+          <DeferredClient />
+        </VillasProvider>
+      </SiteSettingsProvider>
     </ThemeProvider>
   );
 }

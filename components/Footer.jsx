@@ -1,21 +1,28 @@
+'use client';
+
 import Link from 'next/link';
 import { InstagramLogo, Envelope, ChatCircle } from '@phosphor-icons/react/dist/ssr';
+import { useSiteSettings } from '@/components/SiteSettingsProvider';
+import { useVillas } from '@/components/VillasProvider';
 import Logo from './Logo';
 
 export default function Footer() {
+  const settings = useSiteSettings();
+  const villas = useVillas();
+
   return (
     <footer id="contact" className="bg-[var(--color-ink-dark)] text-[var(--color-cream)]/75 pt-20 pb-7">
       <div className="container-x grid md:grid-cols-[1.6fr_1fr_1fr_1fr] gap-12 pb-12">
         <div className="text-white">
           <Logo invert className="text-white" />
           <p className="mt-4 text-[var(--color-cream)]/60 max-w-[32ch] leading-relaxed">
-            Ayia Napa villas &amp; suites, managed by the people who own them.
+            {settings.footer.tagline}
           </p>
           <div className="mt-5 flex gap-3">
             {[
-              { Icon: InstagramLogo, href: 'https://instagram.com', label: 'Instagram' },
-              { Icon: ChatCircle, href: 'https://wa.me/35797494941', label: 'WhatsApp' },
-              { Icon: Envelope, href: 'mailto:info@aquamarine365.com', label: 'Email' }
+              { Icon: InstagramLogo, href: settings.contact.instagramUrl, label: 'Instagram' },
+              { Icon: ChatCircle, href: settings.contact.whatsappUrl, label: 'WhatsApp' },
+              { Icon: Envelope, href: `mailto:${settings.contact.email}`, label: 'Email' }
             ].map(({ Icon, href, label }) => (
               <a
                 key={label}
@@ -34,51 +41,53 @@ export default function Footer() {
         <div>
           <h4 className="label !text-white/80 mb-3">Contact</h4>
           <p className="text-sm">
-            <a href="tel:+35797494941" className="font-mono hover:text-white">+357 97 494 941</a>
+            <a href={`tel:${settings.contact.phone.replace(/\s+/g, '')}`} className="font-mono hover:text-white">
+              {settings.contact.phone}
+            </a>
           </p>
           <p className="text-sm mt-1">
             <a
-              href="mailto:info@aquamarine365.com"
+              href={`mailto:${settings.contact.email}`}
               className="hover:text-white"
-              aria-label="Email info@aquamarine365.com"
+              aria-label={`Email ${settings.contact.email}`}
             >
-              {/* Displayed in parts so plaintext harvesters get nothing easy —
-                  click-through still works via the mailto: href. */}
-              info<span aria-hidden> [at] </span>
-              <span className="sr-only">@</span>
-              aquamarine365<span aria-hidden> [dot] </span>
-              <span className="sr-only">.</span>
-              com
+              {settings.contact.email}
             </a>
           </p>
           <p className="text-sm mt-2 leading-relaxed">
-            61 Tefkrou Anthia
-            <br />
-            Ayia Napa 5330, Cyprus
+            {settings.contact.addressLines.map((line) => (
+              <span key={line} className="block">
+                {line}
+              </span>
+            ))}
           </p>
         </div>
 
         <div>
           <h4 className="label !text-white/80 mb-3">Stays</h4>
           <ul className="space-y-1.5 text-sm">
-            <li><Link href="/stays/ocean-dreams-suites" className="hover:text-white">Ocean Dreams Suites</Link></li>
-            <li><Link href="/stays/dream-tropicana-villa" className="hover:text-white">Dream Tropicana Villa</Link></li>
-            <li><Link href="/stays/valerian-palm-villa" className="hover:text-white">Valerian Palm Villa</Link></li>
+            {villas.map((villa) => (
+              <li key={villa.slug}>
+                <Link href={`/stays/${villa.slug}`} className="hover:text-white">
+                  {villa.name}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
 
         <div>
           <h4 className="label !text-white/80 mb-3">Trust</h4>
           <ul className="space-y-1.5 text-sm text-[var(--color-cream)]/60">
-            <li>Licensed CY-DMT 2024</li>
-            <li>GDPR compliant</li>
-            <li>Secure payments · Stripe</li>
+            {settings.footer.trustItems.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
           </ul>
         </div>
       </div>
 
       <div className="container-x flex flex-col md:flex-row justify-between gap-3 pt-6 border-t border-white/10 text-xs text-[var(--color-cream)]/45 font-mono">
-        <small>© {new Date().getFullYear()} Aquamarine Holiday Rentals. All rights reserved.</small>
+        <small>&copy; {new Date().getFullYear()} Aquamarine Holiday Rentals. All rights reserved.</small>
         <small className="flex gap-3">
           <Link href="/legal/privacy" className="hover:text-white">Privacy</Link>
           <Link href="/legal/cookies" className="hover:text-white">Cookies</Link>
