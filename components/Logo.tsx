@@ -1,7 +1,15 @@
 'use client';
 
 import Link from 'next/link';
+import type { MouseEvent } from 'react';
 import { cn } from '@/lib/utils';
+
+interface LogoProps {
+  className?: string;
+  invert?: boolean;
+  small?: boolean;
+  onNavigate?: (event: MouseEvent<HTMLAnchorElement>) => void;
+}
 
 /**
  * Wordmark-only lockup. No gradient dot, no icon — the way Sotheby's
@@ -12,7 +20,7 @@ import { cn } from '@/lib/utils';
  *   tracking, crisp leading
  * - Always wraps in a Link to /, clickable everywhere it renders
  */
-export default function Logo({ className, invert = false, small = false, onNavigate }) {
+export default function Logo({ className, invert = false, small = false, onNavigate }: LogoProps) {
   return (
     <Link
       href="/"

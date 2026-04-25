@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import LegalPageCmsContent from '@/components/LegalPageCmsContent';
 import { getCookiePage } from '@/sanity/fetchContent';
 
@@ -7,7 +8,7 @@ const FALLBACK = {
     'Exactly what Aquamarine stores on your device and why. No third-party tracking, no analytics, no marketing cookies.'
 };
 
-export async function generateMetadata() {
+export async function generateMetadata(): Promise<Metadata> {
   const page = await getCookiePage();
 
   return {

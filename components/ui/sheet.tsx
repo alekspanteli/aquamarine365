@@ -1,5 +1,6 @@
 'use client';
 
+import * as React from 'react';
 import { Dialog as DialogPrimitive } from 'radix-ui';
 import { X } from '@phosphor-icons/react/dist/ssr';
 import { cn } from '@/lib/utils';
@@ -11,7 +12,9 @@ const SheetPortal = DialogPrimitive.Portal;
 const SheetTitle = DialogPrimitive.Title;
 const SheetDescription = DialogPrimitive.Description;
 
-function SheetOverlay({ className, ref, ...props }) {
+type SheetOverlayProps = React.ComponentProps<typeof DialogPrimitive.Overlay>;
+
+function SheetOverlay({ className, ref, ...props }: SheetOverlayProps) {
   return (
     <DialogPrimitive.Overlay
       ref={ref}
@@ -23,12 +26,19 @@ function SheetOverlay({ className, ref, ...props }) {
   );
 }
 
-const sidePos = {
+type SheetSide = 'right' | 'left' | 'top' | 'bottom';
+
+const sidePos: Record<SheetSide, string> = {
   right: 'right-0 top-0 h-full w-full max-w-sm border-l',
   left: 'left-0 top-0 h-full w-full max-w-sm border-r',
   top: 'inset-x-0 top-0 border-b',
   bottom: 'inset-x-0 bottom-0 border-t'
 };
+
+interface SheetContentProps extends React.ComponentProps<typeof DialogPrimitive.Content> {
+  side?: SheetSide;
+  hideClose?: boolean;
+}
 
 function SheetContent({
   side = 'right',
@@ -37,7 +47,7 @@ function SheetContent({
   ref,
   hideClose = false,
   ...props
-}) {
+}: SheetContentProps) {
   return (
     <SheetPortal>
       <SheetOverlay />

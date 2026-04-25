@@ -4,6 +4,53 @@ import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { Microphone, MicrophoneSlash } from '@phosphor-icons/react/dist/ssr';
 import { toast } from 'sonner';
 
+// Minimal type shims for the Web Speech API which isn't in lib.dom.
+interface SpeechRecognitionAlternative {
+  transcript: string;
+}
+
+interface SpeechRecognitionResult {
+  isFinal: boolean;
+  0: SpeechRecognitionAlternative;
+  [index: number]: SpeechRecognitionAlternative;
+}
+
+interface SpeechRecognitionResultList {
+  length: number;
+  item(index: number): SpeechRecognitionResult;
+  [index: number]: SpeechRecognitionResult;
+}
+
+interface SpeechRecognitionEvent extends Event {
+  resultIndex: number;
+  results: SpeechRecognitionResultList;
+}
+
+interface SpeechRecognitionErrorEvent extends Event {
+  error: string;
+}
+
+interface SpeechRecognitionInstance {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  maxAlternatives: number;
+  onresult: ((e: SpeechRecognitionEvent) => void) | null;
+  onerror: ((e: SpeechRecognitionErrorEvent) => void) | null;
+  onend: (() => void) | null;
+  start(): void;
+  stop(): void;
+}
+
+type SpeechRecognitionConstructor = new () => SpeechRecognitionInstance;
+
+declare global {
+  interface Window {
+    SpeechRecognition?: SpeechRecognitionConstructor;
+    webkitSpeechRecognition?: SpeechRecognitionConstructor;
+  }
+}
+
 // Feature-detect the Web Speech API reactively via useSyncExternalStore:
 // false during SSR + first paint, switches to true after hydration if
 // the browser supports it. Avoids the setState-in-effect anti-pattern.
@@ -11,19 +58,27 @@ const subscribe = () => () => {};
 const getSpeechSupported = () =>
   typeof window !== 'undefined' && !!(window.SpeechRecognition || window.webkitSpeechRecognition);
 
+interface VoiceInputProps {
+  onTranscript?: (text: string) => void;
+  onSubmit?: (text: string) => void;
+  disabled?: boolean;
+  className?: string;
+}
+
 /**
  * Microphone button that feeds speech-to-text into `onTranscript(text)`.
  * Uses the native Web Speech API — zero deps, runs in the browser.
  * Auto-hides when the API isn't supported (Firefox, some locked-down mobile builds).
  */
-export default function VoiceInput({ onTranscript, onSubmit, disabled, className = '' }) {
+export default function VoiceInput({ onTranscript, onSubmit, disabled, className = '' }: VoiceInputProps) {
   const supported = useSyncExternalStore(subscribe, getSpeechSupported, () => false);
   const [listening, setListening] = useState(false);
-  const recognitionRef = useRef(null);
+  const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
 
   useEffect(() => {
     if (!supported) return;
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) return;
 
     const r = new SR();
     r.continuous = false;

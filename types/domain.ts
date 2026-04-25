@@ -6,10 +6,19 @@ export type DeepPartial<T> = T extends Array<infer U>
     ? { [K in keyof T]?: DeepPartial<T[K]> }
     : T;
 
+export interface SanityImage {
+  url: string;
+  alt: string;
+  lqip: string | null;
+  width: number | null;
+  height: number | null;
+  ref: unknown | null;
+}
+
 export interface SeoSettings {
   defaultTitle: string;
   defaultDescription: string;
-  ogImage: string | null;
+  ogImage: SanityImage | null;
 }
 
 export interface NavItem {
@@ -42,8 +51,7 @@ export interface HeroSettings {
   body: string;
   primaryCtaLabel: string;
   secondaryCtaLabel: string;
-  image: string;
-  imageAlt: string;
+  image: SanityImage;
   stats: Array<Keyed<HeroStat>>;
 }
 
@@ -60,8 +68,7 @@ export interface ClaritySettings {
   titleSuffix: string;
   body: string;
   pills: string[];
-  image: string;
-  imageAlt: string;
+  image: SanityImage;
   availabilityLabel: string;
   availabilityText: string;
 }
@@ -218,8 +225,8 @@ export interface Villa {
   bathrooms: number;
   priceFrom: number;
   summary: string;
-  cover: string;
-  gallery: string[];
+  cover: SanityImage;
+  gallery: SanityImage[];
   highlights: string[];
   amenities: string[];
   specs: VillaSpec[];

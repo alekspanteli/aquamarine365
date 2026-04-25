@@ -1,15 +1,25 @@
 'use client';
 
+import * as React from 'react';
 import { Popover as PopoverPrimitive } from 'radix-ui';
 import { cn } from '@/lib/utils';
 
 const Popover = PopoverPrimitive.Root;
 const PopoverTrigger = PopoverPrimitive.Trigger;
 
+type PopoverContentProps = React.ComponentProps<typeof PopoverPrimitive.Content>;
+
 // Radix positions PopoverContent via a transform (Floating UI). The inner
 // [data-aq-pop] box only fades — translating the Content would fight
 // Radix's own transform and break positioning.
-function PopoverContent({ className, align = 'start', sideOffset = 6, children, ref, ...props }) {
+function PopoverContent({
+  className,
+  align = 'start',
+  sideOffset = 6,
+  children,
+  ref,
+  ...props
+}: PopoverContentProps) {
   return (
     <PopoverPrimitive.Portal>
       <PopoverPrimitive.Content

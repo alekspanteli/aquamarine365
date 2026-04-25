@@ -8,11 +8,15 @@ import { Sun, Moon } from '@phosphor-icons/react/dist/ssr';
 // avoids the setState-in-effect anti-pattern that ESLint flags and that
 // the old `useEffect(() => setMounted(true), [])` idiom relied on.
 const subscribe = () => () => {};
-function useIsHydrated() {
+function useIsHydrated(): boolean {
   return useSyncExternalStore(subscribe, () => true, () => false);
 }
 
-export default function ThemeToggle({ className = '' }) {
+interface ThemeToggleProps {
+  className?: string;
+}
+
+export default function ThemeToggle({ className = '' }: ThemeToggleProps) {
   const { theme, resolvedTheme, setTheme } = useTheme();
   const hydrated = useIsHydrated();
 

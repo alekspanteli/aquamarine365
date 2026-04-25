@@ -1,8 +1,11 @@
 'use client';
 
+import * as React from 'react';
 import { cn } from '@/lib/utils';
 
-function Input({ className, type = 'text', ref, ...props }) {
+type InputProps = React.ComponentPropsWithRef<'input'>;
+
+function Input({ className, type = 'text', ref, ...props }: InputProps) {
   return (
     <input
       ref={ref}

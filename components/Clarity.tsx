@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useSiteSettings } from '@/components/SiteSettingsProvider';
+import { imageUrl } from '@/sanity/image';
 
 export default function Clarity() {
   const settings = useSiteSettings();
@@ -50,10 +51,12 @@ export default function Clarity() {
         >
           <div className="absolute inset-0 rounded-[28px] overflow-hidden shadow-[0_20px_60px_rgba(15,29,33,0.18)]">
             <Image
-              src={settings.clarity.image}
-              alt={settings.clarity.imageAlt}
+              src={imageUrl(settings.clarity.image, 1600) ?? settings.clarity.image.url}
+              alt={settings.clarity.image.alt}
               fill
               sizes="(max-width: 960px) 100vw, 50vw"
+              placeholder={settings.clarity.image.lqip ? 'blur' : 'empty'}
+              blurDataURL={settings.clarity.image.lqip ?? undefined}
               className="object-cover"
             />
           </div>

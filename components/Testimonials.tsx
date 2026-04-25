@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useSiteSettings } from '@/components/SiteSettingsProvider';
+import type { SiteSettings } from '@/types/domain';
 
 export default function Testimonials() {
   const settings = useSiteSettings();
@@ -43,7 +44,7 @@ export default function Testimonials() {
           onMouseLeave={() => setPaused(false)}
           onFocusCapture={() => setPaused(true)}
           onBlurCapture={(e) => {
-            if (!e.currentTarget.contains(e.relatedTarget)) setPaused(false);
+            if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setPaused(false);
           }}
         >
           <svg className="absolute top-6 left-6 w-12 h-auto text-[var(--punch-soft)]" viewBox="0 0 64 48" aria-hidden>
@@ -119,7 +120,11 @@ export default function Testimonials() {
   );
 }
 
-function TrustPanel({ settings }) {
+interface TrustPanelProps {
+  settings: SiteSettings;
+}
+
+function TrustPanel({ settings }: TrustPanelProps) {
   const stats = settings.testimonials.trustStats;
   const cities = settings.testimonials.cities;
 

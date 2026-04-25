@@ -4,6 +4,15 @@ import { useState } from 'react';
 import { ArrowSquareOut } from '@phosphor-icons/react/dist/ssr';
 import { Skeleton } from '@/components/ui/skeleton';
 
+interface MapEmbedProps {
+  lat: number;
+  lng: number;
+  title?: string;
+  label?: string;
+  zoom?: number;
+  className?: string;
+}
+
 /**
  * Google Maps embed.
  * - If NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY is set, uses the official
@@ -19,7 +28,7 @@ export default function MapEmbed({
   label,
   zoom = 14,
   className = ''
-}) {
+}: MapEmbedProps) {
   const [loaded, setLoaded] = useState(false);
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY;
 

@@ -4,7 +4,7 @@ import * as React from 'react';
 import dynamic from 'next/dynamic';
 import { CalendarBlank as CalendarIcon } from '@phosphor-icons/react/dist/ssr';
 
-const fmt = (d) =>
+const fmt = (d: Date) =>
   d.toLocaleDateString('en-GB', { weekday: 'short', month: 'short', day: 'numeric' });
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
@@ -17,7 +17,15 @@ const Calendar = dynamic(() => import('./calendar').then((m) => m.Calendar), {
   )
 });
 
-export function DatePicker({ value, onChange, placeholder = 'Pick a date', minDate, className }) {
+interface DatePickerProps {
+  value?: Date;
+  onChange?: (date: Date | undefined) => void;
+  placeholder?: string;
+  minDate?: Date;
+  className?: string;
+}
+
+export function DatePicker({ value, onChange, placeholder = 'Pick a date', minDate, className }: DatePickerProps) {
   const [open, setOpen] = React.useState(false);
 
   return (

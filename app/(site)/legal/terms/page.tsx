@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import LegalPageCmsContent from '@/components/LegalPageCmsContent';
 import { getTermsPage } from '@/sanity/fetchContent';
 
@@ -7,7 +8,7 @@ const FALLBACK = {
     'Booking terms, payment, cancellation, and house rules for Aquamarine Holiday Rentals villas in Ayia Napa.'
 };
 
-export async function generateMetadata() {
+export async function generateMetadata(): Promise<Metadata> {
   const page = await getTermsPage();
 
   return {

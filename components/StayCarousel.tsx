@@ -10,6 +10,7 @@ import { useVillas } from '@/components/VillasProvider';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ImageLoader } from '@/components/ui/skeleton';
+import { imageUrl } from '@/sanity/image';
 
 export default function StayCarousel() {
   const settings = useSiteSettings();
@@ -134,11 +135,13 @@ export default function StayCarousel() {
                 aria-label={`View ${villa.name}`}
               >
                 <Image
-                  src={villa.cover}
-                  alt={villa.name}
+                  src={imageUrl(villa.cover, 1800) ?? villa.cover.url}
+                  alt={villa.cover.alt || villa.name}
                   fill
                   sizes="(max-width: 1024px) 100vw, 60vw"
                   priority={index === 0}
+                  placeholder={villa.cover.lqip ? 'blur' : 'empty'}
+                  blurDataURL={villa.cover.lqip ?? undefined}
                   onLoad={() => markCoverLoaded(villa.slug)}
                   className={`object-cover transition-all duration-700 group-hover:scale-105 ${
                     coverLoaded ? 'opacity-100' : 'opacity-0'
@@ -216,7 +219,13 @@ export default function StayCarousel() {
               role="tab"
             >
               <span className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl">
-                <Image src={villaItem.cover} alt="" fill sizes="64px" className="object-cover" />
+                <Image
+                  src={imageUrl(villaItem.cover, 200) ?? villaItem.cover.url}
+                  alt=""
+                  fill
+                  sizes="64px"
+                  className="object-cover"
+                />
               </span>
               <span className="flex min-w-0 flex-col gap-0.5">
                 <strong className="truncate text-sm font-medium">{villaItem.name}</strong>

@@ -1,26 +1,15 @@
-# Aquamarine 365 — Next.js + Framer Motion
+# Aquamarine 365
 
-Premium, conversion-focused website for Aquamarine Holiday Rentals (Ayia Napa, Cyprus). Built with Next.js 14 App Router, React 18, and Framer Motion. Zero CSS framework — vanilla CSS Modules keep the bundle lean.
+Premium, conversion-focused website for Aquamarine Holiday Rentals (Ayia Napa, Cyprus).
 
 ## Stack
 
-- **Next.js 14** (App Router, static-rendered pages)
-- **React 18**
-- **Framer Motion 11** — hero parallax, scroll reveals, drag carousels, lightbox
-- **CSS Modules** + `next/font` (Fraunces + Inter)
-- **next/image** with remote patterns for Unsplash
-
-## Features
-
-- **Animated hero** with scroll-driven parallax and staggered text entrance
-- **Drag-and-swipe stays carousel** on the homepage (keyboard + thumbnail nav)
-- **Per-villa detail pages** at `/stays/[slug]` with:
-  - Full-width **image gallery slider** (drag, arrow keys, dot thumbs)
-  - **Lightbox** with click-to-expand and keyboard nav
-  - Sticky booking sidebar with price + enquiry CTA
-- **Auto-rotating testimonials** with progress bar dots
-- **Scroll-triggered reveals** on every section
-- **Mobile-first** responsive layout with animated hamburger menu
+- **Next.js 16** App Router (Turbopack)
+- **React 19** with TypeScript (strict mode)
+- **Sanity CMS** — villas, site settings, legal pages
+- **Tailwind v4** + **shadcn/ui** + Radix primitives
+- **Framer Motion 11** — hero parallax, drag carousels, lightbox, reveals
+- **next/font** (Source Serif, Geist Sans, IBM Plex Mono)
 
 ## Run locally
 
@@ -29,62 +18,48 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:3000.
+Open http://localhost:3000. Sanity Studio is mounted at `/studio`.
+
+## Environment
+
+Copy `.env.local` and set Sanity project credentials:
+
+```
+NEXT_PUBLIC_SANITY_PROJECT_ID=…
+NEXT_PUBLIC_SANITY_DATASET=production
+SANITY_API_WRITE_TOKEN=…   # only needed for scripts/seed-legal-pages.mjs
+NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY=…   # optional, falls back to keyless embed
+```
 
 ## Deploy to Vercel
 
-### Option A — Vercel dashboard (easiest)
-1. Push this repo to GitHub.
-2. Go to https://vercel.com/new and import the repo.
-3. Framework preset auto-detects as **Next.js**. Keep defaults.
-4. Click **Deploy**. Done.
-
-### Option B — CLI
 ```bash
 npm i -g vercel
-vercel           # link + first deploy (preview)
-vercel --prod    # production deploy
+vercel        # preview
+vercel --prod # production
 ```
 
-No environment variables required. Images are served from Unsplash via `next/image` (remote patterns whitelisted in `next.config.mjs`).
+Project auto-detects as Next.js. Make sure the env vars above are set in the Vercel dashboard.
 
 ## Project structure
 
 ```
 app/
-  layout.jsx              # fonts, metadata
-  page.jsx                # homepage
-  globals.css             # design tokens + base styles
-  stays/[slug]/page.jsx   # villa detail (static params)
-components/
-  Nav.jsx                 # sticky blurred nav + mobile menu
-  Hero.jsx                # parallax hero
-  Clarity.jsx             # "what we do"
-  StayCarousel.jsx        # drag/swipe stays carousel
-  WhyUs.jsx               # 4 reason cards
-  HowItWorks.jsx          # 4-step animated row
-  Testimonials.jsx        # auto-rotate + progress
-  Offer.jsx               # dark CTA + enquiry form
-  Footer.jsx              # contact + trust
-  VillaGallery.jsx        # drag gallery + lightbox
-  VillaBody.jsx           # villa detail composition
-data/
-  villas.js               # single source of truth
-next.config.mjs
-vercel.json
+  (site)/                 # public site segment (layout, pages, error/loading)
+  api/book/route.ts       # booking enquiry endpoint
+  studio/[[...tool]]/     # Sanity Studio
+  layout.tsx              # root layout, fonts
+components/               # UI components (.tsx)
+  ui/                     # shadcn/ui primitives
+lib/                      # utils, chat engine, villa matcher
+sanity/                   # client, queries, schemas, defaults, fetchers
+types/domain.ts           # shared domain types
+scripts/seed-legal-pages.mjs   # idempotent seed for legal page defaults
 ```
 
-## Replacing content
+## Scripts
 
-All villa copy and images live in `data/villas.js`. Swap Unsplash URLs for your own S3/Cloudinary URLs and add the hostname to `next.config.mjs` → `images.remotePatterns`.
-
-## Why these choices
-
-- **App Router + RSC**: smaller client bundles (only interactive components are `'use client'`).
-- **No Tailwind / no UI library**: bundle is ~140 kB gz on first load; the design tokens in `globals.css` are enough.
-- **Framer Motion over Lottie/GSAP**: React-native APIs, scroll + drag + layout animations out of the box.
-- **Unsplash placeholders**: swap later, no blocker for launch.
-
-## Copy strategy
-
-See `REDESIGN.md` for the positioning brief, full copy rewrite, headline variations, and UX rationale behind each section.
+- `npm run dev` — dev server (Turbopack)
+- `npm run build` — production build
+- `npm run lint` — ESLint
+- `npm run test:e2e` — Playwright tests

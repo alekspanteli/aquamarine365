@@ -7,6 +7,7 @@ import { VillasProvider } from '@/components/VillasProvider';
 import { DEFAULT_OG_IMAGE } from '@/sanity/defaults/siteSettings';
 import { getSiteSettings } from '@/sanity/fetchContent';
 import { getVillas } from '@/sanity/fetchVillas';
+import { SanityLive } from '@/sanity/live';
 import '../globals.css';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -14,7 +15,11 @@ export async function generateMetadata(): Promise<Metadata> {
   const title = settings.seo.defaultTitle;
   const description = settings.seo.defaultDescription;
   const ogImage = settings.seo.ogImage
-    ? { ...DEFAULT_OG_IMAGE, url: settings.seo.ogImage }
+    ? {
+        ...DEFAULT_OG_IMAGE,
+        url: settings.seo.ogImage.url,
+        alt: settings.seo.ogImage.alt || DEFAULT_OG_IMAGE.alt
+      }
     : DEFAULT_OG_IMAGE;
 
   return {
@@ -72,6 +77,7 @@ export default async function SiteLayout({ children }: SiteLayoutProps) {
         <VillasProvider villas={villas}>
           {children}
           <DeferredClient />
+          <SanityLive />
         </VillasProvider>
       </SiteSettingsProvider>
     </ThemeProvider>

@@ -19,7 +19,7 @@ export default function CookieBanner() {
     } catch {}
   }, []);
 
-  const decide = (value) => {
+  const decide = (value: string) => {
     try { localStorage.setItem(KEY, value); } catch {}
     setShow(false);
   };

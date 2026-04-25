@@ -1,12 +1,15 @@
 'use client';
 
+import * as React from 'react';
 import { Accordion as AccordionPrimitive } from 'radix-ui';
 import { Plus } from '@phosphor-icons/react/dist/ssr';
 import { cn } from '@/lib/utils';
 
 const Accordion = AccordionPrimitive.Root;
 
-function AccordionItem({ className, ref, ...props }) {
+type AccordionItemProps = React.ComponentProps<typeof AccordionPrimitive.Item>;
+
+function AccordionItem({ className, ref, ...props }: AccordionItemProps) {
   return (
     <AccordionPrimitive.Item
       ref={ref}
@@ -17,7 +20,9 @@ function AccordionItem({ className, ref, ...props }) {
   );
 }
 
-function AccordionTrigger({ className, children, ref, ...props }) {
+type AccordionTriggerProps = React.ComponentProps<typeof AccordionPrimitive.Trigger>;
+
+function AccordionTrigger({ className, children, ref, ...props }: AccordionTriggerProps) {
   return (
     <AccordionPrimitive.Header className="flex">
       <AccordionPrimitive.Trigger
@@ -46,7 +51,9 @@ function AccordionTrigger({ className, children, ref, ...props }) {
   );
 }
 
-function AccordionContent({ className, children, ref, ...props }) {
+type AccordionContentProps = React.ComponentProps<typeof AccordionPrimitive.Content>;
+
+function AccordionContent({ className, children, ref, ...props }: AccordionContentProps) {
   return (
     <AccordionPrimitive.Content
       ref={ref}

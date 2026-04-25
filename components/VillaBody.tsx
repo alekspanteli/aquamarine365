@@ -11,10 +11,15 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { DatePicker } from '@/components/ui/date-picker';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import type { Villa } from '@/types/domain';
 
-export default function VillaBody({ villa }) {
-  const [checkIn, setCheckIn] = useState();
-  const [checkOut, setCheckOut] = useState();
+interface VillaBodyProps {
+  villa: Villa;
+}
+
+export default function VillaBody({ villa }: VillaBodyProps) {
+  const [checkIn, setCheckIn] = useState<Date | undefined>();
+  const [checkOut, setCheckOut] = useState<Date | undefined>();
   const [guests, setGuests] = useState('2');
   const today = new Date();
   return (

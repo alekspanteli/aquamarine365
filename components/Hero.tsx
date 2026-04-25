@@ -7,11 +7,12 @@ import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, Sparkle } from '@phosphor-icons/react/dist/ssr';
 import { Button } from '@/components/ui/button';
 import { useSiteSettings } from '@/components/SiteSettingsProvider';
+import { imageUrl } from '@/sanity/image';
 import FindMyVilla from './FindMyVilla';
 
 export default function Hero() {
   const settings = useSiteSettings();
-  const ref = useRef(null);
+  const ref = useRef<HTMLElement | null>(null);
   const reduce = useReducedMotion();
   const [allowParallax, setAllowParallax] = useState(false);
 
@@ -43,14 +44,14 @@ export default function Hero() {
         aria-hidden
       >
         <Image
-          src={settings.hero.image}
-          alt={settings.hero.imageAlt}
+          src={imageUrl(settings.hero.image, 2400) ?? settings.hero.image.url}
+          alt={settings.hero.image.alt}
           fill
           priority
           fetchPriority="high"
           sizes="100vw"
-          placeholder="blur"
-          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAn/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AKpgA//Z"
+          placeholder={settings.hero.image.lqip ? 'blur' : 'empty'}
+          blurDataURL={settings.hero.image.lqip ?? undefined}
           className="object-cover"
         />
       </motion.div>

@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import LegalPageCmsContent from '@/components/LegalPageCmsContent';
 import { getPrivacyPage } from '@/sanity/fetchContent';
 
@@ -7,7 +8,7 @@ const FALLBACK = {
     "How Aquamarine Holiday Rentals handles your personal data: what we collect, why, who it's shared with, and your rights under GDPR."
 };
 
-export async function generateMetadata() {
+export async function generateMetadata(): Promise<Metadata> {
   const page = await getPrivacyPage();
 
   return {

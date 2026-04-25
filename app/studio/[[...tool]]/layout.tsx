@@ -1,8 +1,15 @@
-export const metadata = {
+import type { Metadata } from 'next';
+import type { ReactNode } from 'react';
+
+export const metadata: Metadata = {
   title: 'Studio',
   robots: { index: false, follow: false }
 };
 
-export default function StudioLayout({ children }) {
+interface StudioLayoutProps {
+  children: ReactNode;
+}
+
+export default function StudioLayout({ children }: StudioLayoutProps) {
   return children;
 }

@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, type FormEvent } from 'react';
 import { motion } from 'framer-motion';
 import { Check, CalendarBlank, Minus, Plus } from '@phosphor-icons/react/dist/ssr';
 import { toast } from 'sonner';
+import type { DateRange } from 'react-day-picker';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -12,26 +13,29 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { useSiteSettings } from '@/components/SiteSettingsProvider';
 
-const fmtDay = (d) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+const fmtDay = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
 
-function formatDatesValue(range, guests) {
-  const parts = [];
+function formatDatesValue(range: DateRange | undefined, guests: number): string {
+  const parts: string[] = [];
   if (range?.from && range?.to) parts.push(`${fmtDay(range.from)} - ${fmtDay(range.to)}`);
   else if (range?.from) parts.push(fmtDay(range.from));
   if (guests > 0) parts.push(`${guests} ${guests === 1 ? 'guest' : 'guests'}`);
   return parts.join(' - ');
 }
 
+type Status = 'idle' | 'loading' | 'sent';
+type FormErrors = Partial<Record<'name' | 'email' | 'dates', string>>;
+
 export default function Offer() {
   const settings = useSiteSettings();
-  const [status, setStatus] = useState('idle');
-  const [errors, setErrors] = useState({});
-  const [range, setRange] = useState();
+  const [status, setStatus] = useState<Status>('idle');
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [range, setRange] = useState<DateRange | undefined>();
   const [guests, setGuests] = useState(2);
   const [pickerOpen, setPickerOpen] = useState(false);
   const datesValue = formatDatesValue(range, guests);
 
-  const submit = async (e) => {
+  const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (status === 'loading') return;
     setErrors({});
@@ -63,12 +67,15 @@ export default function Offer() {
       toast.success('Enquiry received', {
         description: settings.offer.replyNote
       });
-      e.target.reset();
+      e.currentTarget.reset();
+      setRange(undefined);
+      setGuests(2);
       setTimeout(() => setStatus('idle'), 4000);
     } catch (err) {
       setStatus('idle');
+      const message = err instanceof Error ? err.message : `Please try again, or email ${settings.contact.email}.`;
       toast.error('Something went wrong', {
-        description: err.message || `Please try again, or email ${settings.contact.email}.`
+        description: message
       });
     }
   };

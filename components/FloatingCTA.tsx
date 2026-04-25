@@ -6,7 +6,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight } from '@phosphor-icons/react/dist/ssr';
 import { Button } from '@/components/ui/button';
 
-export default function FloatingCTA({ href = '/#book', label = 'Check availability' }) {
+interface FloatingCTAProps {
+  href?: string;
+  label?: string;
+}
+
+export default function FloatingCTA({ href = '/#book', label = 'Check availability' }: FloatingCTAProps) {
   const [show, setShow] = useState(false);
 
   useEffect(() => {

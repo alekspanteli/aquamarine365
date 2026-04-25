@@ -1,8 +1,9 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Page not found',
   robots: { index: false, follow: false }
 };

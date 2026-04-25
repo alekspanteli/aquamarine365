@@ -1,7 +1,8 @@
+import { defineType } from 'sanity';
 import { legalFields } from './legalFields';
 import { defaultTermsPage } from '../defaults/legalPages';
 
-const termsPage = {
+export const termsPage = defineType({
   name: 'termsPage',
   title: 'Terms Page',
   type: 'document',
@@ -12,6 +13,6 @@ const termsPage = {
       return { title: 'Booking terms' };
     }
   }
-};
+});
 
 export default termsPage;

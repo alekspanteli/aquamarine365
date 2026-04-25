@@ -1,10 +1,14 @@
-import type { Keyed, OpenGraphImage, SiteSettings } from '@/types/domain';
+import type { Keyed, OpenGraphImage, SanityImage, SiteSettings } from '@/types/domain';
 
 function withKeys<T extends Record<string, unknown>>(prefix: string, items: T[]): Array<Keyed<T>> {
   return items.map((item, index) => ({
     _key: `${prefix}-${index + 1}`,
     ...item
   }));
+}
+
+function fallbackImage(url: string, alt: string): SanityImage {
+  return { url, alt, lqip: null, width: null, height: null, ref: null };
 }
 
 export const defaultSiteSettings: SiteSettings = {
@@ -46,9 +50,10 @@ export const defaultSiteSettings: SiteSettings = {
       'A small, owner-operated collection of seafront homes. Cleaned before every arrival, stocked on request, backed by a real team on the island 24/7. Book direct - no platform fees.',
     primaryCtaLabel: 'Check availability',
     secondaryCtaLabel: 'Or let us match you',
-    image:
+    image: fallbackImage(
       'https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=2400&q=70',
-    imageAlt: 'Seafront villa exterior in Ayia Napa',
+      'Seafront villa exterior in Ayia Napa'
+    ),
     stats: withKeys('hero-stat', [
       { value: '4.9', label: 'Guest rating - 300+ stays' },
       { value: '12 yrs', label: 'Operating in Ayia Napa' },
@@ -74,9 +79,10 @@ export const defaultSiteSettings: SiteSettings = {
       '5-15 min to beach',
       'Long-stay rates'
     ],
-    image:
+    image: fallbackImage(
       'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&w=1200&q=75',
-    imageAlt: 'Mediterranean villa with pool at dusk',
+      'Mediterranean villa with pool at dusk'
+    ),
     availabilityLabel: 'Available this summer',
     availabilityText: '3 private villas - 19 beds total'
   },
@@ -279,13 +285,11 @@ export const defaultSiteSettings: SiteSettings = {
   }
 };
 
-const { ogImage, ...seoInitialValue } = defaultSiteSettings.seo;
-const { image: heroImage, ...heroInitialValue } = defaultSiteSettings.hero;
-const { image: clarityImage, ...clarityInitialValue } = defaultSiteSettings.clarity;
-
-void ogImage;
-void heroImage;
-void clarityImage;
+// Studio gets defaults without preset image references so editors upload
+// real assets rather than inheriting Unsplash placeholder URLs.
+const { ogImage: _ogImage, ...seoInitialValue } = defaultSiteSettings.seo;
+const { image: _heroImage, ...heroInitialValue } = defaultSiteSettings.hero;
+const { image: _clarityImage, ...clarityInitialValue } = defaultSiteSettings.clarity;
 
 export const studioSiteSettingsInitialValue = {
   ...defaultSiteSettings,

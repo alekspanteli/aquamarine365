@@ -1,7 +1,8 @@
+import { defineType } from 'sanity';
 import { legalFields } from './legalFields';
 import { defaultCookiePage } from '../defaults/legalPages';
 
-const cookiePage = {
+export const cookiePage = defineType({
   name: 'cookiePage',
   title: 'Cookie Page',
   type: 'document',
@@ -12,6 +13,6 @@ const cookiePage = {
       return { title: 'Cookie policy' };
     }
   }
-};
+});
 
 export default cookiePage;

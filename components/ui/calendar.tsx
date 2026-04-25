@@ -1,14 +1,18 @@
 'use client';
 
-import { DayPicker, getDefaultClassNames } from 'react-day-picker';
+import { DayPicker, getDefaultClassNames, type DayPickerProps, type ChevronProps } from 'react-day-picker';
 import { CaretLeft, CaretRight } from '@phosphor-icons/react/dist/ssr';
 import { cn } from '@/lib/utils';
+
+type CalendarProps = DayPickerProps & {
+  className?: string;
+};
 
 // react-day-picker v9 renamed most classNames keys and replaced the
 // `IconLeft` / `IconRight` components with a single `Chevron` component.
 // This component targets the v9 API and adapts the canonical shadcn
 // styling to our design tokens (--fg, --accent, --line, --surface-2).
-export function Calendar({ className, classNames, showOutsideDays = true, ...props }) {
+export function Calendar({ className, classNames, showOutsideDays = true, ...props }: CalendarProps) {
   const def = getDefaultClassNames();
 
   return (
@@ -59,7 +63,7 @@ export function Calendar({ className, classNames, showOutsideDays = true, ...pro
         ...classNames
       }}
       components={{
-        Chevron: ({ orientation, className: iconClass, ...iconProps }) => {
+        Chevron: ({ orientation, className: iconClass, ...iconProps }: ChevronProps) => {
           const size = 'h-4 w-4';
           if (orientation === 'left')
             return <CaretLeft className={cn(size, iconClass)} {...iconProps} />;

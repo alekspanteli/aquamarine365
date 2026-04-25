@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowRight, Sparkle, Check } from '@phosphor-icons/react/dist/ssr';
 import type { QuizAnswers, QuizQuestionId } from '@/types/domain';
 import { useVillas } from '@/components/VillasProvider';
+import { imageUrl } from '@/sanity/image';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -180,10 +181,12 @@ export default function FindMyVilla({ children, className }: FindMyVillaProps) {
                 </div>
                 <div className="relative mb-4 aspect-[16/9] overflow-hidden rounded-xl">
                   <Image
-                    src={recommendation.winner.cover}
-                    alt={recommendation.winner.name}
+                    src={imageUrl(recommendation.winner.cover, 1200) ?? recommendation.winner.cover.url}
+                    alt={recommendation.winner.cover.alt || recommendation.winner.name}
                     fill
                     sizes="(max-width: 560px) 100vw, 560px"
+                    placeholder={recommendation.winner.cover.lqip ? 'blur' : 'empty'}
+                    blurDataURL={recommendation.winner.cover.lqip ?? undefined}
                     className="object-cover"
                   />
                   <div className="absolute right-3 bottom-3 rounded-xl bg-[var(--color-ink)] px-3 py-1.5 font-mono text-xs text-white">

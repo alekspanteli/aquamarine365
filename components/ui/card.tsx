@@ -1,6 +1,11 @@
+import * as React from 'react';
 import { cn } from '@/lib/utils';
 
-function Card({ className, ref, ...props }) {
+type DivProps = React.ComponentPropsWithRef<'div'>;
+type HeadingProps = React.ComponentPropsWithRef<'h3'>;
+type ParagraphProps = React.ComponentPropsWithRef<'p'>;
+
+function Card({ className, ref, ...props }: DivProps) {
   return (
     <div
       ref={ref}
@@ -14,7 +19,7 @@ function Card({ className, ref, ...props }) {
   );
 }
 
-function CardHeader({ className, ref, ...props }) {
+function CardHeader({ className, ref, ...props }: DivProps) {
   return (
     <div
       ref={ref}
@@ -25,7 +30,7 @@ function CardHeader({ className, ref, ...props }) {
   );
 }
 
-function CardTitle({ className, ref, ...props }) {
+function CardTitle({ className, ref, ...props }: HeadingProps) {
   return (
     <h3
       ref={ref}
@@ -36,7 +41,7 @@ function CardTitle({ className, ref, ...props }) {
   );
 }
 
-function CardDescription({ className, ref, ...props }) {
+function CardDescription({ className, ref, ...props }: ParagraphProps) {
   return (
     <p
       ref={ref}
@@ -47,7 +52,7 @@ function CardDescription({ className, ref, ...props }) {
   );
 }
 
-function CardAction({ className, ref, ...props }) {
+function CardAction({ className, ref, ...props }: DivProps) {
   return (
     <div
       ref={ref}
@@ -58,7 +63,7 @@ function CardAction({ className, ref, ...props }) {
   );
 }
 
-function CardContent({ className, ref, ...props }) {
+function CardContent({ className, ref, ...props }: DivProps) {
   return (
     <div
       ref={ref}
@@ -69,7 +74,7 @@ function CardContent({ className, ref, ...props }) {
   );
 }
 
-function CardFooter({ className, ref, ...props }) {
+function CardFooter({ className, ref, ...props }: DivProps) {
   return (
     <div
       ref={ref}

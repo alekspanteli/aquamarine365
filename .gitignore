@@ -12,3 +12,4 @@ playwright-report
 skills
 skills-lock.json
 /*.png
+tsconfig.tsbuildinfo

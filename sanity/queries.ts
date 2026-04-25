@@ -1,4 +1,13 @@
-import { groq } from 'next-sanity';
+import { defineQuery } from 'next-sanity';
+
+const IMAGE_PROJECTION = `{
+  "url": asset->url,
+  "alt": coalesce(alt, ""),
+  "lqip": asset->metadata.lqip,
+  "width": asset->metadata.dimensions.width,
+  "height": asset->metadata.dimensions.height,
+  "ref": @
+}`;
 
 const VILLA_PROJECTION = `
   _id,
@@ -11,8 +20,8 @@ const VILLA_PROJECTION = `
   bathrooms,
   priceFrom,
   summary,
-  "cover": cover.asset->url,
-  "gallery": gallery[].asset->url,
+  "cover": cover${IMAGE_PROJECTION},
+  "gallery": gallery[]${IMAGE_PROJECTION},
   highlights,
   amenities,
   specs,
@@ -20,19 +29,25 @@ const VILLA_PROJECTION = `
   coords
 `;
 
-export const allVillasQuery = groq`*[_type == "villa"] | order(coalesce(order, 999), name asc) { ${VILLA_PROJECTION} }`;
+export const allVillasQuery = defineQuery(
+  `*[_type == "villa"] | order(coalesce(order, 999), name asc) { ${VILLA_PROJECTION} }`
+);
 
-export const villaBySlugQuery = groq`*[_type == "villa" && slug.current == $slug][0] { ${VILLA_PROJECTION} }`;
+export const villaBySlugQuery = defineQuery(
+  `*[_type == "villa" && slug.current == $slug][0] { ${VILLA_PROJECTION} }`
+);
 
-export const villaSlugsQuery = groq`*[_type == "villa" && defined(slug.current)][].slug.current`;
+export const villaSlugsQuery = defineQuery(
+  `*[_type == "villa" && defined(slug.current)][].slug.current`
+);
 
-export const siteSettingsQuery = groq`*[_type == "siteSettings" && _id == "siteSettings"][0]{
+export const siteSettingsQuery = defineQuery(`*[_type == "siteSettings" && _id == "siteSettings"][0]{
   "title": coalesce(title, siteName),
   siteUrl,
   seo{
     defaultTitle,
     defaultDescription,
-    "ogImage": ogImage.asset->url
+    "ogImage": ogImage${IMAGE_PROJECTION}
   },
   nav{
     items,
@@ -57,8 +72,7 @@ export const siteSettingsQuery = groq`*[_type == "siteSettings" && _id == "siteS
     body,
     primaryCtaLabel,
     secondaryCtaLabel,
-    "image": image.asset->url,
-    imageAlt,
+    "image": image${IMAGE_PROJECTION},
     stats
   },
   stays{
@@ -73,8 +87,7 @@ export const siteSettingsQuery = groq`*[_type == "siteSettings" && _id == "siteS
     titleSuffix,
     body,
     pills,
-    "image": image.asset->url,
-    imageAlt,
+    "image": image${IMAGE_PROJECTION},
     availabilityLabel,
     availabilityText
   },
@@ -85,7 +98,7 @@ export const siteSettingsQuery = groq`*[_type == "siteSettings" && _id == "siteS
   faq,
   offer,
   organization
-}`;
+}`);
 
 const LEGAL_PAGE_PROJECTION = `
   title,
@@ -97,6 +110,12 @@ const LEGAL_PAGE_PROJECTION = `
   _updatedAt
 `;
 
-export const privacyPageQuery = groq`*[_type == "privacyPage" && _id == "privacyPage"][0]{ ${LEGAL_PAGE_PROJECTION} }`;
-export const cookiePageQuery = groq`*[_type == "cookiePage" && _id == "cookiePage"][0]{ ${LEGAL_PAGE_PROJECTION} }`;
-export const termsPageQuery = groq`*[_type == "termsPage" && _id == "termsPage"][0]{ ${LEGAL_PAGE_PROJECTION} }`;
+export const privacyPageQuery = defineQuery(
+  `*[_type == "privacyPage" && _id == "privacyPage"][0]{ ${LEGAL_PAGE_PROJECTION} }`
+);
+export const cookiePageQuery = defineQuery(
+  `*[_type == "cookiePage" && _id == "cookiePage"][0]{ ${LEGAL_PAGE_PROJECTION} }`
+);
+export const termsPageQuery = defineQuery(
+  `*[_type == "termsPage" && _id == "termsPage"][0]{ ${LEGAL_PAGE_PROJECTION} }`
+);

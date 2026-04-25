@@ -1,18 +1,25 @@
 'use client';
 
 import Image from 'next/image';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, type KeyboardEvent } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ArrowRight, CornersOut, X } from '@phosphor-icons/react/dist/ssr';
-import { Skeleton, ImageLoader } from '@/components/ui/skeleton';
+import { ImageLoader } from '@/components/ui/skeleton';
+import type { SanityImage } from '@/types/domain';
+import { imageUrl } from '@/sanity/image';
 
-export default function VillaGallery({ images, name }) {
+interface VillaGalleryProps {
+  images: SanityImage[];
+  name: string;
+}
+
+export default function VillaGallery({ images, name }: VillaGalleryProps) {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [lightbox, setLightbox] = useState(false);
-  const [loadedSet, setLoadedSet] = useState(() => new Set());
+  const [loadedSet, setLoadedSet] = useState<Set<number>>(() => new Set());
   const isLoaded = loadedSet.has(index);
-  const markLoaded = useCallback((i) => {
+  const markLoaded = useCallback((i: number) => {
     setLoadedSet((s) => {
       if (s.has(i)) return s;
       const next = new Set(s);
@@ -22,7 +29,7 @@ export default function VillaGallery({ images, name }) {
   }, []);
 
   const go = useCallback(
-    (i) => {
+    (i: number) => {
       const next = (i + images.length) % images.length;
       setDirection(next > index ? 1 : -1);
       setIndex(next);
@@ -36,7 +43,7 @@ export default function VillaGallery({ images, name }) {
   // always dismiss it.
   useEffect(() => {
     if (!lightbox) return;
-    const onKey = (e) => {
+    const onKey = (e: globalThis.KeyboardEvent) => {
       if (e.key === 'Escape') setLightbox(false);
       if (e.key === 'ArrowRight') go(index + 1);
       if (e.key === 'ArrowLeft') go(index - 1);
@@ -50,7 +57,7 @@ export default function VillaGallery({ images, name }) {
     return () => { document.body.style.overflow = ''; };
   }, [lightbox]);
 
-  const onGalleryKeyDown = (e) => {
+  const onGalleryKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     if (lightbox) return;
     if (e.key === 'ArrowRight') { e.preventDefault(); go(index + 1); }
     else if (e.key === 'ArrowLeft') { e.preventDefault(); go(index - 1); }
@@ -77,9 +84,9 @@ export default function VillaGallery({ images, name }) {
               key={index}
               custom={direction}
               variants={{
-                enter: (d) => ({ x: d > 0 ? 40 : -40, opacity: 0 }),
+                enter: (d: number) => ({ x: d > 0 ? 40 : -40, opacity: 0 }),
                 center: { x: 0, opacity: 1, zIndex: 2 },
-                exit: (d) => ({ x: d > 0 ? -40 : 40, opacity: 0, zIndex: 1 })
+                exit: (d: number) => ({ x: d > 0 ? -40 : 40, opacity: 0, zIndex: 1 })
               }}
               initial="enter"
               animate="center"
@@ -105,8 +112,8 @@ export default function VillaGallery({ images, name }) {
               className="absolute inset-0"
             >
               <Image
-                src={images[index]}
-                alt={`${name} — image ${index + 1}`}
+                src={imageUrl(images[index], 2000) ?? images[index].url}
+                alt={images[index].alt || `${name} — image ${index + 1}`}
                 fill
                 sizes="(max-width: 960px) 100vw, 70vw"
                 className="object-cover"
@@ -118,8 +125,8 @@ export default function VillaGallery({ images, name }) {
                   // before React attached the listener.
                   if (el && el.complete && el.naturalWidth > 0) markLoaded(index);
                 }}
-                placeholder="blur"
-                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAn/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AKpgA//Z"
+                placeholder={images[index].lqip ? 'blur' : 'empty'}
+                blurDataURL={images[index].lqip ?? undefined}
               />
             </motion.div>
           </AnimatePresence>
@@ -153,10 +160,10 @@ export default function VillaGallery({ images, name }) {
         </div>
 
         <div className="grid grid-cols-5 gap-3 md:gap-3.5 pt-5 pb-2">
-          {images.map((src, i) => {
+          {images.map((image, i) => {
             const active = i === index;
             return (
-              <div key={src} className="relative">
+              <div key={image.url} className="relative">
                 {/* Pointer above active thumb — unmistakable "you are here" signal */}
                 {active && (
                   <span
@@ -179,7 +186,7 @@ export default function VillaGallery({ images, name }) {
                   style={{ transformOrigin: 'center bottom' }}
                 >
                   <Image
-                    src={src}
+                    src={imageUrl(image, 240) ?? image.url}
                     alt=""
                     fill
                     sizes="120px"
@@ -227,8 +234,8 @@ export default function VillaGallery({ images, name }) {
               className="relative w-[min(1400px,92vw)] h-[min(90vh,900px)]"
             >
               <Image
-                src={images[index]}
-                alt={`${name} — image ${index + 1}`}
+                src={imageUrl(images[index], 2400) ?? images[index].url}
+                alt={images[index].alt || `${name} — image ${index + 1}`}
                 fill
                 sizes="90vw"
                 className="object-contain"

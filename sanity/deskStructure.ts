@@ -1,3 +1,5 @@
+import type { StructureResolver } from 'sanity/structure';
+
 const SINGLETONS = [
   { id: 'siteSettings', schemaType: 'siteSettings', title: 'Site Settings' },
   { id: 'privacyPage', schemaType: 'privacyPage', title: 'Privacy policy' },
@@ -5,8 +7,8 @@ const SINGLETONS = [
   { id: 'termsPage', schemaType: 'termsPage', title: 'Booking terms' }
 ];
 
-export function structure(S) {
-  return S.list()
+export const structure: StructureResolver = (S) =>
+  S.list()
     .title('Content')
     .items([
       ...SINGLETONS.map((item) =>
@@ -20,4 +22,3 @@ export function structure(S) {
         (item) => !SINGLETONS.some((singleton) => singleton.schemaType === item.getId())
       )
     ]);
-}

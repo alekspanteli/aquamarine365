@@ -1,9 +1,14 @@
+import type { ReactNode } from 'react';
 import Link from 'next/link';
 import Nav from '@/components/Nav';
 import ProgressBar from '@/components/ProgressBar';
 import Footer from '@/components/Footer';
 
-export default function LegalLayout({ children }) {
+interface LegalLayoutProps {
+  children: ReactNode;
+}
+
+export default function LegalLayout({ children }: LegalLayoutProps) {
   return (
     <>
       <ProgressBar />

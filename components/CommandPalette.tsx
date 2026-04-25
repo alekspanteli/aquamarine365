@@ -15,20 +15,25 @@ import { useVillas } from '@/components/VillasProvider';
 import { useSiteSettings } from '@/components/SiteSettingsProvider';
 import { Bed, House, Info, Question, Phone, Envelope, ChatCircle, Sun, Moon, Laptop } from '@phosphor-icons/react/dist/ssr';
 
-export default function CommandPalette({ open, setOpen }) {
+interface CommandPaletteProps {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+}
+
+export default function CommandPalette({ open, setOpen }: CommandPaletteProps) {
   const router = useRouter();
   const { setTheme } = useTheme();
   const villas = useVillas();
   const settings = useSiteSettings();
 
-  const run = (fn) => () => {
+  const run = (fn: () => void) => () => {
     setOpen(false);
     setTimeout(fn, 50);
   };
 
-  const go = (href) => run(() => router.push(href));
+  const go = (href: string) => run(() => router.push(href));
 
-  const filter = (value, search) => {
+  const filter = (value: string, search: string) => {
     if (!search) return 1;
     const haystack = value.toLowerCase();
     const needle = search.trim().toLowerCase();

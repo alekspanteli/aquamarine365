@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { useSiteSettings } from '@/components/SiteSettingsProvider';
+import type { Keyed, NavItem } from '@/types/domain';
 import ThemeToggle from './ThemeToggle';
 import Logo from './Logo';
 
@@ -35,7 +36,7 @@ export default function Nav() {
   }, []);
 
   useEffect(() => {
-    const onKey = (e) => {
+    const onKey = (e: KeyboardEvent) => {
       if ((e.key === 'k' || e.key === 'K') && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setCmdOpen((open) => !open);
@@ -47,7 +48,9 @@ export default function Nav() {
 
   useEffect(() => {
     const ids = navItems.map((n) => n.href.split('#')[1]).filter(Boolean);
-    const els = ids.map((id) => document.getElementById(id)).filter(Boolean);
+    const els = ids
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
     if (!els.length) return;
 
     const obs = new IntersectionObserver(
@@ -149,7 +152,12 @@ export default function Nav() {
   );
 }
 
-function DrawerContent({ close, navItems }) {
+interface DrawerContentProps {
+  close: () => void;
+  navItems: Array<Keyed<NavItem>>;
+}
+
+function DrawerContent({ close, navItems }: DrawerContentProps) {
   return (
     <div className="flex flex-col h-full overflow-y-auto bg-[var(--bg)]">
       <div className="px-7 pt-7 pb-6 flex items-center justify-between">

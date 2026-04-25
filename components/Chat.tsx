@@ -2,7 +2,6 @@
 
 import {
   useEffect,
-  useEffectEvent,
   useRef,
   useState,
   type ChangeEvent,
@@ -178,15 +177,20 @@ export default function Chat() {
     return () => window.clearTimeout(timeoutId);
   }, [open]);
 
-  const handleEscape = useEffectEvent((event: KeyboardEvent) => {
-    if (event.key === 'Escape' && open) {
-      setOpen(false);
-    }
-  });
+  const openRef = useRef(open);
+  useEffect(() => {
+    openRef.current = open;
+  }, [open]);
 
   useEffect(() => {
-    window.addEventListener('keydown', handleEscape);
-    return () => window.removeEventListener('keydown', handleEscape);
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && openRef.current) {
+        setOpen(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   const send = async (text: string) => {

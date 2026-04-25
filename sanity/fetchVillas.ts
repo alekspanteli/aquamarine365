@@ -1,15 +1,15 @@
 import { cache } from 'react';
-import type { Villa, VillaCoordinates, VillaSpec } from '@/types/domain';
+import type { Villa } from '@/types/domain';
 import { client } from './client';
 import { allVillasQuery, villaBySlugQuery, villaSlugsQuery } from './queries';
 
 type RawVilla = Omit<Villa, 'gallery' | 'highlights' | 'amenities' | 'specs' | 'location_area' | 'coords'> & {
-  gallery?: string[] | null;
+  gallery?: Villa['gallery'] | null;
   highlights?: string[] | null;
   amenities?: string[] | null;
-  specs?: VillaSpec[] | null;
+  specs?: Villa['specs'] | null;
   location_area?: string | null;
-  coords?: VillaCoordinates | null;
+  coords?: Villa['coords'];
 };
 
 function normalizeVilla(villa: RawVilla): Villa {

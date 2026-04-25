@@ -1,5 +1,6 @@
 'use client';
 
+import * as React from 'react';
 import { Select as SelectPrimitive } from 'radix-ui';
 import { Check, CaretDown, CaretUp } from '@phosphor-icons/react/dist/ssr';
 import { cn } from '@/lib/utils';
@@ -7,7 +8,9 @@ import { cn } from '@/lib/utils';
 const Select = SelectPrimitive.Root;
 const SelectValue = SelectPrimitive.Value;
 
-function SelectTrigger({ className, children, ref, ...props }) {
+type SelectTriggerProps = React.ComponentProps<typeof SelectPrimitive.Trigger>;
+
+function SelectTrigger({ className, children, ref, ...props }: SelectTriggerProps) {
   return (
     <SelectPrimitive.Trigger
       ref={ref}
@@ -28,7 +31,9 @@ function SelectTrigger({ className, children, ref, ...props }) {
   );
 }
 
-function SelectContent({ className, children, position = 'popper', ref, ...props }) {
+type SelectContentProps = React.ComponentProps<typeof SelectPrimitive.Content>;
+
+function SelectContent({ className, children, position = 'popper', ref, ...props }: SelectContentProps) {
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
@@ -55,7 +60,9 @@ function SelectContent({ className, children, position = 'popper', ref, ...props
   );
 }
 
-function SelectItem({ className, children, ref, ...props }) {
+type SelectItemProps = React.ComponentProps<typeof SelectPrimitive.Item>;
+
+function SelectItem({ className, children, ref, ...props }: SelectItemProps) {
   return (
     <SelectPrimitive.Item
       ref={ref}

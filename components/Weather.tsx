@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ComponentType } from 'react';
 import {
   Sun,
   Cloud,
@@ -10,15 +10,45 @@ import {
   Lightning,
   SunDim
 } from '@phosphor-icons/react/dist/ssr';
+import type { IconProps } from '@phosphor-icons/react';
 import { Skeleton } from '@/components/ui/skeleton';
+
+interface WeatherProps {
+  lat: number;
+  lng: number;
+  label?: string;
+}
+
+interface CurrentWeather {
+  temperature_2m: number;
+  weather_code: number;
+  wind_speed_10m: number;
+}
+
+interface DailyWeather {
+  time: string[];
+  weather_code: number[];
+  temperature_2m_max: number[];
+  temperature_2m_min: number[];
+}
+
+interface WeatherData {
+  current: CurrentWeather;
+  daily: DailyWeather;
+}
+
+interface WeatherInfo {
+  label: string;
+  Icon: ComponentType<IconProps>;
+}
 
 /**
  * Current conditions + 5-day forecast for a lat/lng, using Open-Meteo's
  * genuinely-keyless public API. No signup, no key, no cost.
  * Response is cached by the browser for ~15 min (Open-Meteo sets headers).
  */
-export default function Weather({ lat, lng, label = 'Ayia Napa' }) {
-  const [data, setData] = useState(null);
+export default function Weather({ lat, lng, label = 'Ayia Napa' }: WeatherProps) {
+  const [data, setData] = useState<WeatherData | null>(null);
   const [err, setErr] = useState(false);
 
   useEffect(() => {
@@ -111,7 +141,7 @@ export default function Weather({ lat, lng, label = 'Ayia Napa' }) {
 }
 
 // Open-Meteo WMO weather codes → readable label + phosphor icon
-function codeToInfo(code) {
+function codeToInfo(code: number): WeatherInfo {
   if (code === 0) return { label: 'Clear sky', Icon: Sun };
   if ([1, 2].includes(code)) return { label: 'Mostly clear', Icon: SunDim };
   if (code === 3) return { label: 'Overcast', Icon: Cloud };
@@ -123,6 +153,6 @@ function codeToInfo(code) {
   return { label: 'Mixed', Icon: Cloud };
 }
 
-function weekday(iso) {
+function weekday(iso: string): string {
   return new Date(iso).toLocaleDateString(undefined, { weekday: 'short' });
 }

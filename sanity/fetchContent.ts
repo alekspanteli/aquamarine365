@@ -1,43 +1,53 @@
 import { cache } from 'react';
-import type { DeepPartial, LegalPage, SiteSettings } from '@/types/domain';
+import type { LegalPage, SiteSettings } from '@/types/domain';
 import { defaultSiteSettings } from './defaults/siteSettings';
 import { client } from './client';
 import { cookiePageQuery, privacyPageQuery, siteSettingsQuery, termsPageQuery } from './queries';
 
-function isPlainObject(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
+type IncomingSettings = Partial<SiteSettings> | null;
+
+// Drop keys whose value is null/undefined so a missing CMS field doesn't
+// blow away its default. GROQ projections return null for empty image
+// objects, which would otherwise propagate through the spread.
+function pickDefined<T extends object>(obj: T | undefined | null): Partial<T> {
+  if (!obj) return {};
+  return Object.fromEntries(
+    Object.entries(obj).filter(([, v]) => v !== null && v !== undefined)
+  ) as Partial<T>;
 }
 
-function mergeDeep<T>(base: T, override: DeepPartial<T> | undefined): T {
-  if (Array.isArray(base)) {
-    return (override === undefined ? base : override) as T;
-  }
-
-  if (isPlainObject(base)) {
-    const source = isPlainObject(override) ? override : {};
-
-    return Object.fromEntries(
-      Object.keys(base).map((key) => [
-        key,
-        mergeDeep(
-          base[key as keyof T],
-          source[key as keyof typeof source] as DeepPartial<T[keyof T]> | undefined
-        )
-      ])
-    ) as T;
-  }
-
-  return (override ?? base) as T;
+// Section-level fallback: if Sanity returns the doc but a section is empty,
+// fall through to the default. Validation rules in the schema mean each
+// individual field within a populated section is already required.
+function withFallback(data: IncomingSettings): SiteSettings {
+  if (!data) return defaultSiteSettings;
+  return {
+    ...defaultSiteSettings,
+    ...pickDefined(data),
+    seo: { ...defaultSiteSettings.seo, ...pickDefined(data.seo) },
+    nav: { ...defaultSiteSettings.nav, ...pickDefined(data.nav) },
+    contact: { ...defaultSiteSettings.contact, ...pickDefined(data.contact) },
+    footer: { ...defaultSiteSettings.footer, ...pickDefined(data.footer) },
+    hero: { ...defaultSiteSettings.hero, ...pickDefined(data.hero) },
+    stays: { ...defaultSiteSettings.stays, ...pickDefined(data.stays) },
+    clarity: { ...defaultSiteSettings.clarity, ...pickDefined(data.clarity) },
+    whyUs: { ...defaultSiteSettings.whyUs, ...pickDefined(data.whyUs) },
+    compare: { ...defaultSiteSettings.compare, ...pickDefined(data.compare) },
+    howItWorks: { ...defaultSiteSettings.howItWorks, ...pickDefined(data.howItWorks) },
+    testimonials: { ...defaultSiteSettings.testimonials, ...pickDefined(data.testimonials) },
+    faq: { ...defaultSiteSettings.faq, ...pickDefined(data.faq) },
+    offer: { ...defaultSiteSettings.offer, ...pickDefined(data.offer) },
+    organization: { ...defaultSiteSettings.organization, ...pickDefined(data.organization) }
+  };
 }
 
 export const getSiteSettings = cache(async (): Promise<SiteSettings> => {
-  const data = await client.fetch<DeepPartial<SiteSettings>>(
+  const data = await client.fetch<IncomingSettings>(
     siteSettingsQuery,
     {},
     { next: { tags: ['site-settings'], revalidate: 60 } }
   );
-
-  return mergeDeep(defaultSiteSettings, data ?? {});
+  return withFallback(data);
 });
 
 export const getPrivacyPage = cache(async (): Promise<LegalPage | null> => {

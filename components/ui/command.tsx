@@ -1,10 +1,13 @@
 'use client';
 
+import * as React from 'react';
 import { Command as CommandPrimitive } from 'cmdk';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 
-function Command({ className, ref, ...props }) {
+type CommandProps = React.ComponentProps<typeof CommandPrimitive>;
+
+function Command({ className, ref, ...props }: CommandProps) {
   return (
     <CommandPrimitive
       ref={ref}
@@ -15,6 +18,15 @@ function Command({ className, ref, ...props }) {
   );
 }
 
+interface CommandDialogProps {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  title?: string;
+  description?: string;
+  filter?: CommandProps['filter'];
+  children?: React.ReactNode;
+}
+
 function CommandDialog({
   open,
   onOpenChange,
@@ -22,7 +34,7 @@ function CommandDialog({
   description = 'Search villas, sections, and actions.',
   filter,
   children
-}) {
+}: CommandDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
@@ -34,7 +46,9 @@ function CommandDialog({
   );
 }
 
-function CommandInput({ className, ref, ...props }) {
+type CommandInputProps = React.ComponentProps<typeof CommandPrimitive.Input>;
+
+function CommandInput({ className, ref, ...props }: CommandInputProps) {
   return (
     <div
       data-slot="command-input-wrapper"
@@ -60,7 +74,9 @@ const CommandEmpty = CommandPrimitive.Empty;
 const CommandGroup = CommandPrimitive.Group;
 const CommandItem = CommandPrimitive.Item;
 
-function CommandSeparator({ className, ref, ...props }) {
+type CommandSeparatorProps = React.ComponentProps<typeof CommandPrimitive.Separator>;
+
+function CommandSeparator({ className, ref, ...props }: CommandSeparatorProps) {
   return (
     <CommandPrimitive.Separator
       ref={ref}

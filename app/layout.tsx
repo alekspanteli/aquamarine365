@@ -31,7 +31,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
       </head>
-      <body>{children}</body>
+      <body className="relative">{children}</body>
     </html>
   );
 }
