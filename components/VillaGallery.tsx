@@ -112,14 +112,14 @@ export default function VillaGallery({ images, name }: VillaGalleryProps) {
           <button
             onClick={() => go(index - 1)}
             aria-label="Previous image"
-            className="absolute top-1/2 -translate-y-1/2 left-4 h-12 w-12 rounded-full bg-white text-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-white shadow-lg transition z-10 inline-flex items-center justify-center"
+            className="absolute top-1/2 -translate-y-1/2 left-4 h-12 w-12 rounded-full bg-white text-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-white shadow-lg transition z-10 inline-flex items-center justify-center cursor-pointer"
           >
             <ArrowLeft size={18} />
           </button>
           <button
             onClick={() => go(index + 1)}
             aria-label="Next image"
-            className="absolute top-1/2 -translate-y-1/2 right-4 h-12 w-12 rounded-full bg-white text-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-white shadow-lg transition z-10 inline-flex items-center justify-center"
+            className="absolute top-1/2 -translate-y-1/2 right-4 h-12 w-12 rounded-full bg-white text-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-white shadow-lg transition z-10 inline-flex items-center justify-center cursor-pointer"
           >
             <ArrowRight size={18} />
           </button>
@@ -131,7 +131,7 @@ export default function VillaGallery({ images, name }: VillaGalleryProps) {
           <button
             onClick={() => setLightbox(true)}
             aria-label="Open full size"
-            className="absolute bottom-4 right-4 h-10 w-10 rounded-xl bg-white text-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-white shadow-lg transition z-10 inline-flex items-center justify-center"
+            className="absolute bottom-4 right-4 h-10 w-10 rounded-xl bg-white text-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-white shadow-lg transition z-10 inline-flex items-center justify-center cursor-pointer"
           >
             <CornersOut size={16} />
           </button>
@@ -201,7 +201,7 @@ export default function VillaGallery({ images, name }: VillaGalleryProps) {
             <button
               onClick={(e) => { e.stopPropagation(); setLightbox(false); }}
               aria-label="Close"
-              className="absolute top-6 right-6 h-11 w-11 rounded-full bg-white/15 text-white hover:bg-white/25 inline-flex items-center justify-center z-10"
+              className="absolute top-6 right-6 h-11 w-11 rounded-full bg-white/15 text-white hover:bg-white/25 inline-flex items-center justify-center z-10 cursor-pointer"
             >
               <X size={20} />
             </button>
@@ -211,13 +211,23 @@ export default function VillaGallery({ images, name }: VillaGalleryProps) {
               exit={{ scale: 0.96, opacity: 0 }}
               transition={{ duration: 0.3 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-[min(1400px,92vw)] h-[min(90vh,900px)]"
+              className="relative"
+              style={(() => {
+                const img = images[index];
+                const aspect = img.width && img.height ? img.width / img.height : 16 / 10;
+                return {
+                  aspectRatio: aspect,
+                  width: `min(1400px, 92vw, calc(85vh * ${aspect}))`,
+                };
+              })()}
             >
               <Image
-                src={imageUrl(images[index], 2400) ?? images[index].url}
+                key={index}
+                src={imageUrl(images[index], 2000) ?? images[index].url}
                 alt={images[index].alt || `${name} — image ${index + 1}`}
                 fill
                 sizes="90vw"
+                priority
                 placeholder={images[index].lqip ? 'blur' : 'empty'}
                 blurDataURL={images[index].lqip ?? undefined}
                 className="object-contain"
@@ -225,7 +235,7 @@ export default function VillaGallery({ images, name }: VillaGalleryProps) {
               <button
                 onClick={() => go(index - 1)}
                 aria-label="Previous image"
-                className="absolute top-1/2 -translate-y-1/2 left-2 md:-left-6 h-13 w-13 rounded-full border border-white/30 bg-white/10 text-white hover:bg-white/25 backdrop-blur inline-flex items-center justify-center"
+                className="absolute top-1/2 -translate-y-1/2 left-2 md:-left-6 h-13 w-13 rounded-full border border-white/30 bg-white/10 text-white hover:bg-white/25 backdrop-blur inline-flex items-center justify-center cursor-pointer"
                 style={{ height: 52, width: 52 }}
               >
                 <ArrowLeft size={20} />
@@ -233,7 +243,7 @@ export default function VillaGallery({ images, name }: VillaGalleryProps) {
               <button
                 onClick={() => go(index + 1)}
                 aria-label="Next image"
-                className="absolute top-1/2 -translate-y-1/2 right-2 md:-right-6 rounded-full border border-white/30 bg-white/10 text-white hover:bg-white/25 backdrop-blur inline-flex items-center justify-center"
+                className="absolute top-1/2 -translate-y-1/2 right-2 md:-right-6 rounded-full border border-white/30 bg-white/10 text-white hover:bg-white/25 backdrop-blur inline-flex items-center justify-center cursor-pointer"
                 style={{ height: 52, width: 52 }}
               >
                 <ArrowRight size={20} />
