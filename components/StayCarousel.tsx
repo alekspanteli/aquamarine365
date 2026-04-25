@@ -9,7 +9,6 @@ import { useSiteSettings } from '@/components/SiteSettingsProvider';
 import { useVillas } from '@/components/VillasProvider';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ImageLoader } from '@/components/ui/skeleton';
 import { imageUrl } from '@/sanity/image';
 
 export default function StayCarousel() {
@@ -17,25 +16,12 @@ export default function StayCarousel() {
   const villas = useVillas();
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
-  const [loadedCovers, setLoadedCovers] = useState<Set<string>>(() => new Set());
 
   if (!villas.length) {
     return null;
   }
 
-  const coverLoaded = loadedCovers.has(villas[index].slug);
   const villa = villas[index];
-
-  const markCoverLoaded = (slug: string) =>
-    setLoadedCovers((current) => {
-      if (current.has(slug)) {
-        return current;
-      }
-
-      const next = new Set(current);
-      next.add(slug);
-      return next;
-    });
 
   const go = (nextIndex: number) => {
     const next = (nextIndex + villas.length) % villas.length;
@@ -102,8 +88,7 @@ export default function StayCarousel() {
           </div>
         </div>
 
-        <div className="relative h-[820px] overflow-hidden rounded-[28px] sm:h-[700px] lg:h-[520px]">
-          {!coverLoaded ? <ImageLoader className="absolute inset-0 z-[1]" /> : null}
+        <div className="relative h-[820px] overflow-hidden rounded-[28px] bg-[var(--color-ink)]/8 sm:h-[700px] lg:h-[520px]">
           <AnimatePresence custom={direction}>
             <motion.div
               key={villa.slug}
@@ -142,10 +127,7 @@ export default function StayCarousel() {
                   priority={index === 0}
                   placeholder={villa.cover.lqip ? 'blur' : 'empty'}
                   blurDataURL={villa.cover.lqip ?? undefined}
-                  onLoad={() => markCoverLoaded(villa.slug)}
-                  className={`object-cover transition-all duration-700 group-hover:scale-105 ${
-                    coverLoaded ? 'opacity-100' : 'opacity-0'
-                  }`}
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 to-transparent" />
                 <Badge
@@ -224,6 +206,8 @@ export default function StayCarousel() {
                   alt=""
                   fill
                   sizes="64px"
+                  placeholder={villaItem.cover.lqip ? 'blur' : 'empty'}
+                  blurDataURL={villaItem.cover.lqip ?? undefined}
                   className="object-cover"
                 />
               </span>

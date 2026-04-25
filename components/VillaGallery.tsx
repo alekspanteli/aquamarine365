@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { useState, useEffect, useCallback, type KeyboardEvent } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ArrowRight, CornersOut, X } from '@phosphor-icons/react/dist/ssr';
-import { ImageLoader } from '@/components/ui/skeleton';
 import type { SanityImage } from '@/types/domain';
 import { imageUrl } from '@/sanity/image';
 
@@ -17,16 +16,6 @@ export default function VillaGallery({ images, name }: VillaGalleryProps) {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [lightbox, setLightbox] = useState(false);
-  const [loadedSet, setLoadedSet] = useState<Set<number>>(() => new Set());
-  const isLoaded = loadedSet.has(index);
-  const markLoaded = useCallback((i: number) => {
-    setLoadedSet((s) => {
-      if (s.has(i)) return s;
-      const next = new Set(s);
-      next.add(i);
-      return next;
-    });
-  }, []);
 
   const go = useCallback(
     (i: number) => {
@@ -74,11 +63,6 @@ export default function VillaGallery({ images, name }: VillaGalleryProps) {
         onKeyDown={onGalleryKeyDown}
       >
         <div className="relative aspect-[16/10] rounded-3xl overflow-hidden bg-[var(--color-ink)] cursor-grab active:cursor-grabbing shadow-xl">
-          {/* Visible loader behind the slide — covers the gap while the next
-              image is sliding in or hasn't loaded yet. Shimmer + spinner +
-              "Loading" label so it's unmistakably a loading state. */}
-          {!isLoaded && <ImageLoader className="absolute inset-0 z-[1]" />}
-
           <AnimatePresence custom={direction}>
             <motion.div
               key={index}
@@ -119,12 +103,6 @@ export default function VillaGallery({ images, name }: VillaGalleryProps) {
                 className="object-cover"
                 priority={index === 0}
                 fetchPriority={index === 0 ? 'high' : 'auto'}
-                onLoad={() => markLoaded(index)}
-                ref={(el) => {
-                  // Catch the cache-warm case where onLoad already fired
-                  // before React attached the listener.
-                  if (el && el.complete && el.naturalWidth > 0) markLoaded(index);
-                }}
                 placeholder={images[index].lqip ? 'blur' : 'empty'}
                 blurDataURL={images[index].lqip ?? undefined}
               />
@@ -186,10 +164,12 @@ export default function VillaGallery({ images, name }: VillaGalleryProps) {
                   style={{ transformOrigin: 'center bottom' }}
                 >
                   <Image
-                    src={imageUrl(image, 240) ?? image.url}
+                    src={imageUrl(image, 480) ?? image.url}
                     alt=""
                     fill
-                    sizes="120px"
+                    sizes="(max-width: 768px) 20vw, 200px"
+                    placeholder={image.lqip ? 'blur' : 'empty'}
+                    blurDataURL={image.lqip ?? undefined}
                     className={`object-cover transition-all duration-300 ${
                       active
                         ? 'opacity-100'
@@ -238,6 +218,8 @@ export default function VillaGallery({ images, name }: VillaGalleryProps) {
                 alt={images[index].alt || `${name} — image ${index + 1}`}
                 fill
                 sizes="90vw"
+                placeholder={images[index].lqip ? 'blur' : 'empty'}
+                blurDataURL={images[index].lqip ?? undefined}
                 className="object-contain"
               />
               <button
